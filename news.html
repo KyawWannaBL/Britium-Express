@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News & Updates | Britium Express</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --brand-blue: #0d2c54;
+            --brand-orange: #ff6b00;
+            --light-gray: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            background-color: #f4f6f9;
+        }
+
+        /* Navbar */
+        .top-bar { background-color: var(--brand-blue); color: white; padding: 10px 0; font-size: 0.9rem; }
+        .navbar-brand { font-weight: 900; color: var(--brand-blue) !important; text-transform: uppercase; }
+        .nav-link { font-weight: 500; color: #444 !important; margin-left: 15px; }
+        .nav-link:hover { color: var(--brand-orange) !important; }
+        .btn-portal { border: 2px solid var(--brand-blue); color: var(--brand-blue); font-weight: 700; padding: 6px 20px; border-radius: 5px; }
+
+        /* Page Header */
+        .blog-header {
+            background-color: var(--brand-blue);
+            padding: 60px 0;
+            color: white;
+            text-align: center;
+        }
+
+        /* Blog Cards */
+        .blog-card {
+            background: white;
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            height: 100%;
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .blog-img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .blog-content { padding: 25px; }
+        .blog-meta { font-size: 0.85rem; color: #999; margin-bottom: 10px; }
+        .blog-title { font-weight: 700; margin-bottom: 15px; color: var(--brand-blue); }
+        .blog-title a { text-decoration: none; color: inherit; }
+        .btn-read-more { color: var(--brand-orange); font-weight: 600; text-decoration: none; font-size: 0.9rem; }
+        .btn-read-more:hover { text-decoration: underline; }
+
+        /* Sidebar Widgets */
+        .widget { background: white; padding: 25px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #eee; }
+        .widget-title { font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid var(--brand-orange); padding-bottom: 10px; display: inline-block; }
+        .cat-list { list-style: none; padding: 0; margin: 0; }
+        .cat-list li { margin-bottom: 10px; border-bottom: 1px dashed #eee; padding-bottom: 10px; }
+        .cat-list li a { text-decoration: none; color: #555; display: flex; justify-content: space-between; }
+        .cat-list li a:hover { color: var(--brand-orange); }
+
+        /* Footer */
+        footer { background-color: #111; color: #aaa; padding: 60px 0 20px; }
+        footer h5 { color: white; margin-bottom: 20px; }
+        footer a { color: #aaa; text-decoration: none; }
+
+        /* Floating WA */
+        .float-wa {
+            position: fixed; bottom: 25px; right: 25px;
+            background-color: #25d366; color: white;
+            width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            z-index: 1000; text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="container d-flex flex-column flex-md-row justify-content-between">
+            <div><span class="me-3"><i class="fas fa-phone-alt me-2"></i> +95-9-897447744</span></div>
+            <div><span><i class="fas fa-clock me-2"></i> Mon-Sat: 9:00am - 5:30pm</span></div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-shipping-fast me-2"></i> Britium <span style="color:var(--brand-orange)">Express</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navContent">
+                 <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="tracking.html">Track & Trace</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="quote.html">Get Quote</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="news.html">News</a></li> <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item ms-lg-3"><a href="login.html" class="btn btn-portal">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="blog-header">
+        <div class="container">
+            <h1 class="display-5 fw-bold">Britium News & Insights</h1>
+            <p class="lead opacity-75 mb-0">Latest updates on logistics, fuel surcharges, and company events.</p>
+        </div>
+    </header>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-8">
+                    <div class="row g-4">
+                        
+                        <div class="col-md-6">
+                            <div class="blog-card">
+                                <img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Nay Pyi Taw Hub" class="blog-img">
+                                <div class="blog-content">
+                                    <div class="blog-meta"><i class="far fa-calendar-alt me-2"></i> Oct 15, 2025 | Company News</div>
+                                    <h5 class="blog-title"><a href="#">Expanding our Reach: New Hub in Nay Pyi Taw</a></h5>
+                                    <p class="text-muted small">We are proud to announce the full operational status of our Nay Pyi Taw hub, serving government agencies and local businesses with daily routes.</p>
+                                    <a href="#" class="btn-read-more">Read Full Story <i class="fas fa-arrow-right ms-1"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="blog-card">
+                                <img src="https://images.unsplash.com/photo-1585713181935-d5f622cc2415?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Flexitank" class="blog-img">
+                                <div class="blog-content">
+                                    <div class="blog-meta"><i class="far fa-calendar-alt me-2"></i> Sep 22, 2025 | Logistics Tips</div>
+                                    <h5 class="blog-title"><a href="#">Why Flexitanks are the Future of Liquid Transport</a></h5>
+                                    <p class="text-muted small">Learn how Britium's ISO-certified flexitank solutions provide a cost-effective alternative to traditional drums for non-hazardous liquids.</p>
+                                    <a href="#" class="btn-read-more">Read Full Story <i class="fas fa-arrow-right ms-1"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="blog-card">
+                                <img src="https://images.unsplash.com/photo-1532934423032-5a279c1f6d89?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Fuel Surcharge" class="blog-img">
+                                <div class="blog-content">
+                                    <div class="blog-meta"><i class="far fa-calendar-alt me-2"></i> Aug 05, 2025 | Service Updates</div>
+                                    <h5 class="blog-title"><a href="#">Fuel Surcharge Update (August 2025)</a></h5>
+                                    <p class="text-muted small">Due to global fuel price fluctuations, our international air freight surcharge has been adjusted. Click to see the new rate table.</p>
+                                    <a href="#" class="btn-read-more">Read Full Story <i class="fas fa-arrow-right ms-1"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="blog-card">
+                                <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Singapore" class="blog-img">
+                                <div class="blog-content">
+                                    <div class="blog-meta"><i class="far fa-calendar-alt me-2"></i> Jul 10, 2025 | Trade Lanes</div>
+                                    <h5 class="blog-title"><a href="#">Optimizing the Myanmar-Singapore Trade Corridor</a></h5>
+                                    <p class="text-muted small">Discover how our consolidated air cargo services to Singapore help Myanmar businesses export electronics and perishables faster.</p>
+                                    <a href="#" class="btn-read-more">Read Full Story <i class="fas fa-arrow-right ms-1"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <nav class="mt-5">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="col-lg-4 ps-lg-5 mt-4 mt-lg-0">
+                    
+                    <div class="widget">
+                        <h6 class="widget-title">Search News</h6>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search...">
+                            <button class="btn btn-warning text-white" style="background-color: var(--brand-orange);"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="widget">
+                        <h6 class="widget-title">Categories</h6>
+                        <ul class="cat-list">
+                            <li><a href="#">Company News <span>(4)</span></a></li>
+                            <li><a href="#">Logistics Tips <span>(8)</span></a></li>
+                            <li><a href="#">Service Updates <span>(2)</span></a></li>
+                            <li><a href="#">Regulations & Customs <span>(5)</span></a></li>
+                            <li><a href="#">E-Commerce <span>(3)</span></a></li>
+                        </ul>
+                    </div>
+
+                    <div class="widget bg-dark text-white text-center p-4">
+                        <i class="fas fa-paper-plane fa-3x mb-3 text-warning"></i>
+                        <h5 class="fw-bold">Need a Quote?</h5>
+                        <p class="small text-white-50">Get an instant estimate for your shipment now.</p>
+                        <a href="quote.html" class="btn btn-warning w-100 fw-bold">CALCULATE RATE</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="text-uppercase">Britium Express</h5>
+                    <p class="small text-muted">A dedicated delivery arm of Britium Ventures Company Limited. Providing fast, secure, and compliant logistics solutions.</p>
+                </div>
+                <div class="col-lg-2 mb-4">
+                    <h5>Links</h5>
+                    <a href="index.html" class="d-block mb-2">Track Package</a>
+                    <a href="services.html" class="d-block mb-2">Services</a>
+                    <a href="news.html" class="d-block mb-2">News</a>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <h5>Reach Out</h5>
+                    <div class="d-flex mb-2">
+                        <i class="fas fa-map-marker-alt me-3 mt-1 text-warning"></i>
+                        <span class="small text-muted">Britium Ventures Company Limited, YANGON, Yangon 11451 My.</span>
+                    </div>
+                    <div class="d-flex mb-2">
+                        <i class="fas fa-phone me-3 mt-1 text-warning"></i>
+                        <span class="small text-muted">+95-9-897447744, +95-9-897447755</span>
+                    </div>
+                </div>
+            </div>
+            <div class="border-top border-secondary pt-3 mt-3 text-center small text-muted">
+                &copy; 2026 Britium Ventures Company Limited. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/959897447744" class="float-wa" title="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

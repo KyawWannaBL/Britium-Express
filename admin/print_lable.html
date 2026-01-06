@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Print Label - BE-89744</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #555; padding: 20px; font-family: 'Arial', sans-serif; }
+        
+        /* The Label Paper */
+        .waybill {
+            background: white;
+            width: 148mm; /* A5 Width */
+            height: 210mm; /* A5 Height */
+            margin: 0 auto;
+            padding: 15px;
+            border: 1px solid #ddd;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .header-box { border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
+        .logo { font-size: 24px; font-weight: 900; color: #0d2c54; text-transform: uppercase; }
+        
+        .box { border: 2px solid #000; padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+        .box-title { font-size: 10px; text-transform: uppercase; font-weight: bold; color: #666; margin-bottom: 5px; display: block; }
+        .box-content { font-weight: bold; font-size: 14px; }
+        
+        .big-code { font-size: 24px; font-weight: 900; text-align: center; letter-spacing: 2px; }
+        
+        /* COD Box needs to be HUGE */
+        .cod-box { border: 3px solid #000; background: #f8f9fa; text-align: center; padding: 15px; }
+        .cod-amount { font-size: 32px; font-weight: 900; }
+        
+        .barcode { height: 50px; background: #000; width: 80%; margin: 10px auto; } /* Placeholder for barcode */
+
+        /* Print Settings */
+        @media print {
+            body { background: white; padding: 0; }
+            .no-print { display: none; }
+            .waybill { border: none; width: 100%; height: 100%; margin: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="text-center mb-3 no-print">
+        <button onclick="window.print()" class="btn btn-warning fw-bold">PRINT LABEL</button>
+        <button onclick="window.close()" class="btn btn-secondary">CLOSE</button>
+    </div>
+
+    <div class="waybill">
+        <div class="header-box d-flex justify-content-between align-items-center">
+            <div class="logo"><i class="fas fa-shipping-fast"></i> BRITIUM</div>
+            <div class="text-end">
+                <small class="d-block fw-bold">Standard Express</small>
+                <small>Yangon -> Mandalay</small>
+            </div>
+        </div>
+
+        <div class="text-center mb-3">
+            <img src="https://bwipjs-api.metafloor.com/?bcid=code128&text=BE-89744&scale=3&height=10&includetext" alt="Barcode" style="width: 80%; height: 60px;">
+        </div>
+
+        <div class="row g-2">
+            <div class="col-6">
+                <div class="box" style="height: 120px;">
+                    <span class="box-title">FROM (SENDER)</span>
+                    <div class="box-content">
+                        U Ba Maung<br>
+                        09-897447744<br>
+                        <small>No. 277, Anawrahta Rd, East Dagon, Yangon.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="box" style="height: 120px;">
+                    <span class="box-title">TO (RECEIVER)</span>
+                    <div class="box-content">
+                        Daw Hla<br>
+                        09-422299994<br>
+                        <small>78th Street, Between 30x31, Mandalay.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-2 mt-1">
+            <div class="col-4">
+                <div class="box text-center">
+                    <span class="box-title">DATE</span>
+                    24/10/2025
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="box text-center">
+                    <span class="box-title">WEIGHT</span>
+                    2.5 KG
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="box text-center">
+                    <span class="box-title">TYPE</span>
+                    Parcel
+                </div>
+            </div>
+        </div>
+
+        <div class="cod-box mt-3">
+            <span class="box-title">CASH ON DELIVERY (TO COLLECT)</span>
+            <div class="cod-amount">45,000 MMK</div>
+        </div>
+
+        <div class="row mt-4 pt-4">
+            <div class="col-6 text-center border-end">
+                <br><br>
+                <div class="border-top w-75 mx-auto"></div>
+                <small class="fw-bold">SENDER SIGNATURE</small>
+            </div>
+            <div class="col-6 text-center">
+                <br><br>
+                <div class="border-top w-75 mx-auto"></div>
+                <small class="fw-bold">RECEIVER SIGNATURE</small>
+            </div>
+        </div>
+
+        <div class="text-center mt-4 pt-3 border-top">
+            <small style="font-size: 10px;">Britium Express | www.britiumexpress.com | Hotline: 09-897447744</small>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domestic Express | Britium Express</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --brand-blue: #0d2c54; --brand-orange: #ff6b00; --light-gray: #f8f9fa; }
+        body { font-family: 'Roboto', sans-serif; color: #333; }
+
+        /* Navbar */
+        .top-bar { background-color: var(--brand-blue); color: white; padding: 10px 0; font-size: 0.9rem; }
+        .navbar-brand img { height: 70px; width: auto; }
+        .nav-link { font-weight: 500; color: #444 !important; margin-left: 15px; text-transform: uppercase; font-size: 0.9rem; }
+        .nav-link:hover, .nav-link.active { color: var(--brand-orange) !important; }
+        .btn-portal { border: 2px solid var(--brand-blue); color: var(--brand-blue); font-weight: 700; padding: 8px 25px; border-radius: 5px; transition: 0.3s; }
+        .btn-portal:hover { background-color: var(--brand-blue); color: white; }
+
+        /* Hero */
+        .page-hero {
+            background: linear-gradient(rgba(13, 44, 84, 0.85), rgba(13, 44, 84, 0.85)), url('https://images.unsplash.com/photo-1595150937666-419b48f93309?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover; background-position: center; padding: 120px 0; color: white; text-align: center;
+        }
+
+        /* Features */
+        .route-card { border: 1px solid #eee; border-radius: 8px; padding: 25px; background: white; border-left: 5px solid var(--brand-blue); margin-bottom: 20px; transition: 0.3s; }
+        .route-card:hover { transform: translateX(5px); border-left-color: var(--brand-orange); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        
+        .time-badge { background-color: #e3f2fd; color: var(--brand-blue); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+
+        /* Footer */
+        footer { background-color: #111; color: #aaa; padding: 60px 0 20px; }
+        footer a { color: #aaa; text-decoration: none; display: block; margin-bottom: 10px; }
+        footer a:hover { color: var(--brand-orange); }
+        .float-wa { position: fixed; bottom: 25px; right: 25px; background-color: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); z-index: 1000; }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div><span class="me-3"><i class="fas fa-phone-alt"></i> +95 9 897 4477 44</span> <span><i class="fas fa-envelope"></i> info@britiumexpress.com</span></div>
+            <div><span class="me-3"><i class="fas fa-clock"></i> Mon-Sat: 9:00am - 5:30pm</span></div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="Britium-Express/Assets/Images/BRITIUM EXPRESS logo.png" alt="Britium Express Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navContent">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="tracking.html">Track & Trace</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="quote.html">Get Quote</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="news.html">News</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item ms-lg-3"><a href="login.html" class="btn btn-portal">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-hero">
+        <div class="container">
+            <span class="text-uppercase ls-1 text-warning fw-bold mb-2 d-block">Reliable Nationwide Logistics</span>
+            <h1 class="display-3 fw-bold">Domestic Express</h1>
+            <p class="lead opacity-75">Connecting Yangon, Mandalay, and Nay Pyi Taw with speed and precision.</p>
+        </div>
+    </header>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-6">
+                    <h2 class="fw-bold mb-4" style="color: var(--brand-blue)">Priority Routes</h2>
+                    <p class="text-muted mb-4">We specialize in the "Golden Triangle" of Myanmar's economy. Our dedicated fleet runs daily schedules between the commercial capital, the administrative capital, and the cultural hub.</p>
+                    
+                    <div class="route-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="fw-bold mb-1">Yangon City Same-Day</h5>
+                                <small class="text-muted">Downtown & Major Townships</small>
+                            </div>
+                            <span class="time-badge"><i class="fas fa-bolt me-1"></i> Same Day</span>
+                        </div>
+                    </div>
+
+                    <div class="route-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="fw-bold mb-1">Yangon <i class="fas fa-arrow-right mx-2 text-warning"></i> Mandalay</h5>
+                                <small class="text-muted">Daily Highway Express</small>
+                            </div>
+                            <span class="time-badge">Next Day</span>
+                        </div>
+                    </div>
+
+                    <div class="route-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="fw-bold mb-1">Yangon <i class="fas fa-arrow-right mx-2 text-warning"></i> Nay Pyi Taw</h5>
+                                <small class="text-muted">Government & Commercial Cargo</small>
+                            </div>
+                            <span class="time-badge">Next Day</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Myanmar Map Route" class="img-fluid rounded shadow-lg border border-5 border-white">
+                </div>
+            </div>
+
+            <div class="row g-4 mt-4">
+                <div class="col-md-4 text-center">
+                    <i class="fas fa-door-open fa-3x text-warning mb-3"></i>
+                    <h5 class="fw-bold">Door-to-Door</h5>
+                    <p class="text-muted small">We pick up from your doorstep and deliver directly to the receiver. No need to visit a station.</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="fas fa-box-open fa-3x text-warning mb-3"></i>
+                    <h5 class="fw-bold">Secure Handling</h5>
+                    <p class="text-muted small">From documents to fragile parcels, our trained staff ensures your items arrive intact.</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="fas fa-mobile-alt fa-3x text-warning mb-3"></i>
+                    <h5 class="fw-bold">Real-Time Updates</h5>
+                    <p class="text-muted small">Track your shipment status via our Website or Mobile App at any time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light text-center">
+        <div class="container">
+            <h3 class="fw-bold mb-3">Ready to Ship?</h3>
+            <p class="text-muted mb-4">Check our competitive rates for Domestic Shipping.</p>
+            <a href="quote.html" class="btn btn-warning fw-bold text-white px-5 py-3">CALCULATE RATE</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="text-uppercase text-white">Britium Express</h5>
+                    <p class="small">A dedicated delivery arm of Britium Ventures Company Limited.</p>
+                </div>
+                <div class="col-lg-2 mb-4">
+                    <h5 class="text-white">Links</h5>
+                    <a href="tracking.html">Track Package</a>
+                    <a href="services.html">Services</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <h5 class="text-white">Contact Us</h5>
+                    <p class="mb-1"><i class="fas fa-phone me-2"></i> +95 9 897 4477 44</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> No. 277, East Dagon Township, Yangon.</p>
+                </div>
+            </div>
+            <div class="border-top border-secondary pt-3 mt-3 text-center small">&copy; 2026 Britium Ventures Company Limited.</div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/959897447744" class="float-wa"><i class="fab fa-whatsapp"></i></a>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

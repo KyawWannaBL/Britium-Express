@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Customers | Britium Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root { --admin-dark: #212529; --admin-accent: #ff6b00; --brand-blue: #0d2c54; }
+        body { background-color: #e9ecef; font-family: 'Segoe UI', sans-serif; }
+        
+        /* Sidebar */
+        .sidebar { height: 100vh; position: fixed; width: 250px; background: var(--admin-dark); color: white; z-index: 100; }
+        .main-content { margin-left: 250px; padding: 20px; }
+        .nav-link { color: #aaa; padding: 15px; display: flex; align-items: center; }
+        .nav-link:hover { color: white; background: rgba(255,255,255,0.1); }
+        .nav-link.active { color: white; background: var(--brand-blue); border-left: 4px solid var(--admin-accent); }
+        
+        /* Table Styles */
+        .table-card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow: hidden; margin-top: 20px; }
+        .avatar-sm { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; margin-right: 10px; background-color: #eee; }
+        
+        .badge-vip { background-color: #6610f2; color: white; }
+        .badge-regular { background-color: #6c757d; color: white; }
+        .badge-corp { background-color: #0d6efd; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar d-flex flex-column p-3">
+    <a href="index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <span class="fs-4 fw-bold text-warning">BRITIUM ADMIN</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item"><a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt me-3"></i> Dashboard</a></li>
+        <li><a href="shipments.html" class="nav-link"><i class="fas fa-box-open me-3"></i> Shipments</a></li>
+        <li><a href="customers.html" class="nav-link active"><i class="fas fa-users me-3"></i> Customers</a></li>
+        <li><a href="drivers.html" class="nav-link"><i class="fas fa-motorcycle me-3"></i> Drivers</a></li>
+        <li><a href="finance.html" class="nav-link"><i class="fas fa-wallet me-3"></i> Finance</a></li>
+    </ul>
+    <hr>
+    <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+            <img src="https://ui-avatars.com/api/?name=Admin+Staff&background=random" alt="" width="32" height="32" class="rounded-circle me-2">
+            <strong>Admin Staff</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li><a class="dropdown-item" href="../index.html">Sign out</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-dark">Customer Database</h2>
+        <button class="btn btn-warning fw-bold text-white" data-bs-toggle="modal" data-bs-target="#addCustomerModal" style="background-color: var(--admin-accent);">
+            <i class="fas fa-user-plus me-2"></i> Add Customer
+        </button>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card p-3 border-0 shadow-sm border-start border-primary border-4">
+                <h6 class="text-muted">Total Clients</h6>
+                <h3 class="fw-bold mb-0">1,204</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 border-0 shadow-sm border-start border-success border-4">
+                <h6 class="text-muted">Active This Month</h6>
+                <h3 class="fw-bold mb-0">850</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 border-0 shadow-sm border-start border-info border-4">
+                <h6 class="text-muted">Corporate Accounts</h6>
+                <h3 class="fw-bold mb-0">45</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="card p-3 border-0 shadow-sm mb-4">
+        <div class="row g-2">
+            <div class="col-md-5">
+                <input type="text" class="form-control" placeholder="Search by Name, Phone, or Shop Name...">
+            </div>
+            <div class="col-md-3">
+                <select class="form-select">
+                    <option selected>All Types</option>
+                    <option>Individual</option>
+                    <option>Online Shop</option>
+                    <option>Corporate</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-select">
+                    <option selected>Active</option>
+                    <option>Banned</option>
+                </select>
+            </div>
+            <div class="col-md-2 d-grid">
+                <button class="btn btn-dark">Filter</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-card">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4">Customer Name</th>
+                        <th>Phone / Contact</th>
+                        <th>Type</th>
+                        <th>Total Shipments</th>
+                        <th>Total Spend</th>
+                        <th>Joined Date</th>
+                        <th class="text-end pe-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=Tech+Store&background=6610f2&color=fff" class="avatar-sm">
+                                <div>
+                                    <div class="fw-bold">Tech Store Myanmar</div>
+                                    <small class="text-muted">U Ba Maung</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>09-8974477xx</td>
+                        <td><span class="badge badge-vip rounded-pill">VIP Seller</span></td>
+                        <td class="fw-bold text-center">1,540</td>
+                        <td>4.5M MMK</td>
+                        <td class="small text-muted">Jan 2024</td>
+                        <td class="text-end pe-4">
+                            <button class="btn btn-sm btn-light border" title="View Profile"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-sm btn-light border" title="Edit"><i class="fas fa-edit"></i></button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=ABC+Co&background=0d6efd&color=fff" class="avatar-sm">
+                                <div>
+                                    <div class="fw-bold">ABC Trading Co., Ltd.</div>
+                                    <small class="text-muted">Daw Hla (Manager)</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>09-4222999xx</td>
+                        <td><span class="badge badge-corp rounded-pill">Corporate</span></td>
+                        <td class="fw-bold text-center">320</td>
+                        <td>1.2M MMK</td>
+                        <td class="small text-muted">Mar 2024</td>
+                        <td class="text-end pe-4">
+                            <button class="btn btn-sm btn-light border" title="View Profile"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-sm btn-light border" title="Edit"><i class="fas fa-edit"></i></button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=Ma+Mya&background=6c757d&color=fff" class="avatar-sm">
+                                <div>
+                                    <div class="fw-bold">Ma Mya</div>
+                                    <small class="text-muted">Individual</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>09-7823266xx</td>
+                        <td><span class="badge badge-regular rounded-pill">Regular</span></td>
+                        <td class="fw-bold text-center">5</td>
+                        <td>15,000 MMK</td>
+                        <td class="small text-muted">Oct 2025</td>
+                        <td class="text-end pe-4">
+                            <button class="btn btn-sm btn-light border" title="View Profile"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-sm btn-light border" title="Edit"><i class="fas fa-edit"></i></button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="p-3 border-top d-flex justify-content-end">
+            <nav>
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
+                    <li class="page-item active"><a class="page-link bg-dark border-dark" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link text-dark" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addCustomerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i> Register New Customer</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Full Name / Shop Name</label>
+                        <input type="text" class="form-control" placeholder="e.g. U Ba Maung">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" placeholder="09xxxxxxxxx">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email (Optional)</label>
+                        <input type="email" class="form-control" placeholder="name@example.com">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Default Pickup Address</label>
+                        <textarea class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Account Type</label>
+                        <select class="form-select">
+                            <option>Regular (Individual)</option>
+                            <option>Online Shop (VIP)</option>
+                            <option>Corporate (Monthly Billing)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 fw-bold">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COD & E-Commerce | Britium Express</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --brand-blue: #0d2c54; --brand-orange: #ff6b00; --light-gray: #f8f9fa; }
+        body { font-family: 'Roboto', sans-serif; color: #333; }
+
+        /* Navbar */
+        .top-bar { background-color: var(--brand-blue); color: white; padding: 10px 0; font-size: 0.9rem; }
+        .navbar { background: white; padding: 10px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .navbar-brand img { height: 70px; width: auto; }
+        .nav-link { font-weight: 500; color: #444 !important; margin-left: 15px; text-transform: uppercase; font-size: 0.9rem; }
+        .nav-link:hover, .nav-link.active { color: var(--brand-orange) !important; }
+        .btn-portal { border: 2px solid var(--brand-blue); color: var(--brand-blue); font-weight: 700; padding: 8px 25px; border-radius: 5px; transition: 0.3s; }
+        .btn-portal:hover { background-color: var(--brand-blue); color: white; }
+
+        /* Hero */
+        .page-hero {
+            background: linear-gradient(rgba(13, 44, 84, 0.9), rgba(13, 44, 84, 0.9)), url('https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover; background-position: center; padding: 100px 0; color: white; text-align: center;
+        }
+
+        /* Features */
+        .process-step { position: relative; padding: 30px; border: 1px solid #eee; border-radius: 10px; background: white; height: 100%; text-align: center; }
+        .step-num { display: inline-block; width: 40px; height: 40px; background: var(--brand-orange); color: white; border-radius: 50%; line-height: 40px; font-weight: bold; margin-bottom: 15px; }
+
+        /* Footer */
+        footer { background-color: #111; color: #aaa; padding: 60px 0 20px; }
+        footer a { color: #aaa; text-decoration: none; display: block; margin-bottom: 10px; }
+        footer a:hover { color: var(--brand-orange); }
+        .float-wa { position: fixed; bottom: 25px; right: 25px; background-color: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); z-index: 1000; }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div><span class="me-3"><i class="fas fa-phone-alt"></i> +95 9 897 4477 44</span> <span><i class="fas fa-envelope"></i> info@britiumexpress.com</span></div>
+            <div><span class="me-3"><i class="fas fa-clock"></i> Mon-Sat: 9:00am - 5:30pm</span></div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="Britium-Express/Assets/Images/BRITIUM EXPRESS logo.png" alt="Britium Express Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navContent">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="tracking.html">Track & Trace</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="quote.html">Get Quote</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="news.html">News</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item ms-lg-3"><a href="login.html" class="btn btn-portal">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-hero">
+        <div class="container">
+            <h1 class="display-4 fw-bold">E-Commerce & COD Solutions</h1>
+            <p class="lead opacity-75">Secure Cash on Delivery handling with fast remittance for online sellers.</p>
+        </div>
+    </header>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6">
+                    <h5 class="text-uppercase text-primary fw-bold">For Online Shops</h5>
+                    <h2 class="fw-bold mb-4" style="color: var(--brand-blue)">Grow Your Business with Secure Payments</h2>
+                    <p class="text-muted">In Myanmar's digital economy, trust is everything. Britium Express acts as the bridge between you and your customers.</p>
+                    
+                    <ul class="list-unstyled mt-4">
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="fas fa-check-circle text-success mt-1 me-3 fa-lg"></i>
+                            <div>
+                                <strong>Secure Cash Handling</strong><br>
+                                <span class="text-muted small">We collect cash upon delivery and ensure it reaches your account safely.</span>
+                            </div>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="fas fa-bolt text-warning mt-1 me-3 fa-lg"></i>
+                            <div>
+                                <strong>Fast Remittance</strong><br>
+                                <span class="text-muted small">Get your money fast. We offer next-day or weekly remittance options to suit your cash flow.</span>
+                            </div>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="fas fa-undo text-danger mt-1 me-3 fa-lg"></i>
+                            <div>
+                                <strong>Easy Return Management</strong><br>
+                                <span class="text-muted small">If a customer rejects a parcel, we handle the return logistics efficiently.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="E-Commerce Payment" class="img-fluid rounded shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h3 class="fw-bold">How It Works</h3>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="process-step">
+                        <span class="step-num">1</span>
+                        <h5>Book Pickup</h5>
+                        <p class="small text-muted">Create an order via our App or Website.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="process-step">
+                        <span class="step-num">2</span>
+                        <h5>We Deliver</h5>
+                        <p class="small text-muted">We deliver the item to your customer.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="process-step">
+                        <span class="step-num">3</span>
+                        <h5>Collect Cash</h5>
+                        <p class="small text-muted">Rider collects the item value + shipping fee.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="process-step">
+                        <span class="step-num">4</span>
+                        <h5>Remittance</h5>
+                        <p class="small text-muted">We transfer the money to your bank account.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 text-center">
+        <div class="container">
+            <div class="card bg-dark text-white p-5 border-0 rounded-3">
+                <h3 class="fw-bold mb-3">Become a Britium Partner</h3>
+                <p class="mb-4">Join hundreds of online shops growing with Britium Express.</p>
+                <div>
+                    <a href="register_seller.html" class="btn btn-warning fw-bold text-white px-4">Register Merchant Account</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="text-uppercase text-white">Britium Express</h5>
+                    <p class="small">A dedicated delivery arm of Britium Ventures Company Limited.</p>
+                </div>
+                <div class="col-lg-2 mb-4">
+                    <h5 class="text-white">Links</h5>
+                    <a href="tracking.html">Track Package</a>
+                    <a href="services.html">Services</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <h5 class="text-white">Contact Us</h5>
+                    <p class="mb-1"><i class="fas fa-phone me-2"></i> +95 9 897 4477 44</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> No. 277, East Dagon Township, Yangon.</p>
+                </div>
+            </div>
+            <div class="border-top border-secondary pt-3 mt-3 text-center small">&copy; 2026 Britium Ventures Company Limited.</div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/959897447744" class="float-wa"><i class="fab fa-whatsapp"></i></a>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support & Guidelines | Britium Express</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --brand-blue: #0d2c54;
+            --brand-orange: #ff6b00;
+            --light-gray: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        /* Navbar (Consistent) */
+        .top-bar { background-color: var(--brand-blue); color: white; padding: 10px 0; font-size: 0.9rem; }
+        .navbar-brand { font-weight: 900; color: var(--brand-blue) !important; text-transform: uppercase; }
+        .nav-link { font-weight: 500; color: #444 !important; margin-left: 15px; }
+        .nav-link:hover { color: var(--brand-orange) !important; }
+        .btn-portal { border: 2px solid var(--brand-blue); color: var(--brand-blue); font-weight: 700; padding: 6px 20px; border-radius: 5px; }
+
+        /* Header */
+        .support-header {
+            background-color: var(--brand-blue);
+            padding: 60px 0;
+            color: white;
+            text-align: center;
+        }
+
+        /* Sidebar Navigation */
+        .nav-pills .nav-link {
+            color: #555;
+            font-weight: 600;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: white;
+            border: 1px solid #eee;
+            text-align: left;
+            transition: 0.3s;
+        }
+        .nav-pills .nav-link:hover {
+            background-color: #f0f0f0;
+            color: var(--brand-orange);
+        }
+        .nav-pills .nav-link.active {
+            background-color: var(--brand-orange);
+            color: white;
+            border-color: var(--brand-orange);
+        }
+        .nav-pills .nav-link i {
+            width: 25px;
+            text-align: center;
+            margin-right: 10px;
+        }
+
+        /* Content Cards */
+        .content-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            height: 100%;
+        }
+        
+        /* Step Icons for Packaging */
+        .step-circle {
+            width: 40px; height: 40px;
+            background-color: var(--brand-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        /* Accordion for FAQ */
+        .accordion-button:not(.collapsed) {
+            color: var(--brand-blue);
+            background-color: #eef2f6;
+            font-weight: bold;
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: rgba(0,0,0,.125);
+        }
+
+        /* Prohibited List */
+        .banned-item {
+            border: 1px solid #ffcccc;
+            background-color: #fff5f5;
+            color: #cc0000;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        /* Calculator Box */
+        .calc-box {
+            background-color: #e3f2fd;
+            border: 1px dashed var(--brand-blue);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        /* Footer */
+        footer { background-color: #111; color: #aaa; padding: 60px 0 20px; }
+        footer h5 { color: white; margin-bottom: 20px; }
+        footer a { color: #aaa; text-decoration: none; }
+
+        /* Floating WA */
+        .float-wa {
+            position: fixed; bottom: 25px; right: 25px;
+            background-color: #25d366; color: white;
+            width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            z-index: 1000; text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="container d-flex flex-column flex-md-row justify-content-between">
+            <div><span class="me-3"><i class="fas fa-phone-alt me-2"></i> +95-9-897447744</span></div>
+            <div><span><i class="fas fa-clock me-2"></i> Mon-Sat: 9:00am - 5:30pm</span></div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-shipping-fast me-2"></i> Britium <span style="color:var(--brand-orange)">Express</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navContent">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Track & Trace</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html#rates">Rates</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">Support</a></li>
+                    <li class="nav-item ms-lg-3"><a href="#" class="btn btn-portal">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="support-header">
+        <div class="container">
+            <h1 class="fw-bold">Information Center</h1>
+            <p class="lead opacity-75 mb-0">Guidelines, Policies, and Frequently Asked Questions</p>
+        </div>
+    </header>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 mb-4">
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <button class="nav-link active" id="v-pills-faq-tab" data-bs-toggle="pill" data-bs-target="#v-pills-faq" type="button">
+                            <i class="fas fa-question-circle"></i> FAQ
+                        </button>
+                        <button class="nav-link" id="v-pills-pack-tab" data-bs-toggle="pill" data-bs-target="#v-pills-pack" type="button">
+                            <i class="fas fa-box-open"></i> Packaging Guide
+                        </button>
+                        <button class="nav-link" id="v-pills-ban-tab" data-bs-toggle="pill" data-bs-target="#v-pills-ban" type="button">
+                            <i class="fas fa-ban"></i> Prohibited Items
+                        </button>
+                        <button class="nav-link" id="v-pills-terms-tab" data-bs-toggle="pill" data-bs-target="#v-pills-terms" type="button">
+                            <i class="fas fa-file-contract"></i> Trade Terms (Incoterms)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-lg-9">
+                    <div class="tab-content" id="v-pills-tabContent">
+                        
+                        <div class="tab-pane fade show active" id="v-pills-faq">
+                            <div class="content-card">
+                                <h3 class="fw-bold mb-4">Frequently Asked Questions</h3>
+                                <div class="accordion" id="faqAccordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                                How do I track my package?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body">
+                                                Simply enter your <strong>Tracking ID (e.g., BE-12345)</strong> on our Homepage or Tracking page. You can track up to 10 numbers at once by separating them with commas.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingTwo">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                                How does Cash on Delivery (COD) work?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body">
+                                                We collect payment from the receiver upon delivery. The funds are then remitted to the sender's bank account according to our remittance schedule (usually within 24-48 hours after delivery).
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingThree">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                                What are your operating hours?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body">
+                                                Our hubs in Yangon, Mandalay, and Nay Pyi Taw operate <strong>Monday to Saturday, from 9:00 AM to 5:30 PM</strong>. We are closed on Sundays and Public Holidays.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="v-pills-pack">
+                            <div class="content-card">
+                                <h3 class="fw-bold mb-4">Packaging Best Practices</h3>
+                                <p class="text-muted">Proper packaging ensures your shipment arrives safely. Follow these 3 steps:</p>
+                                
+                                <div class="d-flex mb-4">
+                                    <div class="step-circle">1</div>
+                                    <div>
+                                        <h5 class="fw-bold">Outer Box</h5>
+                                        <p class="mb-0">Use a new, high-quality corrugated carton. For heavy items, wooden crates are recommended to prevent crushing.</p>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex mb-4">
+                                    <div class="step-circle">2</div>
+                                    <div>
+                                        <h5 class="fw-bold">Cushioning</h5>
+                                        <p class="mb-0">Fill all voids with bubble wrap, foam, or air pillows. The item should not move when the box is shaken.</p>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex mb-4">
+                                    <div class="step-circle">3</div>
+                                    <div>
+                                        <h5 class="fw-bold">Sealing (H-Seal Method)</h5>
+                                        <p class="mb-0">Use strong packing tape. Apply tape to the center seam and both edge seams (making an 'H' shape) for maximum security.</p>
+                                    </div>
+                                </div>
+
+                                <div class="calc-box">
+                                    <h5 class="fw-bold text-primary"><i class="fas fa-calculator me-2"></i> Calculating Chargeable Weight</h5>
+                                    <p class="small">Airlines charge based on the greater of Actual Weight or Volumetric Weight.</p>
+                                    <div class="bg-white p-3 rounded text-center fw-bold border">
+                                        (Length x Width x Height in cm) / 6000 = Volumetric Weight (kg)
+                                    </div>
+                                    <p class="small text-muted mt-2 mb-0"><em>Note: Some express carriers use 5000 as the divisor. Britium Express confirms the correct factor per shipment.</em></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="v-pills-ban">
+                            <div class="content-card">
+                                <h3 class="fw-bold mb-4 text-danger">Prohibited & Restricted Items</h3>
+                                <p class="text-muted mb-4">For safety and legal compliance, the following items are strictly prohibited from air cargo. <strong>Ask us if unsure!</strong></p>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="banned-item"><i class="fas fa-bomb me-3"></i> Explosives & Fireworks</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="banned-item"><i class="fas fa-fire me-3"></i> Flammables (Petrol, Lighter Fluid)</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="banned-item"><i class="fas fa-skull-crossbones me-3"></i> Toxic Substances & Illegal Drugs</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="banned-item"><i class="fas fa-paw me-3"></i> Live Animals (Without Special Permit)</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="banned-item"><i class="fas fa-money-bill-wave me-3"></i> Cash & High-Value Bullion</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="banned-item"><i class="fas fa-battery-full me-3"></i> Lithium Batteries (Loose/Damaged)</div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-warning mt-3">
+                                    <i class="fas fa-exclamation-triangle me-2"></i> <strong>Warning:</strong> Hiding dangerous goods is illegal and compromises the safety of everyone in the transport chain.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="v-pills-terms">
+                            <div class="content-card">
+                                <h3 class="fw-bold mb-4">Understanding Trade Terms (Incoterms)</h3>
+                                <p class="text-muted">Incoterms® define who is responsible for the shipping costs and risks.</p>
+                                
+                                <div class="mb-4">
+                                    <h5 class="fw-bold text-primary">EXW (Ex Works)</h5>
+                                    <p>Seller's responsibility is minimal. The buyer handles all transport and risk starting from the seller's warehouse pick-up.</p>
+                                </div>
+                                <hr>
+                                <div class="mb-4">
+                                    <h5 class="fw-bold text-primary">FOB (Free On Board)</h5>
+                                    <p>Seller is responsible until the goods are loaded onto the vessel/aircraft. Once on board, the risk transfers to the buyer.</p>
+                                </div>
+                                <hr>
+                                <div>
+                                    <h5 class="fw-bold text-primary">CIF (Cost, Insurance & Freight)</h5>
+                                    <p>Seller pays for the cost, freight, and insurance to the destination port. However, risk transfers to the buyer once goods are on board the vessel.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="text-uppercase">Britium Express</h5>
+                    <p class="small text-muted">A dedicated delivery arm of Britium Ventures Company Limited. Providing fast, secure, and compliant logistics solutions.</p>
+                </div>
+                <div class="col-lg-2 mb-4">
+                    <h5>Links</h5>
+                    <a href="index.html" class="d-block mb-2">Track Package</a>
+                    <a href="services.html" class="d-block mb-2">Services</a>
+                    <a href="#" class="d-block mb-2">Support</a>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <h5>Reach Out</h5>
+                    <div class="d-flex mb-2">
+                        <i class="fas fa-map-marker-alt me-3 mt-1 text-warning"></i>
+                        <span class="small text-muted">Britium Ventures Company Limited, YANGON, Yangon 11451 My.</span>
+                    </div>
+                    <div class="d-flex mb-2">
+                        <i class="fas fa-phone me-3 mt-1 text-warning"></i>
+                        <span class="small text-muted">+95-9-897447744, +95-9-897447755</span>
+                    </div>
+                    <div class="d-flex">
+                        <i class="fas fa-envelope me-3 mt-1 text-warning"></i>
+                        <span class="small text-muted">info@britiumexpress.com</span>
+                    </div>
+                </div>
+            </div>
+            <div class="border-top border-secondary pt-3 mt-3 text-center small text-muted">
+                &copy; 2026 Britium Ventures Company Limited. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/959897447744" class="float-wa" title="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+```

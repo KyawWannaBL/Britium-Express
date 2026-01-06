@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services & Rates | Britium Express</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --brand-blue: #0d2c54;
+            --brand-orange: #ff6b00;
+            --light-gray: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+        }
+
+        /* Navbar Styles */
+        .top-bar { background-color: var(--brand-blue); color: white; padding: 10px 0; font-size: 0.9rem; }
+        .navbar-brand { font-weight: 900; color: var(--brand-blue) !important; text-transform: uppercase; }
+        .nav-link { font-weight: 500; color: #444 !important; margin-left: 15px; }
+        .nav-link:hover { color: var(--brand-orange) !important; }
+        .nav-link.active { color: var(--brand-orange) !important; }
+        .btn-portal { border: 2px solid var(--brand-blue); color: var(--brand-blue); font-weight: 700; padding: 6px 20px; border-radius: 5px; }
+
+        /* Header */
+        .page-header {
+            background: linear-gradient(rgba(13, 44, 84, 0.9), rgba(13, 44, 84, 0.8)), url('https://images.unsplash.com/photo-1578575437130-527eed3abbec?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 80px 0;
+            color: white;
+            text-align: center;
+        }
+
+        /* Service Cards */
+        .service-box {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            height: 100%;
+            transition: 0.3s;
+            border-bottom: 4px solid transparent;
+        }
+        .service-box:hover {
+            transform: translateY(-5px);
+            border-bottom: 4px solid var(--brand-orange);
+        }
+        .service-icon {
+            font-size: 3rem;
+            color: var(--brand-blue);
+            margin-bottom: 25px;
+        }
+
+        /* Pricing Tabs */
+        .nav-tabs .nav-link {
+            color: var(--brand-blue);
+            font-weight: 700;
+            border: none;
+            border-bottom: 3px solid transparent;
+        }
+        .nav-tabs .nav-link.active {
+            color: var(--brand-orange);
+            border-bottom: 3px solid var(--brand-orange);
+            background: none;
+        }
+        .rate-table th { background-color: var(--brand-blue); color: white; }
+        .rate-table td { vertical-align: middle; font-size: 0.95rem; }
+        .flag-icon { margin-right: 8px; }
+
+        /* Footer */
+        footer { background-color: #111; color: #aaa; padding: 60px 0 20px; }
+        footer h5 { color: white; margin-bottom: 20px; }
+        footer a { color: #aaa; text-decoration: none; }
+        
+        /* Floating WA */
+        .float-wa {
+            position: fixed; bottom: 25px; right: 25px;
+            background-color: #25d366; color: white;
+            width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            z-index: 1000; text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="container d-flex flex-column flex-md-row justify-content-between">
+            <div>
+                <span class="me-3"><i class="fas fa-phone-alt me-2"></i> +95-9-897447744, +95-9-897447755</span>
+            </div>
+            <div>
+                <span class="me-3"><i class="fas fa-envelope me-2"></i> info@britiumexpress.com</span>
+                <span><i class="fas fa-clock me-2"></i> Mon-Sat: 9:00am - 5:30pm</span>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-shipping-fast me-2"></i> Britium <span style="color:var(--brand-orange)">Express</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navContent">
+                 <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="tracking.html">Track & Trace</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="quote.html">Get Quote</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="news.html">News</a></li> <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item ms-lg-3"><a href="login.html" class="btn btn-portal">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container">
+            <h1 class="display-4 fw-bold">Services & Global Rates</h1>
+            <p class="lead opacity-75">Transparency in pricing. Excellence in delivery.</p>
+        </div>
+    </header>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-box text-center">
+                        <i class="fas fa-truck-fast service-icon"></i>
+                        <h4 class="fw-bold mb-3">Domestic Express</h4>
+                        <p class="text-muted">Connecting Yangon, Mandalay, and Nay Pyi Taw with same-day and next-day options.</p>
+                        <a href="#" class="btn btn-outline-dark btn-sm mt-2">View Hubs</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-box text-center">
+                        <i class="fas fa-hand-holding-usd service-icon"></i>
+                        <h4 class="fw-bold mb-3">COD & E-Commerce</h4>
+                        <p class="text-muted">Secure Cash on Delivery handling with fast remittance for online sellers.</p>
+                        <a href="#" class="btn btn-outline-dark btn-sm mt-2">Seller Registration</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-box text-center">
+                        <i class="fas fa-plane-departure service-icon"></i>
+                        <h4 class="fw-bold mb-3">International Cargo</h4>
+                        <p class="text-muted">Consolidated air cargo to USA, Asia, and Europe. Customs Licensed handling.</p>
+                        <a href="#rates" class="btn btn-outline-dark btn-sm mt-2">Check Rates Below</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="rates" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h6 class="text-uppercase text-primary fw-bold">Britium Air Cargo Express</h6>
+                <h2 class="fw-bold">International Pricing Tables</h2>
+                <p class="text-muted">Fast • Reliable • International</p>
+            </div>
+
+            <ul class="nav nav-tabs justify-content-center mb-4" id="rateTabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="asia-tab" data-bs-toggle="tab" data-bs-target="#asia" type="button">Asia</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="europe-tab" data-bs-toggle="tab" data-bs-target="#europe" type="button">Europe</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="oceania-tab" data-bs-toggle="tab" data-bs-target="#oceania" type="button">Oceania</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="na-tab" data-bs-toggle="tab" data-bs-target="#na" type="button">North America</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="me-tab" data-bs-toggle="tab" data-bs-target="#me" type="button">Middle East</button>
+                </li>
+            </ul>
+
+            <div class="tab-content bg-white p-4 rounded shadow-sm" id="rateTabsContent">
+                
+                <div class="tab-pane fade show active" id="asia" role="tabpanel">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-globe-asia text-primary me-2"></i> Asia Air Cargo Pricing (MMK / KG)</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped rate-table table-hover">
+                            <thead>
+                                <tr><th>Weight Slab</th><th>Price / KG</th><th>Destinations</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>5-10 Kg</td><td class="fw-bold">15,000</td><td><i class="fas fa-flag flag-icon"></i> Thailand</td></tr>
+                                <tr><td>5-10 Kg</td><td class="fw-bold">35,000</td><td><i class="fas fa-flag flag-icon"></i> Singapore, Malaysia</td></tr>
+                                <tr><td>5-10 Kg</td><td class="fw-bold">65,000</td><td><i class="fas fa-flag flag-icon"></i> Japan</td></tr>
+                                <tr><td>11-20 Kg</td><td class="fw-bold">12,000</td><td><i class="fas fa-flag flag-icon"></i> Thailand</td></tr>
+                                <tr><td>11-20 Kg</td><td class="fw-bold">55,000</td><td><i class="fas fa-flag flag-icon"></i> Singapore</td></tr>
+                                <tr><td>20-30 Kg</td><td class="fw-bold">11,000</td><td><i class="fas fa-flag flag-icon"></i> Thailand</td></tr>
+                                <tr><td>20-30 Kg</td><td class="fw-bold">35,000</td><td><i class="fas fa-flag flag-icon"></i> Japan, Taiwan</td></tr>
+                            </tbody>
+                        </table>
+                        <small class="text-muted">*Rates subject to change.</small>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="europe" role="tabpanel">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-euro-sign text-primary me-2"></i> Europe Air Cargo Pricing (MMK / KG)</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped rate-table table-hover">
+                            <thead>
+                                <tr><th>Weight Slab</th><th>Price / KG</th><th>Destinations</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>3-10 Kg</td><td class="fw-bold">120,000</td><td><i class="fas fa-flag flag-icon"></i> Czech Republic</td></tr>
+                                <tr><td>5-10 Kg</td><td class="fw-bold">15,000</td><td><i class="fas fa-flag flag-icon"></i> Denmark</td></tr>
+                                <tr><td>5-10 Kg</td><td class="fw-bold">35,000</td><td><i class="fas fa-flag flag-icon"></i> Estonia</td></tr>
+                                <tr><td>5-10 Kg</td><td class="fw-bold">80,000</td><td><i class="fas fa-flag flag-icon"></i> Slovakia</td></tr>
+                                <tr><td>11-20 Kg</td><td class="fw-bold">50,000</td><td><i class="fas fa-flag flag-icon"></i> Netherlands</td></tr>
+                                <tr><td>11-20 Kg</td><td class="fw-bold">120,000</td><td><i class="fas fa-flag flag-icon"></i> Poland</td></tr>
+                                <tr><td>20-30 Kg</td><td class="fw-bold">11,000</td><td><i class="fas fa-flag flag-icon"></i> Germany</td></tr>
+                                <tr><td>20-30 Kg</td><td class="fw-bold">33,000</td><td><i class="fas fa-flag flag-icon"></i> Austria</td></tr>
+                                <tr><td>20-30 Kg</td><td class="fw-bold">70,000</td><td><i class="fas fa-flag flag-icon"></i> Belgium</td></tr>
+                            </tbody>
+                        </table>
+                        <small class="text-muted">*Rates on Request: Lithuania, North Macedonia.</small>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="oceania" role="tabpanel">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-water text-primary me-2"></i> Oceania Air Cargo Pricing (MMK / KG)</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped rate-table table-hover">
+                            <thead>
+                                <tr><th>Weight Slab</th><th>Price / KG</th><th>Destinations</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>5-10 Kg</td><td class="fw-bold">95,000</td><td><i class="fas fa-flag flag-icon"></i> Australia, New Zealand</td></tr>
+                                <tr><td>11-20 Kg</td><td class="fw-bold">75,000</td><td><i class="fas fa-flag flag-icon"></i> Australia, New Zealand</td></tr>
+                                <tr><td>20-30 Kg</td><td class="fw-bold">70,000</td><td><i class="fas fa-flag flag-icon"></i> Australia, New Zealand</td></tr>
+                            </tbody>
+                        </table>
+                        <small class="text-muted">*Rates include USA in slab group.</small>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="na" role="tabpanel">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-flag-usa text-primary me-2"></i> North America Air Cargo Pricing (MMK / KG)</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped rate-table table-hover">
+                            <thead>
+                                <tr><th>Weight Slab</th><th>Price / KG</th><th>Destinations</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>5-10 Kg</td><td class="fw-bold">119,000</td><td><i class="fas fa-flag flag-icon"></i> USA, Mexico, Canada</td></tr>
+                                <tr><td>11-20 Kg</td><td class="fw-bold">95,000</td><td><i class="fas fa-flag flag-icon"></i> USA, Mexico, Canada</td></tr>
+                                <tr><td>20-30 Kg</td><td class="fw-bold">75,000</td><td><i class="fas fa-flag flag-icon"></i> USA, Mexico, Canada</td></tr>
+                            </tbody>
+                        </table>
+                        <small class="text-muted">*Weight slabs apply.</small>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="me" role="tabpanel">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-mosque text-primary me-2"></i> Middle East Air Cargo Pricing (MMK / KG)</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped rate-table table-hover">
+                            <thead>
+                                <tr><th>Weight Slab</th><th>Price / KG</th><th>Destinations</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>5-10 Kg</td><td class="fw-bold">120,000</td><td><i class="fas fa-flag flag-icon"></i> Israel</td></tr>
+                                <tr><td>5-10 Kg</td><td class="fw-bold">80,000</td><td><i class="fas fa-flag flag-icon"></i> Saudi Arabia</td></tr>
+                                <tr><td>11-20 Kg</td><td class="fw-bold">90,000</td><td><i class="fas fa-flag flag-icon"></i> Israel</td></tr>
+                                <tr><td>11-20 Kg</td><td class="fw-bold">70,000</td><td><i class="fas fa-flag flag-icon"></i> Kuwait</td></tr>
+                                <tr><td>20-30 Kg</td><td class="fw-bold">60,000</td><td><i class="fas fa-flag flag-icon"></i> Bahrain</td></tr>
+                            </tbody>
+                        </table>
+                        <small class="text-muted">*Rates available on request for Qatar & Oman.</small>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="text-center mt-4">
+                <p class="text-muted"><i class="fas fa-info-circle me-1"></i> Prices are in MMK per KG. Rates are subject to change based on fuel surcharges and capacity.</p>
+                <a href="#" class="btn btn-warning fw-bold px-4 py-2">Get a Custom Quote</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="text-uppercase">Britium Express</h5>
+                    <p class="small text-muted">A dedicated delivery arm of Britium Ventures Company Limited. Providing fast, secure, and compliant logistics solutions.</p>
+                </div>
+                <div class="col-lg-2 mb-4">
+                    <h5>Links</h5>
+                    <a href="#" class="d-block mb-2">Track Package</a>
+                    <a href="#" class="d-block mb-2">Services</a>
+                    <a href="#" class="d-block mb-2">Contact</a>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <h5>Reach Out</h5>
+                    <div class="d-flex mb-2">
+                        <i class="fas fa-map-marker-alt me-3 mt-1 text-warning"></i>
+                        <span class="small text-muted">Britium Ventures Company Limited, YANGON, Yangon 11451 My.</span>
+                    </div>
+                    <div class="d-flex mb-2">
+                        <i class="fas fa-phone me-3 mt-1 text-warning"></i>
+                        <span class="small text-muted">+95-9-897447744, +95-9-897447755, +95-9-897447766</span>
+                    </div>
+                    <div class="d-flex">
+                        <i class="fas fa-envelope me-3 mt-1 text-warning"></i>
+                        <span class="small text-muted">info@britiumexpress.com</span>
+                    </div>
+                </div>
+            </div>
+            <div class="border-top border-secondary pt-3 mt-3 text-center small text-muted">
+                &copy; 2026 Britium Ventures Company Limited. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/959897447744" class="float-wa" title="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
