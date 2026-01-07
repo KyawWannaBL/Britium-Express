@@ -22,59 +22,16 @@
             background-color: #f9f9f9;
         }
 
-        /* * ==============================================
-         * Navigation & Top Bar
-         * ==============================================
-         */
-        .top-bar { 
-            background-color: var(--brand-blue); 
-            color: white; 
-            padding: 10px 0; 
-            font-size: 0.9rem; 
-        }
-        
-        .navbar {
-            background: white;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            padding: 15px 0;
-        }
+        /* Navigation & Top Bar */
+        .top-bar { background-color: var(--brand-blue); color: white; padding: 10px 0; font-size: 0.9rem; }
+        .navbar { background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 15px 0; }
+        .navbar-brand img { height: 70px; width: auto; }
+        .nav-link { font-weight: 500; color: #444 !important; margin-left: 15px; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { color: var(--brand-orange) !important; }
+        .btn-portal { border: 2px solid var(--brand-blue); color: var(--brand-blue); font-weight: 700; padding: 8px 25px; border-radius: 5px; transition: 0.3s; }
+        .btn-portal:hover { background-color: var(--brand-blue); color: white; }
 
-        .navbar-brand img { 
-            height: 70px; 
-            width: auto; 
-        }
-        
-        .nav-link { 
-            font-weight: 500; 
-            color: #444 !important; 
-            margin-left: 15px; 
-            text-transform: uppercase; 
-            font-size: 0.9rem; 
-            transition: 0.3s;
-        }
-        
-        .nav-link:hover, .nav-link.active { 
-            color: var(--brand-orange) !important; 
-        }
-        
-        .btn-portal { 
-            border: 2px solid var(--brand-blue); 
-            color: var(--brand-blue); 
-            font-weight: 700; 
-            padding: 8px 25px; 
-            border-radius: 5px; 
-            transition: 0.3s; 
-        }
-        
-        .btn-portal:hover { 
-            background-color: var(--brand-blue); 
-            color: white; 
-        }
-
-        /* * ==============================================
-         * Page Header & Hero
-         * ==============================================
-         */
+        /* Page Hero */
         .page-hero { 
             background: linear-gradient(rgba(13, 44, 84, 0.9), rgba(13, 44, 84, 0.9)), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); 
             background-size: cover; 
@@ -85,167 +42,40 @@
             margin-bottom: 50px;
         }
 
-        /* * ==============================================
-         * Service Cards
-         * ==============================================
-         */
-        .service-card { 
-            border: none; 
-            transition: 0.3s; 
-            height: 100%; 
-            border-radius: 12px; 
-            overflow: hidden; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
-            background: white;
-        }
+        /* Service Cards */
+        .service-card { border: none; transition: 0.3s; height: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); background: white; }
+        .service-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .service-img { height: 220px; object-fit: cover; width: 100%; }
+        .service-body { padding: 30px; position: relative; }
+        .service-icon { width: 70px; height: 70px; background: var(--brand-orange); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-top: -65px; margin-bottom: 20px; border: 5px solid white; box-shadow: 0 5px 10px rgba(0,0,0,0.1); }
+
+        /* Calculator Section */
+        .calculator-section { background-color: white; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
+        .calculator-box { background: #fff; padding: 40px; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); border-top: 6px solid var(--brand-blue); }
+        .form-label { font-weight: 700; font-size: 0.9rem; color: var(--brand-blue); margin-bottom: 8px; }
+        .form-control, .form-select { padding: 12px; border: 1px solid #dee2e6; border-radius: 6px; }
+        .form-control:focus, .form-select:focus { border-color: var(--brand-orange); box-shadow: 0 0 0 0.25rem rgba(255, 107, 0, 0.15); }
+        .calc-result { background-color: #f0f7ff; border: 2px dashed var(--brand-blue); padding: 30px; border-radius: 10px; margin-top: 30px; display: none; }
         
-        .service-card:hover { 
-            transform: translateY(-10px); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
-        }
-        
-        .service-img { 
-            height: 220px; 
-            object-fit: cover; 
-            width: 100%; 
-        }
-        
-        .service-body { 
-            padding: 30px; 
-            position: relative;
-        }
-        
-        .service-icon { 
-            width: 70px; 
-            height: 70px; 
-            background: var(--brand-orange); 
-            color: white; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 28px; 
-            margin-top: -65px; 
-            margin-bottom: 20px; 
-            border: 5px solid white; 
-            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-        }
+        /* Tabs Customization */
+        .nav-pills .nav-link { color: var(--brand-blue); font-weight: 700; padding: 12px 25px; border-radius: 50px; margin-right: 10px; }
+        .nav-pills .nav-link.active { background-color: var(--brand-orange); color: white; }
 
-        /* * ==============================================
-         * Calculator Section
-         * ==============================================
-         */
-        .calculator-section {
-            background-color: white;
-            border-top: 1px solid #eee;
-            border-bottom: 1px solid #eee;
-        }
-
-        .calculator-box { 
-            background: #fff; 
-            padding: 40px; 
-            border-radius: 15px; 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.08); 
-            border-top: 6px solid var(--brand-blue); 
-        }
-        
-        .form-label {
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: var(--brand-blue);
-            margin-bottom: 8px;
-        }
-
-        .form-control, .form-select {
-            padding: 12px;
-            border: 1px solid #dee2e6;
-            border-radius: 6px;
-        }
-
-        .form-control:focus, .form-select:focus {
-            border-color: var(--brand-orange);
-            box-shadow: 0 0 0 0.25rem rgba(255, 107, 0, 0.15);
-        }
-
-        .calc-result { 
-            background-color: #f0f7ff; 
-            border: 2px dashed var(--brand-blue); 
-            padding: 30px; 
-            border-radius: 10px; 
-            margin-top: 30px; 
-            display: none; /* Hidden by default */
-        }
-
-        .result-value {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: var(--brand-blue);
-        }
-
-        /* * ==============================================
-         * Footer & WhatsApp
-         * ==============================================
-         */
-        footer { 
-            background-color: #111; 
-            color: #aaa; 
-            padding: 80px 0 30px; 
-        }
-        
-        footer h5 {
-            color: white;
-            font-weight: 700;
-            margin-bottom: 25px;
-        }
-
-        footer a { 
-            color: #aaa; 
-            text-decoration: none; 
-            display: block; 
-            margin-bottom: 12px; 
-            transition: 0.2s;
-        }
-        
-        footer a:hover { 
-            color: var(--brand-orange); 
-            padding-left: 5px;
-        }
-        
-        .float-wa { 
-            position: fixed; 
-            bottom: 30px; 
-            right: 30px; 
-            background-color: #25d366; 
-            color: white; 
-            width: 65px; 
-            height: 65px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 36px; 
-            box-shadow: 2px 5px 15px rgba(0,0,0,0.3); 
-            z-index: 1000; 
-            transition: 0.3s;
-        }
-
-        .float-wa:hover {
-            transform: scale(1.1);
-            background-color: #20b857;
-        }
+        /* Footer */
+        footer { background-color: #111; color: #aaa; padding: 80px 0 30px; }
+        footer h5 { color: white; font-weight: 700; margin-bottom: 25px; }
+        footer a { color: #aaa; text-decoration: none; display: block; margin-bottom: 12px; transition: 0.2s; }
+        footer a:hover { color: var(--brand-orange); padding-left: 5px; }
+        .float-wa { position: fixed; bottom: 30px; right: 30px; background-color: #25d366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; box-shadow: 2px 5px 15px rgba(0,0,0,0.3); z-index: 1000; transition: 0.3s; }
+        .float-wa:hover { transform: scale(1.1); background-color: #20b857; }
     </style>
 </head>
 <body>
 
     <div class="top-bar">
         <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-            <div>
-                <span class="me-3"><i class="fas fa-phone-alt me-2"></i> +95 9 897 4477 44</span> 
-                <span><i class="fas fa-envelope me-2"></i> info@britiumexpress.com</span>
-            </div>
-            <div class="mt-2 mt-md-0">
-                <span class="me-3"><i class="fas fa-clock me-2"></i> Mon-Sat: 9:00am - 5:30pm</span>
-            </div>
+            <div><span class="me-3"><i class="fas fa-phone-alt me-2"></i> +95 9 897 4477 44</span> <span><i class="fas fa-envelope me-2"></i> info@britiumexpress.com</span></div>
+            <div class="mt-2 mt-md-0"><span class="me-3"><i class="fas fa-clock me-2"></i> Mon-Sat: 9:00am - 5:30pm</span></div>
         </div>
     </div>
 
@@ -278,200 +108,140 @@
         </div>
     </header>
 
-    <section class="py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h6 class="text-uppercase text-primary fw-bold ls-1">What We Do</h6>
-                <h2 class="fw-bold" style="color: var(--brand-blue)">Core Services</h2>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="service-card h-100">
-                        <img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" class="service-img" alt="Domestic Delivery">
-                        <div class="service-body text-center">
-                            <div class="service-icon mx-auto"><i class="fas fa-truck"></i></div>
-                            <h4 class="fw-bold mb-3">Domestic Express</h4>
-                            <p class="text-muted mb-4">Door-to-door delivery connecting Yangon, Mandalay, and Nay Pyi Taw. We offer Same-Day delivery for Yangon and Next-Day delivery for major highways.</p>
-                            <a href="domestic.html" class="btn btn-outline-primary rounded-pill px-4">View Routes</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <div class="service-card h-100">
-                        <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" class="service-img" alt="COD Service">
-                        <div class="service-body text-center">
-                            <div class="service-icon mx-auto"><i class="fas fa-hand-holding-usd"></i></div>
-                            <h4 class="fw-bold mb-3">COD & E-Commerce</h4>
-                            <p class="text-muted mb-4">Grow your online shop with our Cash on Delivery (COD) service. We collect payments from customers and remit to you within 24 hours.</p>
-                            <a href="ecommerce.html" class="btn btn-outline-primary rounded-pill px-4">Seller Info</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 mx-auto">
-                    <div class="service-card h-100">
-                        <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" class="service-img" alt="Air Cargo">
-                        <div class="service-body text-center">
-                            <div class="service-icon mx-auto"><i class="fas fa-plane-departure"></i></div>
-                            <h4 class="fw-bold mb-3">International Cargo</h4>
-                            <p class="text-muted mb-4">Reliable air freight forwarding to USA, Singapore, Thailand, and Europe. Includes customs clearance and door-to-door options.</p>
-                            <a href="quote.html" class="btn btn-outline-primary rounded-pill px-4">Get Quote</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="py-5 calculator-section">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-xl-9">
-                    <div class="text-center mb-5">
-                        <h2 class="fw-bold" style="color: var(--brand-blue)">International Air Cargo Calculator</h2>
-                        <p class="text-muted">Estimate your shipping costs based on Chargeable Weight (Actual vs. Volumetric).</p>
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold" style="color: var(--brand-blue)">Shipping Rate Calculator</h2>
+                        <p class="text-muted">Get an instant quote for Domestic or International shipping.</p>
                     </div>
+
+                    <ul class="nav nav-pills mb-4 justify-content-center" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pills-domestic-tab" data-bs-toggle="pill" data-bs-target="#pills-domestic" type="button" role="tab"><i class="fas fa-truck me-2"></i> Domestic</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-international-tab" data-bs-toggle="pill" data-bs-target="#pills-international" type="button" role="tab"><i class="fas fa-plane me-2"></i> International</button>
+                        </li>
+                    </ul>
 
                     <div class="calculator-box">
-                        <form id="cargoCalcForm" onsubmit="calculateRate(event)">
-                            <div class="row g-4">
-                                
-                                <div class="col-md-6">
-                                    <label class="form-label">Destination Country</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-white text-primary"><i class="fas fa-globe"></i></span>
-                                        <select class="form-select" id="calcDest" required>
-                                            <option value="" selected disabled>Choose Destination...</option>
-                                            <option value="18.50">United States (USA) - $18.50/kg</option>
-                                            <option value="4.50">Singapore - $4.50/kg</option>
-                                            <option value="3.00">Thailand (BKK) - $3.00/kg</option>
-                                            <option value="15.00">United Kingdom (UK) - $15.00/kg</option>
-                                            <option value="5.50">Malaysia - $5.50/kg</option>
-                                            <option value="12.00">Japan - $12.00/kg</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label">Volumetric Standard</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-white text-secondary"><i class="fas fa-ruler-combined"></i></span>
-                                        <select class="form-select" id="calcDivisor">
-                                            <option value="5000" selected>Standard Air Cargo (5000)</option>
-                                            <option value="6000">Express / Courier (6000)</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-text small">Use 5000 for general cargo, 6000 for specific couriers.</div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label class="form-label">Actual Gross Weight</label>
-                                    <div class="input-group">
-                                        <input type="number" class="form-control" id="calcWeight" placeholder="e.g. 5.5" step="0.1" required>
-                                        <span class="input-group-text">Kilograms (KG)</span>
-                                    </div>
-                                </div>
-
-                                <div class="col-12">
-                                    <label class="form-label text-uppercase text-muted small fw-bold mb-2">Parcel Dimensions (Centimeters)</label>
-                                    <div class="row g-2">
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <span class="input-group-text">L</span>
-                                                <input type="number" class="form-control" id="calcL" placeholder="Length" required>
-                                                <span class="input-group-text text-muted">cm</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <span class="input-group-text">W</span>
-                                                <input type="number" class="form-control" id="calcW" placeholder="Width" required>
-                                                <span class="input-group-text text-muted">cm</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <span class="input-group-text">H</span>
-                                                <input type="number" class="form-control" id="calcH" placeholder="Height" required>
-                                                <span class="input-group-text text-muted">cm</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 mt-4">
-                                    <button type="submit" class="btn btn-warning w-100 fw-bold py-3 text-white shadow-sm" style="background-color: var(--brand-orange);">
-                                        <i class="fas fa-calculator me-2"></i> CALCULATE ESTIMATE
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-
-                        <div id="calcResult" class="calc-result">
-                            <h5 class="fw-bold text-dark border-bottom pb-3 mb-4 text-center">Quote Breakdown</h5>
+                        <div class="tab-content" id="pills-tabContent">
                             
-                            <div class="row text-center align-items-center">
-                                <div class="col-md-4 mb-3 mb-md-0 border-end">
-                                    <span class="text-muted text-uppercase small fw-bold d-block mb-1">Actual Weight</span>
-                                    <span class="fs-4 text-dark" id="resActual">0 kg</span>
-                                </div>
-                                
-                                <div class="col-md-4 mb-3 mb-md-0 border-end">
-                                    <span class="text-muted text-uppercase small fw-bold d-block mb-1">Volumetric Weight</span>
-                                    <span class="fs-4 text-primary" id="resVol">0 kg</span>
-                                    <div class="small text-muted fst-italic mt-1">(L x W x H) / <span id="displayDivisor">5000</span></div>
-                                </div>
-                                
-                                <div class="col-md-4">
-                                    <span class="text-danger text-uppercase small fw-bold d-block mb-1">Chargeable Weight</span>
-                                    <span class="fs-3 fw-bold text-danger" id="resChargeable">0 kg</span>
-                                    <div class="badge bg-danger bg-opacity-10 text-danger mt-1">Higher Value Applied</div>
+                            <div class="tab-pane fade show active" id="pills-domestic" role="tabpanel">
+                                <form id="domesticCalcForm" onsubmit="calculateDomestic(event)">
+                                    <div class="row g-4">
+                                        <div class="col-md-6">
+                                            <label class="form-label">From (Origin)</label>
+                                            <select class="form-select" id="domOrigin" required>
+                                                <option value="" selected disabled>Select City...</option>
+                                                <option value="Yangon">Yangon</option>
+                                                <option value="Mandalay">Mandalay</option>
+                                                <option value="Nay Pyi Taw">Nay Pyi Taw</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">To (Region)</label>
+                                            <select class="form-select" id="domDestRegion" onchange="loadTownships()" required>
+                                                <option value="" selected disabled>Select Region...</option>
+                                                <option value="Yangon">Yangon</option>
+                                                <option value="Mandalay">Mandalay</option>
+                                                <option value="Nay Pyi Taw">Nay Pyi Taw</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="form-label">To (Township)</label>
+                                            <select class="form-select" id="domDestTownship" disabled required>
+                                                <option value="" selected disabled>Select Region First...</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12 mt-4">
+                                            <button type="submit" class="btn btn-warning w-100 fw-bold py-3 text-white shadow-sm" style="background-color: var(--brand-orange);">
+                                                CALCULATE DOMESTIC RATE
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div id="domResult" class="calc-result text-center">
+                                    <small class="text-uppercase text-muted fw-bold">Estimated Delivery Cost</small>
+                                    <h2 class="display-4 fw-bold text-dark mt-2 mb-0" id="domPrice">0 MMK</h2>
+                                    <p class="small text-muted mt-2 mb-0" id="domRouteInfo"></p>
                                 </div>
                             </div>
 
-                            <hr class="my-4">
-
-                            <div class="text-center">
-                                <small class="text-uppercase text-muted fw-bold ls-1">Estimated Shipping Cost</small>
-                                <h1 class="display-4 fw-bold text-dark mt-2 mb-0" id="resTotal">$0.00</h1>
-                                <p class="small text-muted mt-2 mb-0">* Prices are estimates and exclude tax/duties.</p>
+                            <div class="tab-pane fade" id="pills-international" role="tabpanel">
+                                <form id="intlCalcForm" onsubmit="calculateIntl(event)">
+                                    <div class="row g-4">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Destination Country</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white text-primary"><i class="fas fa-globe"></i></span>
+                                                <select class="form-select" id="calcDest" required>
+                                                    <option value="" selected disabled>Choose Destination...</option>
+                                                    <option value="18.50">United States (USA) - $18.50/kg</option>
+                                                    <option value="4.50">Singapore - $4.50/kg</option>
+                                                    <option value="3.00">Thailand (BKK) - $3.00/kg</option>
+                                                    <option value="15.00">United Kingdom (UK) - $15.00/kg</option>
+                                                    <option value="5.50">Malaysia - $5.50/kg</option>
+                                                    <option value="12.00">Japan - $12.00/kg</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Volumetric Standard</label>
+                                            <select class="form-select" id="calcDivisor">
+                                                <option value="5000" selected>Standard Air Cargo (5000)</option>
+                                                <option value="6000">Express / Courier (6000)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="form-label">Actual Weight</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="calcWeight" placeholder="e.g. 5.5" step="0.1" required>
+                                                <span class="input-group-text">kg</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label text-muted small fw-bold">Dimensions (cm)</label>
+                                            <div class="row g-2">
+                                                <div class="col-4"><input type="number" class="form-control" id="calcL" placeholder="L" required></div>
+                                                <div class="col-4"><input type="number" class="form-control" id="calcW" placeholder="W" required></div>
+                                                <div class="col-4"><input type="number" class="form-control" id="calcH" placeholder="H" required></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-4">
+                                            <button type="submit" class="btn btn-primary w-100 fw-bold py-3 text-white shadow-sm" style="background-color: var(--brand-blue);">
+                                                CALCULATE INTERNATIONAL RATE
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div id="intlResult" class="calc-result">
+                                    <div class="row text-center">
+                                        <div class="col-4 border-end">
+                                            <small class="text-muted fw-bold d-block">Actual</small>
+                                            <span class="fs-5 text-dark" id="resActual">0 kg</span>
+                                        </div>
+                                        <div class="col-4 border-end">
+                                            <small class="text-muted fw-bold d-block">Volumetric</small>
+                                            <span class="fs-5 text-primary" id="resVol">0 kg</span>
+                                        </div>
+                                        <div class="col-4">
+                                            <small class="text-danger fw-bold d-block">Chargeable</small>
+                                            <span class="fs-5 fw-bold text-danger" id="resChargeable">0 kg</span>
+                                        </div>
+                                    </div>
+                                    <hr class="my-3">
+                                    <div class="text-center">
+                                        <small class="text-uppercase text-muted fw-bold">Estimated Cost</small>
+                                        <h2 class="display-4 fw-bold text-dark mt-2 mb-0" id="resTotal">$0.00</h2>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="py-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <img src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Warehousing" class="img-fluid rounded shadow-lg">
-                </div>
-                <div class="col-lg-6 ps-lg-5">
-                    <h3 class="fw-bold mb-4" style="color: var(--brand-blue)">Why Choose Britium?</h3>
-                    <div class="d-flex mb-4">
-                        <div class="flex-shrink-0">
-                            <i class="fas fa-shield-alt fa-2x text-warning"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h5 class="fw-bold">Secure Handling</h5>
-                            <p class="text-muted">From the moment we pick up your parcel until delivery, we ensure safety with tamper-proof packaging and real-time tracking.</p>
                         </div>
                     </div>
-                    <div class="d-flex mb-4">
-                        <div class="flex-shrink-0">
-                            <i class="fas fa-headset fa-2x text-warning"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h5 class="fw-bold">24/7 Support</h5>
-                            <p class="text-muted">Our customer service team is always available to answer your queries regarding rates, tracking, or claims.</p>
-                        </div>
-                    </div>
-                    <a href="contact.html" class="btn btn-dark btn-lg px-5">Contact Us</a>
                 </div>
             </div>
         </div>
@@ -504,55 +274,87 @@
         </div>
     </footer>
 
-    <a href="https://wa.me/959897447744" class="float-wa" title="Chat on WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
+    <a href="https://wa.me/959897447744" class="float-wa" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        function calculateRate(event) {
-            // Prevent the form from submitting and reloading the page
-            event.preventDefault();
+        // --- TOWNSHIP DATA ---
+        const townships = {
+            "Yangon": ["Ahlon", "Bahan", "Botataung", "Dagon", "Dagon Seikkan", "Dawbon", "East Dagon", "Hlaing", "Hlaingthaya", "Insein", "Kamayut", "Kyauktada", "Kyimyindaing", "Lanmadaw", "Latha", "Mayangon", "Mingala Taungnyunt", "Mingaladon", "North Dagon", "North Okkalapa", "Pabedan", "Pazundaung", "Sanchaung", "South Dagon", "South Okkalapa", "Tamwe", "Thaketa", "Thingangyun", "Yankin", "Shwepyitha"],
+            "Mandalay": ["Amarapura", "Aungmyethazan", "Chanayethazan", "Chanmyathazi", "Kyaukse", "Madaya", "Mahaaungmye", "Mahlaing", "Meiktila", "Mogok", "Myingyan", "Myittha", "Natogyi", "Nganzun", "Nyaung-U", "Patheingyi", "Pyawbwe", "Pyigyidagun", "Pyinoolwin", "Singu", "Sintgaing", "Tada-U", "Thabeikkyin", "Thaungtha", "Thazi", "Wundwin", "Yamethin"],
+            "Nay Pyi Taw": ["Dekkhinathiri", "Lewe", "Ottarathiri", "Pobbathiri", "Pyinmana", "Tatkon", "Zabuthiri", "Zeyarthiri"]
+        };
 
-            // 1. Get Values from Input Fields
+        function loadTownships() {
+            const region = document.getElementById('domDestRegion').value;
+            const tspSelect = document.getElementById('domDestTownship');
+            tspSelect.innerHTML = '<option value="" selected disabled>Select Township...</option>';
+            
+            if (townships[region]) {
+                townships[region].sort().forEach(tsp => {
+                    let opt = document.createElement('option');
+                    opt.value = tsp;
+                    opt.text = tsp;
+                    tspSelect.appendChild(opt);
+                });
+                tspSelect.disabled = false;
+            } else {
+                tspSelect.disabled = true;
+            }
+        }
+
+        // --- DOMESTIC CALCULATION LOGIC ---
+        function calculateDomestic(e) {
+            e.preventDefault();
+            const origin = document.getElementById('domOrigin').value;
+            const dest = document.getElementById('domDestRegion').value;
+            const tsp = document.getElementById('domDestTownship').value;
+            let price = 0;
+            let routeDesc = `From ${origin} to ${dest} (${tsp})`;
+
+            // Logic Rules
+            if (origin === "Yangon" && dest === "Nay Pyi Taw") price = 5000;
+            else if (origin === "Yangon" && dest === "Mandalay") price = 5000;
+            else if (origin === "Nay Pyi Taw" && dest === "Mandalay") price = 4000;
+            else if (origin === "Mandalay" && dest === "Nay Pyi Taw") price = 4000;
+            else if (origin === "Nay Pyi Taw" && dest === "Nay Pyi Taw") price = 3000;
+            else if (origin === "Mandalay" && dest === "Mandalay") price = 3000;
+            else {
+                document.getElementById('domPrice').innerText = "Contact Us";
+                document.getElementById('domRouteInfo').innerText = "Please contact support for this specific route rate.";
+                document.getElementById('domResult').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('domPrice').innerText = price + " MMK";
+            document.getElementById('domRouteInfo').innerText = routeDesc;
+            document.getElementById('domResult').style.display = 'block';
+        }
+
+        // --- INTERNATIONAL CALCULATION LOGIC ---
+        function calculateIntl(e) {
+            e.preventDefault();
             const rate = parseFloat(document.getElementById('calcDest').value);
             const weight = parseFloat(document.getElementById('calcWeight').value);
             const l = parseFloat(document.getElementById('calcL').value);
             const w = parseFloat(document.getElementById('calcW').value);
             const h = parseFloat(document.getElementById('calcH').value);
-            
-            // 2. Get Selected Divisor (5000 or 6000)
             const divisor = parseFloat(document.getElementById('calcDivisor').value);
 
-            // Validation: Ensure all fields have numbers
             if (isNaN(rate) || isNaN(weight) || isNaN(l) || isNaN(w) || isNaN(h)) {
-                alert("Please fill in all fields correctly.");
-                return;
+                alert("Please fill in all fields."); return;
             }
 
-            // 3. Calculate Volume Weight
             const volWeight = (l * w * h) / divisor;
-
-            // 4. Determine Chargeable Weight (Higher of Actual vs Volume)
             const chargeable = Math.max(weight, volWeight);
+            const total = chargeable * rate;
 
-            // 5. Calculate Total Cost
-            const totalCost = chargeable * rate;
-
-            // 6. Update UI Elements with Results
             document.getElementById('resActual').innerText = weight.toFixed(2) + " kg";
             document.getElementById('resVol').innerText = volWeight.toFixed(2) + " kg";
             document.getElementById('resChargeable').innerText = chargeable.toFixed(2) + " kg";
-            document.getElementById('resTotal').innerText = "$" + totalCost.toFixed(2);
-            document.getElementById('displayDivisor').innerText = divisor; // Show which divisor was used
-
-            // 7. Show Result Box (Animation effect)
-            const resultBox = document.getElementById('calcResult');
-            resultBox.style.display = 'block';
-            resultBox.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('resTotal').innerText = "$" + total.toFixed(2);
+            document.getElementById('intlResult').style.display = 'block';
         }
     </script>
-
 </body>
 </html>
