@@ -3,36 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COD & E-Commerce | Britium Express</title>
-    
+    <title>Domestic Express | Britium Express</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    
     <style>
         :root { --brand-blue: #0d2c54; --brand-orange: #ff6b00; --light-gray: #f8f9fa; }
         body { font-family: 'Roboto', sans-serif; color: #333; }
-
-        /* Navbar */
         .top-bar { background-color: var(--brand-blue); color: white; padding: 10px 0; font-size: 0.9rem; }
-        .navbar { background: white; padding: 10px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .navbar-brand img { height: 70px; width: auto; }
         .nav-link { font-weight: 500; color: #444 !important; margin-left: 15px; text-transform: uppercase; font-size: 0.9rem; }
         .nav-link:hover, .nav-link.active { color: var(--brand-orange) !important; }
         .btn-portal { border: 2px solid var(--brand-blue); color: var(--brand-blue); font-weight: 700; padding: 8px 25px; border-radius: 5px; transition: 0.3s; }
         .btn-portal:hover { background-color: var(--brand-blue); color: white; }
-
-        /* Hero */
-        .page-hero {
-            background: linear-gradient(rgba(13, 44, 84, 0.9), rgba(13, 44, 84, 0.9)), url('https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
-            background-size: cover; background-position: center; padding: 100px 0; color: white; text-align: center;
-        }
-
-        /* Features */
-        .process-step { position: relative; padding: 30px; border: 1px solid #eee; border-radius: 10px; background: white; height: 100%; text-align: center; }
-        .step-num { display: inline-block; width: 40px; height: 40px; background: var(--brand-orange); color: white; border-radius: 50%; line-height: 40px; font-weight: bold; margin-bottom: 15px; }
-
-        /* Footer */
+        .page-hero { background: linear-gradient(rgba(13, 44, 84, 0.85), rgba(13, 44, 84, 0.85)), url('https://images.unsplash.com/photo-1595150937666-419b48f93309?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); background-size: cover; background-position: center; padding: 120px 0; color: white; text-align: center; }
+        .route-card { border: 1px solid #eee; border-radius: 8px; padding: 25px; background: white; border-left: 5px solid var(--brand-blue); margin-bottom: 20px; transition: 0.3s; }
+        .route-card:hover { transform: translateX(5px); border-left-color: var(--brand-orange); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .time-badge { background-color: #e3f2fd; color: var(--brand-blue); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
         footer { background-color: #111; color: #aaa; padding: 60px 0 20px; }
         footer a { color: #aaa; text-decoration: none; display: block; margin-bottom: 10px; }
         footer a:hover { color: var(--brand-orange); }
@@ -51,7 +38,7 @@
     <nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <img src="Britium-Express/Assets/Images/BRITIUM EXPRESS logo.png" alt="Britium Express Logo">
+                <img src="assets/images/BRITIUM EXPRESS logo.png" alt="Britium Express Logo">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navContent">
@@ -70,97 +57,49 @@
 
     <header class="page-hero">
         <div class="container">
-            <h1 class="display-4 fw-bold">E-Commerce & COD Solutions</h1>
-            <p class="lead opacity-75">Secure Cash on Delivery handling with fast remittance for online sellers.</p>
+            <span class="text-uppercase ls-1 text-warning fw-bold mb-2 d-block">Reliable Nationwide Logistics</span>
+            <h1 class="display-3 fw-bold">Domestic Express</h1>
+            <p class="lead opacity-75">Connecting Yangon, Mandalay, and Nay Pyi Taw with speed and precision.</p>
         </div>
     </header>
 
     <section class="py-5">
         <div class="container">
-            <div class="row g-5 align-items-center">
+            <div class="row align-items-center mb-5">
                 <div class="col-lg-6">
-                    <h5 class="text-uppercase text-primary fw-bold">For Online Shops</h5>
-                    <h2 class="fw-bold mb-4" style="color: var(--brand-blue)">Grow Your Business with Secure Payments</h2>
-                    <p class="text-muted">In Myanmar's digital economy, trust is everything. Britium Express acts as the bridge between you and your customers.</p>
-                    
-                    <ul class="list-unstyled mt-4">
-                        <li class="mb-3 d-flex align-items-start">
-                            <i class="fas fa-check-circle text-success mt-1 me-3 fa-lg"></i>
-                            <div>
-                                <strong>Secure Cash Handling</strong><br>
-                                <span class="text-muted small">We collect cash upon delivery and ensure it reaches your account safely.</span>
-                            </div>
-                        </li>
-                        <li class="mb-3 d-flex align-items-start">
-                            <i class="fas fa-bolt text-warning mt-1 me-3 fa-lg"></i>
-                            <div>
-                                <strong>Fast Remittance</strong><br>
-                                <span class="text-muted small">Get your money fast. We offer next-day or weekly remittance options to suit your cash flow.</span>
-                            </div>
-                        </li>
-                        <li class="mb-3 d-flex align-items-start">
-                            <i class="fas fa-undo text-danger mt-1 me-3 fa-lg"></i>
-                            <div>
-                                <strong>Easy Return Management</strong><br>
-                                <span class="text-muted small">If a customer rejects a parcel, we handle the return logistics efficiently.</span>
-                            </div>
-                        </li>
-                    </ul>
+                    <h2 class="fw-bold mb-4" style="color: var(--brand-blue)">Priority Routes</h2>
+                    <p class="text-muted mb-4">We specialize in the "Golden Triangle" of Myanmar's economy. Our dedicated fleet runs daily schedules between the commercial capital, the administrative capital, and the cultural hub.</p>
+                    <div class="route-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div><h5 class="fw-bold mb-1">Yangon City Same-Day</h5><small class="text-muted">Downtown & Major Townships</small></div>
+                            <span class="time-badge"><i class="fas fa-bolt me-1"></i> Same Day</span>
+                        </div>
+                    </div>
+                    <div class="route-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div><h5 class="fw-bold mb-1">Yangon <i class="fas fa-arrow-right mx-2 text-warning"></i> Mandalay</h5><small class="text-muted">Daily Highway Express</small></div>
+                            <span class="time-badge">Next Day</span>
+                        </div>
+                    </div>
+                    <div class="route-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div><h5 class="fw-bold mb-1">Yangon <i class="fas fa-arrow-right mx-2 text-warning"></i> Nay Pyi Taw</h5><small class="text-muted">Government & Commercial Cargo</small></div>
+                            <span class="time-badge">Next Day</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-lg-6">
-                    <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="E-Commerce Payment" class="img-fluid rounded shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Myanmar Map Route" class="img-fluid rounded shadow-lg border border-5 border-white">
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-5 bg-light">
+    <section class="py-5 bg-light text-center">
         <div class="container">
-            <div class="text-center mb-5">
-                <h3 class="fw-bold">How It Works</h3>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-3">
-                    <div class="process-step">
-                        <span class="step-num">1</span>
-                        <h5>Book Pickup</h5>
-                        <p class="small text-muted">Create an order via our App or Website.</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="process-step">
-                        <span class="step-num">2</span>
-                        <h5>We Deliver</h5>
-                        <p class="small text-muted">We deliver the item to your customer.</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="process-step">
-                        <span class="step-num">3</span>
-                        <h5>Collect Cash</h5>
-                        <p class="small text-muted">Rider collects the item value + shipping fee.</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="process-step">
-                        <span class="step-num">4</span>
-                        <h5>Remittance</h5>
-                        <p class="small text-muted">We transfer the money to your bank account.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-5 text-center">
-        <div class="container">
-            <div class="card bg-dark text-white p-5 border-0 rounded-3">
-                <h3 class="fw-bold mb-3">Become a Britium Partner</h3>
-                <p class="mb-4">Join hundreds of online shops growing with Britium Express.</p>
-                <div>
-                    <a href="register_seller.html" class="btn btn-warning fw-bold text-white px-4">Register Merchant Account</a>
-                </div>
-            </div>
+            <h3 class="fw-bold mb-3">Ready to Ship?</h3>
+            <p class="text-muted mb-4">Check our competitive rates for Domestic Shipping.</p>
+            <a href="quote.html" class="btn btn-warning fw-bold text-white px-5 py-3">CALCULATE RATE</a>
         </div>
     </section>
 
