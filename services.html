@@ -108,6 +108,51 @@
         </div>
     </header>
 
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h6 class="text-uppercase text-primary fw-bold ls-1">What We Do</h6>
+                <h2 class="fw-bold" style="color: var(--brand-blue)">Core Services</h2>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card h-100">
+                        <img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" class="service-img" alt="Domestic Delivery">
+                        <div class="service-body text-center">
+                            <div class="service-icon mx-auto"><i class="fas fa-truck"></i></div>
+                            <h4 class="fw-bold mb-3">Domestic Express</h4>
+                            <p class="text-muted mb-4">Connecting Yangon, Mandalay, and Nay Pyi Taw. Same-day & Next-day delivery available.</p>
+                            <a href="domestic.html" class="btn btn-outline-primary rounded-pill px-4">View Routes</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card h-100">
+                        <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" class="service-img" alt="COD Service">
+                        <div class="service-body text-center">
+                            <div class="service-icon mx-auto"><i class="fas fa-hand-holding-usd"></i></div>
+                            <h4 class="fw-bold mb-3">COD & E-Commerce</h4>
+                            <p class="text-muted mb-4">Secure Cash on Delivery handling with 24-hour remittance for online shops.</p>
+                            <a href="ecommerce.html" class="btn btn-outline-primary rounded-pill px-4">Seller Info</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mx-auto">
+                    <div class="service-card h-100">
+                        <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" class="service-img" alt="Air Cargo">
+                        <div class="service-body text-center">
+                            <div class="service-icon mx-auto"><i class="fas fa-plane-departure"></i></div>
+                            <h4 class="fw-bold mb-3">International Cargo</h4>
+                            <p class="text-muted mb-4">Air freight to USA, Singapore, Thailand, UK & more. Customs clearance included.</p>
+                            <a href="quote.html" class="btn btn-outline-primary rounded-pill px-4">Get Quote</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="py-5 calculator-section">
         <div class="container">
             <div class="row justify-content-center">
@@ -150,11 +195,18 @@
                                                 <option value="Nay Pyi Taw">Nay Pyi Taw</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <label class="form-label">To (Township)</label>
                                             <select class="form-select" id="domDestTownship" disabled required>
                                                 <option value="" selected disabled>Select Region First...</option>
                                             </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Parcel Weight</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="domWeight" placeholder="e.g. 1.0" step="0.1" required>
+                                                <span class="input-group-text">Kg</span>
+                                            </div>
                                         </div>
                                         <div class="col-12 mt-4">
                                             <button type="submit" class="btn btn-warning w-100 fw-bold py-3 text-white shadow-sm" style="background-color: var(--brand-orange);">
@@ -167,6 +219,7 @@
                                     <small class="text-uppercase text-muted fw-bold">Estimated Delivery Cost</small>
                                     <h2 class="display-4 fw-bold text-dark mt-2 mb-0" id="domPrice">0 MMK</h2>
                                     <p class="small text-muted mt-2 mb-0" id="domRouteInfo"></p>
+                                    <div class="badge bg-light text-secondary border mt-2">Base rate up to 2kg • +500 MMK/extra kg</div>
                                 </div>
                             </div>
 
@@ -220,12 +273,13 @@
                                 <div id="intlResult" class="calc-result">
                                     <div class="row text-center">
                                         <div class="col-4 border-end">
-                                            <small class="text-muted fw-bold d-block">Actual</small>
+                                            <small class="text-muted fw-bold d-block">Actual Weight</small>
                                             <span class="fs-5 text-dark" id="resActual">0 kg</span>
                                         </div>
                                         <div class="col-4 border-end">
-                                            <small class="text-muted fw-bold d-block">Volumetric</small>
+                                            <small class="text-muted fw-bold d-block">Volume Weight</small>
                                             <span class="fs-5 text-primary" id="resVol">0 kg</span>
+                                            <div class="small text-muted fst-italic" style="font-size: 0.7rem;">(LxWxH) / <span id="dispDiv">5000</span></div>
                                         </div>
                                         <div class="col-4">
                                             <small class="text-danger fw-bold d-block">Chargeable</small>
@@ -309,16 +363,26 @@
             const origin = document.getElementById('domOrigin').value;
             const dest = document.getElementById('domDestRegion').value;
             const tsp = document.getElementById('domDestTownship').value;
-            let price = 0;
-            let routeDesc = `From ${origin} to ${dest} (${tsp})`;
+            const weight = parseFloat(document.getElementById('domWeight').value);
+            
+            if(isNaN(weight)) {
+                alert("Please enter a valid weight.");
+                return;
+            }
 
-            // Logic Rules
-            if (origin === "Yangon" && dest === "Nay Pyi Taw") price = 5000;
-            else if (origin === "Yangon" && dest === "Mandalay") price = 5000;
-            else if (origin === "Nay Pyi Taw" && dest === "Mandalay") price = 4000;
-            else if (origin === "Mandalay" && dest === "Nay Pyi Taw") price = 4000;
-            else if (origin === "Nay Pyi Taw" && dest === "Nay Pyi Taw") price = 3000;
-            else if (origin === "Mandalay" && dest === "Mandalay") price = 3000;
+            let basePrice = 0;
+            const baseWeight = 2.0; // Base rate covers up to 2kg
+            const overWeightFee = 500; // MMK per extra kg
+
+            // Pricing Rules (As requested)
+            if (origin === "Yangon" && dest === "Nay Pyi Taw") basePrice = 5000;
+            else if (origin === "Yangon" && dest === "Mandalay") basePrice = 5000;
+            else if (origin === "Nay Pyi Taw" && dest === "Mandalay") basePrice = 4000;
+            else if (origin === "Mandalay" && dest === "Nay Pyi Taw") basePrice = 4000;
+            else if (origin === "Nay Pyi Taw" && dest === "Nay Pyi Taw") basePrice = 3000;
+            else if (origin === "Mandalay" && dest === "Mandalay") basePrice = 3000;
+            else if (origin === "Yangon" && dest === "Yangon") basePrice = 2000; // Assumption for local Yangon
+            else if (origin === dest) basePrice = 2500; // Same city default
             else {
                 document.getElementById('domPrice').innerText = "Contact Us";
                 document.getElementById('domRouteInfo').innerText = "Please contact support for this specific route rate.";
@@ -326,7 +390,13 @@
                 return;
             }
 
-            document.getElementById('domPrice').innerText = price + " MMK";
+            // Calculate Total
+            let extraWeight = Math.max(0, weight - baseWeight);
+            let total = basePrice + (extraWeight * overWeightFee);
+
+            // Display
+            let routeDesc = `From ${origin} to ${dest} (${tsp}) • ${weight} kg`;
+            document.getElementById('domPrice').innerText = total.toLocaleString() + " MMK";
             document.getElementById('domRouteInfo').innerText = routeDesc;
             document.getElementById('domResult').style.display = 'block';
         }
@@ -345,14 +415,21 @@
                 alert("Please fill in all fields."); return;
             }
 
+            // 1. Calculate Volumetric
             const volWeight = (l * w * h) / divisor;
+
+            // 2. Determine Chargeable Weight (Higher of Actual vs Volumetric)
             const chargeable = Math.max(weight, volWeight);
+
+            // 3. Calculate Total
             const total = chargeable * rate;
 
+            // 4. Update UI
             document.getElementById('resActual').innerText = weight.toFixed(2) + " kg";
             document.getElementById('resVol').innerText = volWeight.toFixed(2) + " kg";
             document.getElementById('resChargeable').innerText = chargeable.toFixed(2) + " kg";
             document.getElementById('resTotal').innerText = "$" + total.toFixed(2);
+            document.getElementById('dispDiv').innerText = divisor;
             document.getElementById('intlResult').style.display = 'block';
         }
     </script>
