@@ -10,18 +10,13 @@
     <style>
         :root { --admin-dark: #212529; --admin-accent: #ff6b00; --brand-blue: #0d2c54; }
         body { background-color: #e9ecef; font-family: 'Segoe UI', sans-serif; }
-        
-        /* Sidebar */
         .sidebar { height: 100vh; position: fixed; width: 250px; background: var(--admin-dark); color: white; z-index: 100; }
-        .main-content { margin-left: 250px; padding: 20px; }
+        .main-content { margin-left: 250px; padding: 20px; padding-bottom: 50px; }
         .nav-link { color: #aaa; padding: 15px; display: flex; align-items: center; }
         .nav-link:hover { color: white; background: rgba(255,255,255,0.1); }
         .nav-link.active { color: white; background: var(--brand-blue); border-left: 4px solid var(--admin-accent); }
-        
-        /* Table Styles */
         .table-card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow: hidden; margin-top: 20px; }
         .avatar-sm { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; margin-right: 10px; background-color: #eee; }
-        
         .badge-vip { background-color: #6610f2; color: white; }
         .badge-regular { background-color: #6c757d; color: white; }
         .badge-corp { background-color: #0d6efd; color: white; }
@@ -45,7 +40,6 @@
     <hr>
     <div class="dropdown">
         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-            <img src="https://ui-avatars.com/api/?name=Admin+Staff&background=random" alt="" width="32" height="32" class="rounded-circle me-2">
             <strong>Admin Staff</strong>
         </a>
         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
@@ -53,6 +47,7 @@
         </ul>
     </div>
 </div>
+
 <div class="main-content">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold text-dark">Customer Database</h2>
@@ -122,7 +117,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
                     <tr>
                         <td class="ps-4">
                             <div class="d-flex align-items-center">
@@ -143,7 +137,6 @@
                             <button class="btn btn-sm btn-light border" title="Edit"><i class="fas fa-edit"></i></button>
                         </td>
                     </tr>
-
                     <tr>
                         <td class="ps-4">
                             <div class="d-flex align-items-center">
@@ -164,43 +157,25 @@
                             <button class="btn btn-sm btn-light border" title="Edit"><i class="fas fa-edit"></i></button>
                         </td>
                     </tr>
-
-                    <tr>
-                        <td class="ps-4">
-                            <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=Ma+Mya&background=6c757d&color=fff" class="avatar-sm">
-                                <div>
-                                    <div class="fw-bold">Ma Mya</div>
-                                    <small class="text-muted">Individual</small>
-                                </div>
-                            </div>
-                        </td>
-                        <td>09-7823266xx</td>
-                        <td><span class="badge badge-regular rounded-pill">Regular</span></td>
-                        <td class="fw-bold text-center">5</td>
-                        <td>15,000 MMK</td>
-                        <td class="small text-muted">Oct 2025</td>
-                        <td class="text-end pe-4">
-                            <button class="btn btn-sm btn-light border" title="View Profile"><i class="fas fa-eye"></i></button>
-                            <button class="btn btn-sm btn-light border" title="Edit"><i class="fas fa-edit"></i></button>
-                        </td>
-                    </tr>
-
                 </tbody>
             </table>
         </div>
-        
         <div class="p-3 border-top d-flex justify-content-end">
             <nav>
                 <ul class="pagination pagination-sm mb-0">
                     <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
                     <li class="page-item active"><a class="page-link bg-dark border-dark" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
                     <li class="page-item"><a class="page-link text-dark" href="#">Next</a></li>
                 </ul>
             </nav>
         </div>
     </div>
+
+    <div class="d-flex justify-content-between mt-5 pt-4 border-top">
+        <a href="shipments.html" class="btn btn-outline-secondary px-4"><i class="fas fa-arrow-left me-2"></i> Previous</a>
+        <a href="drivers.html" class="btn btn-primary px-4">Next: Drivers <i class="fas fa-arrow-right ms-2"></i></a>
+    </div>
+
 </div>
 
 <div class="modal fade" id="addCustomerModal" tabindex="-1" aria-hidden="true">
