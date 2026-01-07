@@ -10,15 +10,27 @@
     <style>
         :root { --admin-dark: #212529; --admin-accent: #ff6b00; --brand-blue: #0d2c54; }
         body { background-color: #e9ecef; font-family: 'Segoe UI', sans-serif; }
-        .sidebar { height: 100vh; position: fixed; width: 250px; background: var(--admin-dark); color: white; z-index: 100; }
+        
+        /* Sidebar */
+        .sidebar { height: 100vh; position: fixed; width: 250px; background: var(--admin-dark); color: white; z-index: 100; overflow-y: auto; }
         .main-content { margin-left: 250px; padding: 20px; padding-bottom: 50px; }
         .nav-link { color: #aaa; padding: 15px; display: flex; align-items: center; }
         .nav-link:hover { color: white; background: rgba(255,255,255,0.1); }
         .nav-link.active { color: white; background: var(--brand-blue); border-left: 4px solid var(--admin-accent); }
-        .settings-card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 25px; margin-bottom: 20px; }
+        
+        /* Cards */
+        .settings-card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 25px; margin-bottom: 25px; border-top: 3px solid transparent; }
+        .card-domestic { border-top-color: var(--brand-blue); }
+        .card-intl { border-top-color: var(--admin-accent); }
+        .card-network { border-top-color: #198754; }
+        
         .card-header-custom { font-weight: 700; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .form-label { font-weight: 600; font-size: 0.9rem; color: #555; }
-        .input-group-text { background-color: #f8f9fa; }
+        
+        /* Zone Box Styling */
+        .zone-box { background-color: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #e9ecef; position: relative; }
+        .zone-box input.zone-name { font-weight: 700; color: var(--brand-blue); border: none; background: transparent; border-bottom: 1px dashed #ccc; width: 100%; margin-bottom: 5px; }
+        .zone-box input.zone-name:focus { outline: none; border-bottom: 1px solid var(--admin-accent); }
+        .zone-box textarea.zone-desc { font-size: 0.85rem; color: #666; border: 1px solid #eee; width: 100%; resize: none; background: #fff; padding: 5px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -48,55 +60,279 @@
 </div>
 
 <div class="main-content">
-    <h2 class="fw-bold text-dark mb-4">System Settings</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-dark">Settings & Configuration</h2>
+        <button class="btn btn-primary" onclick="alert('All Settings Saved Successfully!')"><i class="fas fa-save me-2"></i> Save All Changes</button>
+    </div>
 
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="settings-card">
-                <div class="card-header-custom">
-                    <span><i class="fas fa-map-marker-alt me-2 text-primary"></i> Yangon Zone Pricing</span>
-                    <button class="btn btn-sm btn-primary">Save Changes</button>
-                </div>
-                <form>
-                    <div class="row mb-3 align-items-center">
-                        <div class="col-6"><label class="form-label mb-0">Zone 1 (Downtown)</label></div>
-                        <div class="col-6"><div class="input-group"><input type="number" class="form-control" value="3000"><span class="input-group-text">MMK</span></div></div>
+    <ul class="nav nav-tabs mb-4" id="settingTabs" role="tablist">
+        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#local">Local Pricing</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#intl">International Air Cargo</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#network">Network Expansion</button></li>
+    </ul>
+
+    <div class="tab-content">
+        
+        <div class="tab-pane fade show active" id="local">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="settings-card card-domestic">
+                        <div class="card-header-custom"><span><i class="fas fa-city me-2 text-primary"></i> Yangon Region</span></div>
+                        
+                        <div class="zone-box">
+                            <input type="text" class="zone-name" value="Zone 1: Downtown">
+                            <textarea class="zone-desc" rows="2">Latha, Lanmadaw, Pabedan, Kyauktada, Botahtaung, Pazundaung</textarea>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-white fw-bold">Price</span>
+                                <input type="number" class="form-control" value="2000">
+                                <span class="input-group-text">MMK</span>
+                            </div>
+                        </div>
+
+                        <div class="zone-box">
+                            <input type="text" class="zone-name" value="Zone 2: Inner City">
+                            <textarea class="zone-desc" rows="2">Bahan, Sanchaung, Kamaryut, Hlaing, Ahlone, Kyeemyindaung</textarea>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-white fw-bold">Price</span>
+                                <input type="number" class="form-control" value="2500">
+                                <span class="input-group-text">MMK</span>
+                            </div>
+                        </div>
+
+                        <div class="zone-box">
+                            <input type="text" class="zone-name" value="Zone 3: New Towns">
+                            <textarea class="zone-desc" rows="2">North/South/East Dagon, North/South Okkalapa, Thaketa</textarea>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-white fw-bold">Price</span>
+                                <input type="number" class="form-control" value="3000">
+                                <span class="input-group-text">MMK</span>
+                            </div>
+                        </div>
                     </div>
-                </form>
-            </div>
-            <div class="settings-card">
-                <div class="card-header-custom">
-                    <span><i class="fas fa-building me-2 text-success"></i> Company Details</span>
-                    <button class="btn btn-sm btn-primary">Save</button>
                 </div>
-                <form>
-                    <div class="mb-3"><label class="form-label">Contact Phone</label><input type="text" class="form-control" value="+95-9-897447744"></div>
-                </form>
+
+                <div class="col-lg-4">
+                    <div class="settings-card card-domestic">
+                        <div class="card-header-custom"><span><i class="fas fa-monument me-2 text-success"></i> Mandalay Region</span></div>
+                        
+                        <div class="zone-box">
+                            <input type="text" class="zone-name" value="Downtown Grid">
+                            <textarea class="zone-desc" rows="2">Chanayethazan, Chanmyathazi, Maha Aungmye</textarea>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-white fw-bold">Price</span>
+                                <input type="number" class="form-control" value="2500">
+                                <span class="input-group-text">MMK</span>
+                            </div>
+                        </div>
+
+                        <div class="zone-box">
+                            <input type="text" class="zone-name" value="Industrial Zone">
+                            <textarea class="zone-desc" rows="2">Pyigyidagun, Industrial Park Areas</textarea>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-white fw-bold">Price</span>
+                                <input type="number" class="form-control" value="3000">
+                                <span class="input-group-text">MMK</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="settings-card card-domestic">
+                        <div class="card-header-custom"><span><i class="fas fa-landmark me-2 text-warning"></i> Nay Pyi Taw</span></div>
+                        
+                        <div class="zone-box">
+                            <input type="text" class="zone-name" value="Ministry Zone">
+                            <textarea class="zone-desc" rows="2">Zabuthiri (Govt Offices)</textarea>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-white fw-bold">Price</span>
+                                <input type="number" class="form-control" value="3000">
+                                <span class="input-group-text">MMK</span>
+                            </div>
+                        </div>
+
+                        <div class="zone-box">
+                            <input type="text" class="zone-name" value="Residential & Hotel">
+                            <textarea class="zone-desc" rows="2">Dekkhinathiri, Ottarathiri</textarea>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-white fw-bold">Price</span>
+                                <input type="number" class="form-control" value="3500">
+                                <span class="input-group-text">MMK</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-lg-6">
-            <div class="settings-card">
+
+        <div class="tab-pane fade" id="intl">
+            <div class="settings-card card-intl">
                 <div class="card-header-custom">
-                    <span><i class="fas fa-user-shield me-2 text-dark"></i> Admin Access</span>
-                    <button class="btn btn-sm btn-outline-dark"><i class="fas fa-plus"></i> New User</button>
+                    <span><i class="fas fa-plane-departure me-2 text-danger"></i> International Air Cargo Rates</span>
+                    <button class="btn btn-sm btn-outline-dark" onclick="addCountryRow()"><i class="fas fa-plus me-2"></i> Add Route</button>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-sm align-middle">
-                        <thead><tr><th>Name</th><th>Role</th><th>Status</th></tr></thead>
-                        <tbody><tr><td>Kyaw W.</td><td>Super Admin</td><td><span class="badge bg-success">Active</span></td></tr></tbody>
+                    <table class="table table-bordered align-middle" id="intlTable">
+                        <thead class="bg-light">
+                            <tr>
+                                <th style="width: 30%;">Country / Destination</th>
+                                <th style="width: 20%;">Rate (USD/Kg)</th>
+                                <th style="width: 15%;">Min Weight</th>
+                                <th style="width: 25%;">Est. Duration</th>
+                                <th style="width: 10%;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" class="form-control form-control-sm" value="United States (USA)"></td>
+                                <td><div class="input-group input-group-sm"><span class="input-group-text">$</span><input type="number" class="form-control" value="18.50"></div></td>
+                                <td><input type="text" class="form-control form-control-sm" value="1.0 Kg"></td>
+                                <td><input type="text" class="form-control form-control-sm" value="7-10 Days"></td>
+                                <td><button class="btn btn-sm btn-light text-danger" onclick="this.closest('tr').remove()"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control form-control-sm" value="Singapore"></td>
+                                <td><div class="input-group input-group-sm"><span class="input-group-text">$</span><input type="number" class="form-control" value="4.50"></div></td>
+                                <td><input type="text" class="form-control form-control-sm" value="0.5 Kg"></td>
+                                <td><input type="text" class="form-control form-control-sm" value="2-3 Days"></td>
+                                <td><button class="btn btn-sm btn-light text-danger" onclick="this.closest('tr').remove()"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control form-control-sm" value="Thailand (BKK)"></td>
+                                <td><div class="input-group input-group-sm"><span class="input-group-text">$</span><input type="number" class="form-control" value="3.00"></div></td>
+                                <td><input type="text" class="form-control form-control-sm" value="0.5 Kg"></td>
+                                <td><input type="text" class="form-control form-control-sm" value="1-2 Days"></td>
+                                <td><button class="btn btn-sm btn-light text-danger" onclick="this.closest('tr').remove()"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control form-control-sm" value="United Kingdom (UK)"></td>
+                                <td><div class="input-group input-group-sm"><span class="input-group-text">$</span><input type="number" class="form-control" value="15.00"></div></td>
+                                <td><input type="text" class="form-control form-control-sm" value="1.0 Kg"></td>
+                                <td><input type="text" class="form-control form-control-sm" value="5-7 Days"></td>
+                                <td><button class="btn btn-sm btn-light text-danger" onclick="this.closest('tr').remove()"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="d-flex justify-content-between mt-5 pt-4 border-top">
-        <a href="finance.html" class="btn btn-outline-secondary px-4"><i class="fas fa-arrow-left me-2"></i> Previous</a>
-        <a href="index.html" class="btn btn-primary px-4">Back to Dashboard <i class="fas fa-home ms-2"></i></a>
-    </div>
+        <div class="tab-pane fade" id="network">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="settings-card card-network">
+                        <div class="card-header-custom">
+                            <span><i class="fas fa-network-wired me-2 text-success"></i> Add New Substation / Hub</span>
+                        </div>
+                        <form onsubmit="event.preventDefault(); alert('New Hub Added Successfully!');">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">State / Region</label>
+                                    <select class="form-select" id="stateSelect" onchange="loadTownships()">
+                                        <option selected disabled>Select Region...</option>
+                                        </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Township</label>
+                                    <select class="form-select" id="townshipSelect" disabled>
+                                        <option>Select State First</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label">Hub Name (Internal ID)</label>
+                                    <input type="text" class="form-control" placeholder="e.g. Lashio-North-Hub-01">
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label">Full Address</label>
+                                    <textarea class="form-control" rows="2" placeholder="Street address, Quarter, etc."></textarea>
+                                </div>
+                                <div class="col-12 text-end">
+                                    <button type="submit" class="btn btn-success fw-bold px-4">Create Hub</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="alert alert-info">
+                        <h6 class="fw-bold"><i class="fas fa-info-circle me-2"></i> Database Info</h6>
+                        <p class="small mb-0">The State and Township list is pre-loaded with official Myanmar administrative data (MIMU Standard).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Comprehensive Myanmar Data Object
+    const myanmarLocations = {
+        "Yangon": ["Kamaryut", "Bahan", "Sanchaung", "Hlaing", "Mayangone", "Insein", "Mingaladon", "North Okkalapa", "South Okkalapa", "Yankin", "Thingangyun", "Tamwe", "South Dagon", "North Dagon", "East Dagon", "Dagon Seikkan", "Thaketa", "Dawbon", "Pazundaung", "Botahtaung", "Kyauktada", "Pabedan", "Latha", "Lanmadaw", "Ahlone", "Kyeemyindaung", "Hlaing Tharyar", "Shwepyithar"],
+        "Mandalay": ["Chanayethazan", "Chanmyathazi", "Maha Aungmye", "Pyigyidagun", "Aungmyethazan", "Amarapura", "Patheingyi", "Pyin Oo Lwin", "Kyaukse", "Meiktila", "Myingyan", "Nyaung-U", "Mogok"],
+        "Nay Pyi Taw": ["Zabuthiri", "Dekkhinathiri", "Ottarathiri", "Pobbathiri", "Zeyarthiri", "Pyinmana", "Lewe", "Tatkon"],
+        "Bago": ["Bago", "Taungoo", "Pyay", "Thayarwady", "Nyaunglebin", "Shwegyin", "Daik-U"],
+        "Ayeyarwady": ["Pathein", "Hinthada", "Maubin", "Myaungmya", "Pyapon", "Labutta", "Bogale"],
+        "Sagaing": ["Sagaing", "Monywa", "Shwebo", "Kale", "Katha", "Tamu", "Homalin"],
+        "Magway": ["Magway", "Pakokku", "Thayet", "Minbu", "Gangaw", "Chauk", "Yenangyaung"],
+        "Tanintharyi": ["Dawei", "Myeik", "Kawthaung", "Bokpyin", "Yebyu", "Launglon"],
+        "Kachin": ["Myitkyina", "Bhamo", "Mohnyin", "Putao", "Shwegu", "Hpakant"],
+        "Kayah": ["Loikaw", "Demoso", "Hpruso", "Bawlakhe"],
+        "Kayin": ["Hpa-An", "Myawaddy", "Kawkareik", "Thandaunggyi", "Hpapun"],
+        "Chin": ["Hakha", "Falam", "Matupi", "Mindat", "Paletwa", "Tiddim"],
+        "Mon": ["Mawlamyine", "Thaton", "Ye", "Kyaikto", "Chaungzon", "Mudon"],
+        "Rakhine": ["Sittwe", "Kyaukpyu", "Thandwe", "Mrauk-U", "Maungdaw"],
+        "Shan (South)": ["Taunggyi", "Kalaw", "Nyaungshwe (Inle)", "Hopong", "Loilem", "Nansang"],
+        "Shan (North)": ["Lashio", "Muse", "Kyaukme", "Hsipaw", "Nawnghkio", "Kutkai"],
+        "Shan (East)": ["Kengtung", "Tachileik", "Mong Hsat", "Mong Hpayak"]
+    };
+
+    // Initialize State Dropdown
+    document.addEventListener("DOMContentLoaded", function() {
+        const stateSelect = document.getElementById("stateSelect");
+        Object.keys(myanmarLocations).sort().forEach(state => {
+            let option = document.createElement("option");
+            option.value = state;
+            option.text = state;
+            stateSelect.appendChild(option);
+        });
+    });
+
+    // Dynamic Township Loading
+    function loadTownships() {
+        const stateSelect = document.getElementById("stateSelect");
+        const townshipSelect = document.getElementById("townshipSelect");
+        const selectedState = stateSelect.value;
+
+        townshipSelect.innerHTML = '<option selected disabled>Select Township...</option>';
+        townshipSelect.disabled = false;
+
+        if (selectedState && myanmarLocations[selectedState]) {
+            myanmarLocations[selectedState].sort().forEach(tsp => {
+                let option = document.createElement("option");
+                option.value = tsp;
+                option.text = tsp;
+                townshipSelect.appendChild(option);
+            });
+        }
+    }
+
+    // Add new row to International Table (EDITABLE)
+    function addCountryRow() {
+        const table = document.getElementById("intlTable").getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow();
+        newRow.innerHTML = `
+            <td><input type="text" class="form-control form-control-sm" placeholder="Country Name"></td>
+            <td><div class="input-group input-group-sm"><span class="input-group-text">$</span><input type="number" class="form-control" value="0.00"></div></td>
+            <td><input type="text" class="form-control form-control-sm" value="1.0 Kg"></td>
+            <td><input type="text" class="form-control form-control-sm" placeholder="e.g. 5-7 Days"></td>
+            <td><button class="btn btn-sm btn-light text-danger" onclick="this.closest('tr').remove()"><i class="fas fa-trash"></i></button></td>
+        `;
+    }
+</script>
+
 </body>
 </html>
