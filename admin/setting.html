@@ -31,6 +31,10 @@
         .zone-box input.zone-name { font-weight: 700; color: var(--brand-blue); border: none; background: transparent; border-bottom: 1px dashed #ccc; width: 100%; margin-bottom: 5px; }
         .zone-box input.zone-name:focus { outline: none; border-bottom: 1px solid var(--admin-accent); }
         .zone-box textarea.zone-desc { font-size: 0.85rem; color: #666; border: 1px solid #eee; width: 100%; resize: none; background: #fff; padding: 5px; margin-bottom: 10px; }
+
+        /* Formula Box */
+        .formula-box { background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .formula-text { font-family: 'Courier New', monospace; font-weight: bold; color: var(--brand-blue); }
     </style>
 </head>
 <body>
@@ -74,37 +78,49 @@
     <div class="tab-content">
         
         <div class="tab-pane fade show active" id="local">
+            
+            <div class="settings-card" style="border-top-color: #6f42c1;">
+                <div class="card-header-custom">
+                    <span><i class="fas fa-calculator me-2" style="color: #6f42c1;"></i> National Rate Formula</span>
+                </div>
+                
+                <div class="formula-box text-center">
+                    <span class="text-muted small text-uppercase fw-bold d-block mb-2">Calculation Logic</span>
+                    <span class="formula-text">Total Price = [Base Price] + ((Actual Weight - Base Weight) × [Extra Fee/Kg])</span>
+                </div>
+
+                <div class="row align-items-end">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Standard Base Weight</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" value="2" id="globalBaseWeight">
+                            <span class="input-group-text">Kg</span>
+                        </div>
+                        <div class="form-text small">Prices cover up to this weight.</div>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="fw-bold text-secondary mb-3 mt-4">Metro City Rates (Fixed Zones)</h5>
             <div class="row">
                 <div class="col-lg-4">
                     <div class="settings-card card-domestic">
                         <div class="card-header-custom"><span><i class="fas fa-city me-2 text-primary"></i> Yangon Region</span></div>
-                        
                         <div class="zone-box">
                             <input type="text" class="zone-name" value="Zone 1: Downtown">
-                            <textarea class="zone-desc" rows="2">Latha, Lanmadaw, Pabedan, Kyauktada, Botahtaung, Pazundaung</textarea>
+                            <textarea class="zone-desc" rows="2">Latha, Lanmadaw, Pabedan, Kyauktada</textarea>
                             <div class="input-group input-group-sm">
                                 <span class="input-group-text bg-white fw-bold">Price</span>
                                 <input type="number" class="form-control" value="2000">
                                 <span class="input-group-text">MMK</span>
                             </div>
                         </div>
-
                         <div class="zone-box">
-                            <input type="text" class="zone-name" value="Zone 2: Inner City">
-                            <textarea class="zone-desc" rows="2">Bahan, Sanchaung, Kamaryut, Hlaing, Ahlone, Kyeemyindaung</textarea>
+                            <input type="text" class="zone-name" value="Zone 2: Townships">
+                            <textarea class="zone-desc" rows="2">Bahan, Sanchaung, Kamaryut</textarea>
                             <div class="input-group input-group-sm">
                                 <span class="input-group-text bg-white fw-bold">Price</span>
                                 <input type="number" class="form-control" value="2500">
-                                <span class="input-group-text">MMK</span>
-                            </div>
-                        </div>
-
-                        <div class="zone-box">
-                            <input type="text" class="zone-name" value="Zone 3: New Towns">
-                            <textarea class="zone-desc" rows="2">North/South/East Dagon, North/South Okkalapa, Thaketa</textarea>
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text bg-white fw-bold">Price</span>
-                                <input type="number" class="form-control" value="3000">
                                 <span class="input-group-text">MMK</span>
                             </div>
                         </div>
@@ -114,23 +130,11 @@
                 <div class="col-lg-4">
                     <div class="settings-card card-domestic">
                         <div class="card-header-custom"><span><i class="fas fa-monument me-2 text-success"></i> Mandalay Region</span></div>
-                        
                         <div class="zone-box">
                             <input type="text" class="zone-name" value="Downtown Grid">
-                            <textarea class="zone-desc" rows="2">Chanayethazan, Chanmyathazi, Maha Aungmye</textarea>
-                            <div class="input-group input-group-sm">
+                            <div class="input-group input-group-sm mt-2">
                                 <span class="input-group-text bg-white fw-bold">Price</span>
                                 <input type="number" class="form-control" value="2500">
-                                <span class="input-group-text">MMK</span>
-                            </div>
-                        </div>
-
-                        <div class="zone-box">
-                            <input type="text" class="zone-name" value="Industrial Zone">
-                            <textarea class="zone-desc" rows="2">Pyigyidagun, Industrial Park Areas</textarea>
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text bg-white fw-bold">Price</span>
-                                <input type="number" class="form-control" value="3000">
                                 <span class="input-group-text">MMK</span>
                             </div>
                         </div>
@@ -140,29 +144,36 @@
                 <div class="col-lg-4">
                     <div class="settings-card card-domestic">
                         <div class="card-header-custom"><span><i class="fas fa-landmark me-2 text-warning"></i> Nay Pyi Taw</span></div>
-                        
                         <div class="zone-box">
                             <input type="text" class="zone-name" value="Ministry Zone">
-                            <textarea class="zone-desc" rows="2">Zabuthiri (Govt Offices)</textarea>
-                            <div class="input-group input-group-sm">
+                            <div class="input-group input-group-sm mt-2">
                                 <span class="input-group-text bg-white fw-bold">Price</span>
                                 <input type="number" class="form-control" value="3000">
-                                <span class="input-group-text">MMK</span>
-                            </div>
-                        </div>
-
-                        <div class="zone-box">
-                            <input type="text" class="zone-name" value="Residential & Hotel">
-                            <textarea class="zone-desc" rows="2">Dekkhinathiri, Ottarathiri</textarea>
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text bg-white fw-bold">Price</span>
-                                <input type="number" class="form-control" value="3500">
                                 <span class="input-group-text">MMK</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <h5 class="fw-bold text-secondary mb-3 mt-4">Nationwide State/Region Rates</h5>
+            <div class="settings-card">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>State / Region</th>
+                                <th>Base Price (for <span class="base-weight-display">2</span>kg)</th>
+                                <th>Overweight Fee (per extra kg)</th>
+                                <th>Est. Duration</th>
+                            </tr>
+                        </thead>
+                        <tbody id="nationalRatesBody">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
         <div class="tab-pane fade" id="intl">
@@ -190,27 +201,6 @@
                                 <td><input type="text" class="form-control form-control-sm" value="7-10 Days"></td>
                                 <td><button class="btn btn-sm btn-light text-danger" onclick="this.closest('tr').remove()"><i class="fas fa-trash"></i></button></td>
                             </tr>
-                            <tr>
-                                <td><input type="text" class="form-control form-control-sm" value="Singapore"></td>
-                                <td><div class="input-group input-group-sm"><span class="input-group-text">$</span><input type="number" class="form-control" value="4.50"></div></td>
-                                <td><input type="text" class="form-control form-control-sm" value="0.5 Kg"></td>
-                                <td><input type="text" class="form-control form-control-sm" value="2-3 Days"></td>
-                                <td><button class="btn btn-sm btn-light text-danger" onclick="this.closest('tr').remove()"><i class="fas fa-trash"></i></button></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="form-control form-control-sm" value="Thailand (BKK)"></td>
-                                <td><div class="input-group input-group-sm"><span class="input-group-text">$</span><input type="number" class="form-control" value="3.00"></div></td>
-                                <td><input type="text" class="form-control form-control-sm" value="0.5 Kg"></td>
-                                <td><input type="text" class="form-control form-control-sm" value="1-2 Days"></td>
-                                <td><button class="btn btn-sm btn-light text-danger" onclick="this.closest('tr').remove()"><i class="fas fa-trash"></i></button></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="form-control form-control-sm" value="United Kingdom (UK)"></td>
-                                <td><div class="input-group input-group-sm"><span class="input-group-text">$</span><input type="number" class="form-control" value="15.00"></div></td>
-                                <td><input type="text" class="form-control form-control-sm" value="1.0 Kg"></td>
-                                <td><input type="text" class="form-control form-control-sm" value="5-7 Days"></td>
-                                <td><button class="btn btn-sm btn-light text-danger" onclick="this.closest('tr').remove()"><i class="fas fa-trash"></i></button></td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -230,7 +220,7 @@
                                     <label class="form-label">State / Region</label>
                                     <select class="form-select" id="stateSelect" onchange="loadTownships()">
                                         <option selected disabled>Select Region...</option>
-                                        </select>
+                                    </select>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Township</label>
@@ -253,7 +243,6 @@
                         </form>
                     </div>
                 </div>
-                
                 <div class="col-lg-4">
                     <div class="alert alert-info">
                         <h6 class="fw-bold"><i class="fas fa-info-circle me-2"></i> Database Info</h6>
@@ -275,7 +264,7 @@
         "Mandalay": ["Chanayethazan", "Chanmyathazi", "Maha Aungmye", "Pyigyidagun", "Aungmyethazan", "Amarapura", "Patheingyi", "Pyin Oo Lwin", "Kyaukse", "Meiktila", "Myingyan", "Nyaung-U", "Mogok"],
         "Nay Pyi Taw": ["Zabuthiri", "Dekkhinathiri", "Ottarathiri", "Pobbathiri", "Zeyarthiri", "Pyinmana", "Lewe", "Tatkon"],
         "Bago": ["Bago", "Taungoo", "Pyay", "Thayarwady", "Nyaunglebin", "Shwegyin", "Daik-U"],
-        "Ayeyarwady": ["Pathein", "Hinthada", "Maubin", "Myaungmya", "Pyapon", "Labutta", "Bogale"],
+        "Ayeyarwady": ["Pathein", "Hinthada", "Maubin", "Myaungmya", "Pyapon", "Labutta", "Bogale", "Daedaye", "Kyaiklat"],
         "Sagaing": ["Sagaing", "Monywa", "Shwebo", "Kale", "Katha", "Tamu", "Homalin"],
         "Magway": ["Magway", "Pakokku", "Thayet", "Minbu", "Gangaw", "Chauk", "Yenangyaung"],
         "Tanintharyi": ["Dawei", "Myeik", "Kawthaung", "Bokpyin", "Yebyu", "Launglon"],
@@ -290,14 +279,48 @@
         "Shan (East)": ["Kengtung", "Tachileik", "Mong Hsat", "Mong Hpayak"]
     };
 
-    // Initialize State Dropdown
     document.addEventListener("DOMContentLoaded", function() {
         const stateSelect = document.getElementById("stateSelect");
+        const rateTable = document.getElementById("nationalRatesBody");
+        const baseWeightInput = document.getElementById("globalBaseWeight");
+        const baseWeightDisplays = document.querySelectorAll(".base-weight-display");
+
+        // 1. Update Base Weight Text dynamically
+        baseWeightInput.addEventListener("input", function() {
+            baseWeightDisplays.forEach(span => span.innerText = this.value);
+        });
+
+        // 2. Generate Rate Table for All States
         Object.keys(myanmarLocations).sort().forEach(state => {
+            // Populate Dropdown for Network Tab
             let option = document.createElement("option");
             option.value = state;
             option.text = state;
             stateSelect.appendChild(option);
+
+            // Populate National Rate Table
+            // Skip Yangon, Mandalay, NPT as they have specific zones above
+            if(!['Yangon', 'Mandalay', 'Nay Pyi Taw'].includes(state)) {
+                let row = document.createElement("tr");
+                row.innerHTML = `
+                    <td class="fw-bold text-primary">${state}</td>
+                    <td>
+                        <div class="input-group input-group-sm">
+                            <input type="number" class="form-control" value="4000">
+                            <span class="input-group-text">MMK</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text">+</span>
+                            <input type="number" class="form-control" value="500">
+                            <span class="input-group-text">/kg</span>
+                        </div>
+                    </td>
+                    <td><input type="text" class="form-control form-control-sm" value="3-4 Days"></td>
+                `;
+                rateTable.appendChild(row);
+            }
         });
     });
 
@@ -320,7 +343,7 @@
         }
     }
 
-    // Add new row to International Table (EDITABLE)
+    // Add new row to International Table
     function addCountryRow() {
         const table = document.getElementById("intlTable").getElementsByTagName('tbody')[0];
         const newRow = table.insertRow();
