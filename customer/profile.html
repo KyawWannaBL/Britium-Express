@@ -66,17 +66,19 @@
                 </div>
             </div>
 
-            <h3 class="fw-bold text-dark mb-4">Account Settings</h3>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-bold text-dark">Account Settings</h3>
+                <a href="index.html" class="btn btn-outline-secondary btn-sm"><i class="fas fa-arrow-left me-2"></i> Back to Dashboard</a>
+            </div>
 
             <div class="row">
                 <div class="col-lg-4">
                     <div class="profile-card text-center">
                         <div class="avatar-box">
-                            <img id="profilePreview" src="https://ui-avatars.com/api/?name=Kyaw+Wannanna&background=0d2c54&color=fff&size=200" alt="Profile" class="avatar-img">
+                            <img id="profilePreview" src="https://ui-avatars.com/api/?name=User&background=0d2c54&color=fff&size=200" alt="Profile" class="avatar-img">
                         </div>
-                        <h5 class="fw-bold">Kyaw Wannanna</h5>
-                        <p class="text-muted small">Member since Oct 2025</p>
-                        <span class="badge bg-warning text-dark mb-3">Regular Member</span>
+                        <h5 class="fw-bold" id="display_name">Loading...</h5>
+                        <p class="text-muted small">Online Shop Member</p>
                         
                         <div class="d-grid gap-2">
                             <input type="file" id="imageUpload" accept="image/*" style="display: none;">
@@ -109,29 +111,31 @@
                 <div class="col-lg-8">
                     
                     <div class="profile-card">
-                        <h5 class="card-title"><i class="fas fa-id-card me-2"></i> Personal Information</h5>
-                        <form onsubmit="event.preventDefault(); alert('Profile Info Saved!');">
+                        <h5 class="card-title"><i class="fas fa-id-card me-2"></i> Shop Information</h5>
+                        <form id="profileForm" onsubmit="saveProfile(event)">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" value="Kyaw Wannanna">
+                                    <label class="form-label">Shop Name / Full Name</label>
+                                    <input type="text" class="form-control" id="profileName" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Owner Name (Contact)</label>
+                                    <input type="text" class="form-control" id="profileContact" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Phone Number</label>
-                                    <input type="text" class="form-control" value="09897447744" readonly>
-                                    <div class="form-text small">Contact support to change primary number.</div>
+                                    <input type="text" class="form-control" id="profilePhone" readonly style="background-color: #eee;">
+                                    <div class="form-text small">Phone number is your Login ID (Contact Admin to change).</div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Email Address</label>
-                                    <input type="email" class="form-control" value="kyaw@britium.com">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Company Name (Optional)</label>
-                                    <input type="text" class="form-control" value="Britium Ventures">
+                                    <input type="email" class="form-control" id="profileEmail" placeholder="shop@email.com">
                                 </div>
                             </div>
                             <div class="mt-4 text-end">
-                                <button class="btn btn-success text-white fw-bold px-4" style="background-color: var(--brand-orange); border:none;">Save Changes</button>
+                                <button type="submit" class="btn btn-success text-white fw-bold px-4" style="background-color: var(--brand-orange); border:none;">
+                                    <i class="fas fa-save me-2"></i> Save Changes
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -144,7 +148,7 @@
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label class="form-label">Street Address</label>
-                                    <textarea class="form-control" rows="2">No. 277, Corner of Anawrahta Road and Bo Moe Gyo St.</textarea>
+                                    <textarea class="form-control" rows="2" id="profileAddress">No. 277, Corner of Anawrahta Road and Bo Moe Gyo St.</textarea>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Township</label>
@@ -152,6 +156,7 @@
                                         <option selected>East Dagon</option>
                                         <option>North Dagon</option>
                                         <option>South Dagon</option>
+                                        <option>Thingangyun</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6">
@@ -163,7 +168,7 @@
                                 </div>
                             </div>
                             <div class="mt-4 text-end">
-                                <button class="btn btn-outline-dark btn-sm">Update Address</button>
+                                <button class="btn btn-outline-dark btn-sm">Update Address Only</button>
                             </div>
                         </form>
                     </div>
@@ -178,7 +183,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    // This script listens for the file selection and updates the image preview instantly
+    // 1. IMAGE PREVIEW
     document.getElementById('imageUpload').addEventListener('change', function(event) {
         const file = event.target.files[0];
         if (file) {
@@ -189,6 +194,71 @@
             reader.readAsDataURL(file);
         }
     });
+
+    // 2. LOAD DATA ON PAGE START
+    document.addEventListener("DOMContentLoaded", function() {
+        const currentUser = JSON.parse(localStorage.getItem('britium_current_user'));
+
+        if (currentUser) {
+            // Fill Inputs
+            document.getElementById('profileName').value = currentUser.name || "";
+            document.getElementById('profileContact').value = currentUser.contact || "";
+            document.getElementById('profilePhone').value = currentUser.phone || "";
+            document.getElementById('profileEmail').value = currentUser.email || "";
+            
+            // Fill Display Name
+            document.getElementById('display_name').innerText = currentUser.name || "Valued Merchant";
+            
+            // Update Avatar if saved (simulated by name API for now)
+            const avatarUrl = `https://ui-avatars.com/api/?name=${currentUser.name}&background=0d2c54&color=fff&size=200`;
+            document.getElementById('profilePreview').src = avatarUrl;
+        } else {
+            // Default data for demo if no one logged in
+            document.getElementById('profileName').value = "Guest Shop";
+            document.getElementById('profilePhone').value = "09-0000000";
+        }
+    });
+
+    // 3. SAVE DATA & SYNC TO ADMIN LIST
+    function saveProfile(event) {
+        event.preventDefault();
+
+        // Get values from form
+        const newName = document.getElementById('profileName').value;
+        const newContact = document.getElementById('profileContact').value;
+        const phone = document.getElementById('profilePhone').value; // Used as ID
+        const email = document.getElementById('profileEmail').value;
+
+        // A. Update Current User Session
+        const currentUser = JSON.parse(localStorage.getItem('britium_current_user')) || {};
+        currentUser.name = newName;
+        currentUser.contact = newContact;
+        currentUser.email = email;
+        localStorage.setItem('britium_current_user', JSON.stringify(currentUser));
+
+        // B. Sync with Admin Customer List
+        let allCustomers = JSON.parse(localStorage.getItem('britium_customers')) || [];
+        
+        // Find the specific customer in the list (using phone as ID)
+        const index = allCustomers.findIndex(c => c.phone === phone);
+
+        if (index !== -1) {
+            // Update existing record
+            allCustomers[index].name = newName;
+            allCustomers[index].contact = newContact;
+            // Keep other data like shipments/spend same
+        } else {
+            // If not found (rare, but possible), add them
+            allCustomers.push(currentUser);
+        }
+
+        // Save back to main database
+        localStorage.setItem('britium_customers', JSON.stringify(allCustomers));
+
+        // Success Feedback
+        alert('Profile Updated! Your changes are now visible to Admin.');
+        location.reload(); // Refresh to show new name on sidebar/header
+    }
 </script>
 
 </body>
