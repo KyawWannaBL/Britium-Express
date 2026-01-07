@@ -56,7 +56,8 @@
         .form-control, .form-select { padding: 12px; border: 1px solid #dee2e6; border-radius: 6px; }
         .form-control:focus, .form-select:focus { border-color: var(--brand-orange); box-shadow: 0 0 0 0.25rem rgba(255, 107, 0, 0.15); }
         .calc-result { background-color: #f0f7ff; border: 2px dashed var(--brand-blue); padding: 30px; border-radius: 10px; margin-top: 30px; display: none; }
-        
+        .error-msg { color: #dc3545; font-size: 0.9rem; font-weight: bold; display: none; margin-top: 10px; }
+
         /* Tabs Customization */
         .nav-pills .nav-link { color: var(--brand-blue); font-weight: 700; padding: 12px 25px; border-radius: 50px; margin-right: 10px; }
         .nav-pills .nav-link.active { background-color: var(--brand-orange); color: white; }
@@ -107,51 +108,6 @@
             <p class="lead opacity-75 mb-0">From domestic parcels to international air cargo, Britium Express connects Myanmar to the world.</p>
         </div>
     </header>
-
-    <section class="py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h6 class="text-uppercase text-primary fw-bold ls-1">What We Do</h6>
-                <h2 class="fw-bold" style="color: var(--brand-blue)">Core Services</h2>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="service-card h-100">
-                        <img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" class="service-img" alt="Domestic Delivery">
-                        <div class="service-body text-center">
-                            <div class="service-icon mx-auto"><i class="fas fa-truck"></i></div>
-                            <h4 class="fw-bold mb-3">Domestic Express</h4>
-                            <p class="text-muted mb-4">Connecting Yangon, Mandalay, and Nay Pyi Taw. Same-day & Next-day delivery available.</p>
-                            <a href="domestic.html" class="btn btn-outline-primary rounded-pill px-4">View Routes</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="service-card h-100">
-                        <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" class="service-img" alt="COD Service">
-                        <div class="service-body text-center">
-                            <div class="service-icon mx-auto"><i class="fas fa-hand-holding-usd"></i></div>
-                            <h4 class="fw-bold mb-3">COD & E-Commerce</h4>
-                            <p class="text-muted mb-4">Secure Cash on Delivery handling with 24-hour remittance for online shops.</p>
-                            <a href="ecommerce.html" class="btn btn-outline-primary rounded-pill px-4">Seller Info</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mx-auto">
-                    <div class="service-card h-100">
-                        <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" class="service-img" alt="Air Cargo">
-                        <div class="service-body text-center">
-                            <div class="service-icon mx-auto"><i class="fas fa-plane-departure"></i></div>
-                            <h4 class="fw-bold mb-3">International Cargo</h4>
-                            <p class="text-muted mb-4">Air freight to USA, Singapore, Thailand, UK & more. Customs clearance included.</p>
-                            <a href="quote.html" class="btn btn-outline-primary rounded-pill px-4">Get Quote</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <section class="py-5 calculator-section">
         <div class="container">
@@ -232,12 +188,45 @@
                                                 <span class="input-group-text bg-white text-primary"><i class="fas fa-globe"></i></span>
                                                 <select class="form-select" id="calcDest" required>
                                                     <option value="" selected disabled>Choose Destination...</option>
-                                                    <option value="18.50">United States (USA) - $18.50/kg</option>
-                                                    <option value="4.50">Singapore - $4.50/kg</option>
-                                                    <option value="3.00">Thailand (BKK) - $3.00/kg</option>
-                                                    <option value="15.00">United Kingdom (UK) - $15.00/kg</option>
-                                                    <option value="5.50">Malaysia - $5.50/kg</option>
-                                                    <option value="12.00">Japan - $12.00/kg</option>
+                                                    <optgroup label="Asia">
+                                                        <option value="Thailand">Thailand</option>
+                                                        <option value="Japan">Japan</option>
+                                                        <option value="South Korea">South Korea</option>
+                                                        <option value="Singapore">Singapore</option>
+                                                        <option value="Malaysia">Malaysia</option>
+                                                        <option value="Cambodia">Cambodia</option>
+                                                        <option value="Taiwan">Taiwan</option>
+                                                        <option value="Sri Lanka">Sri Lanka</option>
+                                                        <option value="Indonesia">Indonesia</option>
+                                                        <option value="Philippines">Philippines</option>
+                                                        <option value="Hong Kong">Hong Kong</option>
+                                                    </optgroup>
+                                                    <optgroup label="Europe">
+                                                        <option value="Czech Republic">Czech Republic</option>
+                                                        <option value="Finland">Finland</option>
+                                                        <option value="North Macedonia">North Macedonia</option>
+                                                        <option value="Germany">Germany</option>
+                                                        <option value="Belgium">Belgium</option>
+                                                    </optgroup>
+                                                    <optgroup label="Middle East">
+                                                        <option value="Israel">Israel</option>
+                                                        <option value="Saudi Arabia">Saudi Arabia</option>
+                                                        <option value="Kuwait">Kuwait</option>
+                                                        <option value="Bahrain">Bahrain</option>
+                                                    </optgroup>
+                                                    <optgroup label="North America">
+                                                        <option value="USA">USA</option>
+                                                        <option value="Mexico">Mexico</option>
+                                                        <option value="Canada">Canada</option>
+                                                    </optgroup>
+                                                    <optgroup label="Oceania">
+                                                        <option value="Australia">Australia</option>
+                                                        <option value="New Zealand">New Zealand</option>
+                                                    </optgroup>
+                                                    <optgroup label="Africa">
+                                                        <option value="Tunisia">Tunisia</option>
+                                                        <option value="Egypt">Egypt</option>
+                                                    </optgroup>
                                                 </select>
                                             </div>
                                         </div>
@@ -264,6 +253,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12 mt-4">
+                                            <div id="intlError" class="error-msg text-center mb-3"></div>
                                             <button type="submit" class="btn btn-primary w-100 fw-bold py-3 text-white shadow-sm" style="background-color: var(--brand-blue);">
                                                 CALCULATE INTERNATIONAL RATE
                                             </button>
@@ -288,13 +278,46 @@
                                     </div>
                                     <hr class="my-3">
                                     <div class="text-center">
-                                        <small class="text-uppercase text-muted fw-bold">Estimated Cost</small>
-                                        <h2 class="display-4 fw-bold text-dark mt-2 mb-0" id="resTotal">$0.00</h2>
+                                        <small class="text-uppercase text-muted fw-bold">Estimated Cost (MMK)</small>
+                                        <h2 class="display-4 fw-bold text-dark mt-2 mb-0" id="resTotal">0 MMK</h2>
+                                        <p class="small text-muted mt-2 mb-0">* Prices based on Britium Agent Rates (24.12.2025)</p>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h6 class="text-uppercase text-primary fw-bold ls-1">Why Britium?</h6>
+                <h2 class="fw-bold" style="color: var(--brand-blue)">Service Features</h2>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="service-card text-center p-4">
+                        <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                        <h5>Fast Clearance</h5>
+                        <p class="text-muted small">We handle all customs documentation for international shipments to ensure no delays.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card text-center p-4">
+                        <i class="fas fa-box-open fa-3x text-warning mb-3"></i>
+                        <h5>Safe Packaging</h5>
+                        <p class="text-muted small">Free repacking service available to reduce volumetric weight and ensure safety.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card text-center p-4">
+                        <i class="fas fa-headset fa-3x text-primary mb-3"></i>
+                        <h5>24/7 Support</h5>
+                        <p class="text-muted small">Dedicated support team available via Phone, Viber, and Telegram.</p>
                     </div>
                 </div>
             </div>
@@ -332,7 +355,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // --- TOWNSHIP DATA ---
+        // --- DOMESTIC DATA & LOGIC ---
         const townships = {
             "Yangon": ["Ahlon", "Bahan", "Botataung", "Dagon", "Dagon Seikkan", "Dawbon", "East Dagon", "Hlaing", "Hlaingthaya", "Insein", "Kamayut", "Kyauktada", "Kyimyindaing", "Lanmadaw", "Latha", "Mayangon", "Mingala Taungnyunt", "Mingaladon", "North Dagon", "North Okkalapa", "Pabedan", "Pazundaung", "Sanchaung", "South Dagon", "South Okkalapa", "Tamwe", "Thaketa", "Thingangyun", "Yankin", "Shwepyitha"],
             "Mandalay": ["Amarapura", "Aungmyethazan", "Chanayethazan", "Chanmyathazi", "Kyaukse", "Madaya", "Mahaaungmye", "Mahlaing", "Meiktila", "Mogok", "Myingyan", "Myittha", "Natogyi", "Nganzun", "Nyaung-U", "Patheingyi", "Pyawbwe", "Pyigyidagun", "Pyinoolwin", "Singu", "Sintgaing", "Tada-U", "Thabeikkyin", "Thaungtha", "Thazi", "Wundwin", "Yamethin"],
@@ -343,7 +366,6 @@
             const region = document.getElementById('domDestRegion').value;
             const tspSelect = document.getElementById('domDestTownship');
             tspSelect.innerHTML = '<option value="" selected disabled>Select Township...</option>';
-            
             if (townships[region]) {
                 townships[region].sort().forEach(tsp => {
                     let opt = document.createElement('option');
@@ -352,12 +374,9 @@
                     tspSelect.appendChild(opt);
                 });
                 tspSelect.disabled = false;
-            } else {
-                tspSelect.disabled = true;
-            }
+            } else { tspSelect.disabled = true; }
         }
 
-        // --- DOMESTIC CALCULATION LOGIC ---
         function calculateDomestic(e) {
             e.preventDefault();
             const origin = document.getElementById('domOrigin').value;
@@ -365,24 +384,20 @@
             const tsp = document.getElementById('domDestTownship').value;
             const weight = parseFloat(document.getElementById('domWeight').value);
             
-            if(isNaN(weight)) {
-                alert("Please enter a valid weight.");
-                return;
-            }
+            if(isNaN(weight)) { alert("Please enter a valid weight."); return; }
 
             let basePrice = 0;
-            const baseWeight = 2.0; // Base rate covers up to 2kg
-            const overWeightFee = 500; // MMK per extra kg
+            const baseWeight = 2.0; 
+            const overWeightFee = 500; 
 
-            // Pricing Rules (As requested)
             if (origin === "Yangon" && dest === "Nay Pyi Taw") basePrice = 5000;
             else if (origin === "Yangon" && dest === "Mandalay") basePrice = 5000;
             else if (origin === "Nay Pyi Taw" && dest === "Mandalay") basePrice = 4000;
             else if (origin === "Mandalay" && dest === "Nay Pyi Taw") basePrice = 4000;
             else if (origin === "Nay Pyi Taw" && dest === "Nay Pyi Taw") basePrice = 3000;
             else if (origin === "Mandalay" && dest === "Mandalay") basePrice = 3000;
-            else if (origin === "Yangon" && dest === "Yangon") basePrice = 2000; // Assumption for local Yangon
-            else if (origin === dest) basePrice = 2500; // Same city default
+            else if (origin === "Yangon" && dest === "Yangon") basePrice = 2000; 
+            else if (origin === dest) basePrice = 2500; 
             else {
                 document.getElementById('domPrice').innerText = "Contact Us";
                 document.getElementById('domRouteInfo').innerText = "Please contact support for this specific route rate.";
@@ -390,47 +405,112 @@
                 return;
             }
 
-            // Calculate Total
             let extraWeight = Math.max(0, weight - baseWeight);
             let total = basePrice + (extraWeight * overWeightFee);
-
-            // Display
             let routeDesc = `From ${origin} to ${dest} (${tsp}) • ${weight} kg`;
             document.getElementById('domPrice').innerText = total.toLocaleString() + " MMK";
             document.getElementById('domRouteInfo').innerText = routeDesc;
             document.getElementById('domResult').style.display = 'block';
         }
 
-        // --- INTERNATIONAL CALCULATION LOGIC ---
+        // --- INTERNATIONAL DATA & LOGIC ---
+        // Price per Kg in MMK for specific slabs
+        const intlRates = {
+            "Thailand": [{min: 5, max: 10, rate: 10000}, {min: 11, max: 20, rate: 9000}, {min: 21, max: 30, rate: 8000}],
+            "Japan": [{min: 5, max: 10, rate: 50000}, {min: 11, max: 20, rate: 47000}, {min: 21, max: 30, rate: 28500}],
+            "South Korea": [{min: 5, max: 10, rate: 30000}, {min: 11, max: 20, rate: 17250}, {min: 21, max: 30, rate: 16050}],
+            "Singapore": [{min: 5, max: 10, rate: 32000}, {min: 11, max: 20, rate: 43260}, {min: 21, max: 30, rate: 43260}], // Assumed flat if missing
+            "Malaysia": [{min: 3, max: 10, rate: 32000}, {min: 11, max: 30, rate: 32000}],
+            "Cambodia": [{min: 5, max: 10, rate: 65520}, {min: 11, max: 30, rate: 65520}],
+            "Taiwan": [{min: 20, max: 30, rate: 25620}],
+            "Sri Lanka": [{min: 5, max: 10, rate: 105840}, {min: 11, max: 20, rate: 73920}, {min: 21, max: 30, rate: 52710}],
+            "Indonesia": [{min: 5, max: 10, rate: 69720}, {min: 11, max: 30, rate: 69720}],
+            "Philippines": [{min: 11, max: 20, rate: 46620}, {min: 21, max: 30, rate: 46620}],
+            "Hong Kong": [{min: 20, max: 30, rate: 34440}],
+            "Czech Republic": [{min: 5, max: 10, rate: 105840}, {min: 11, max: 30, rate: 105840}],
+            "Finland": [{min: 11, max: 20, rate: 73920}, {min: 21, max: 30, rate: 73920}],
+            "North Macedonia": [{min: 20, max: 30, rate: 52710}],
+            "Germany": [{min: 11, max: 20, rate: 61600}, {min: 21, max: 30, rate: 61600}],
+            "Belgium": [{min: 20, max: 30, rate: 60340}],
+            "Israel": [{min: 5, max: 10, rate: 105840}, {min: 11, max: 20, rate: 73920}, {min: 21, max: 30, rate: 52710}],
+            "Saudi Arabia": [{min: 5, max: 10, rate: 55300}, {min: 11, max: 30, rate: 55300}],
+            "Kuwait": [{min: 11, max: 20, rate: 49000}, {min: 21, max: 30, rate: 49000}],
+            "Bahrain": [{min: 20, max: 30, rate: 44100}],
+            "USA": [{min: 5, max: 10, rate: 114000}, {min: 11, max: 20, rate: 750000}, {min: 21, max: 30, rate: 68460}],
+            "Mexico": [{min: 5, max: 10, rate: 114000}, {min: 11, max: 20, rate: 750000}, {min: 21, max: 30, rate: 68460}],
+            "Canada": [{min: 5, max: 10, rate: 114000}, {min: 11, max: 20, rate: 750000}, {min: 21, max: 30, rate: 68460}],
+            "Australia": [{min: 5, max: 10, rate: 74900}, {min: 11, max: 20, rate: 63700}, {min: 21, max: 30, rate: 45850}],
+            "New Zealand": [{min: 5, max: 10, rate: 74900}, {min: 11, max: 20, rate: 63700}, {min: 21, max: 30, rate: 45850}],
+            "Tunisia": [{min: 5, max: 10, rate: 105840}, {min: 11, max: 20, rate: 73920}, {min: 21, max: 30, rate: 73920}],
+            "Egypt": [{min: 20, max: 30, rate: 52710}]
+        };
+
         function calculateIntl(e) {
             e.preventDefault();
-            const rate = parseFloat(document.getElementById('calcDest').value);
+            const country = document.getElementById('calcDest').value;
             const weight = parseFloat(document.getElementById('calcWeight').value);
             const l = parseFloat(document.getElementById('calcL').value);
             const w = parseFloat(document.getElementById('calcW').value);
             const h = parseFloat(document.getElementById('calcH').value);
             const divisor = parseFloat(document.getElementById('calcDivisor').value);
+            const errorMsg = document.getElementById('intlError');
+            const resultBox = document.getElementById('intlResult');
 
-            if (isNaN(rate) || isNaN(weight) || isNaN(l) || isNaN(w) || isNaN(h)) {
-                alert("Please fill in all fields."); return;
+            errorMsg.style.display = 'none';
+            resultBox.style.display = 'none';
+
+            if (!country || isNaN(weight) || isNaN(l) || isNaN(w) || isNaN(h)) {
+                errorMsg.innerText = "Please fill in all fields.";
+                errorMsg.style.display = 'block';
+                return;
             }
 
-            // 1. Calculate Volumetric
+            // 1. Calculate Chargeable Weight
             const volWeight = (l * w * h) / divisor;
-
-            // 2. Determine Chargeable Weight (Higher of Actual vs Volumetric)
             const chargeable = Math.max(weight, volWeight);
 
+            // 2. Find Rate Slab
+            const slabs = intlRates[country];
+            let ratePerKg = 0;
+            let minWeightForCountry = slabs[0].min;
+            let maxWeightForCountry = slabs[slabs.length - 1].max;
+
+            // Check boundaries
+            if (chargeable < minWeightForCountry) {
+                errorMsg.innerText = `Minimum weight for ${country} is ${minWeightForCountry} kg.`;
+                errorMsg.style.display = 'block';
+                return;
+            }
+            if (chargeable > maxWeightForCountry) {
+                errorMsg.innerText = `For shipments over ${maxWeightForCountry} kg, please contact us directly.`;
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            // Find matching slab
+            for (let slab of slabs) {
+                if (chargeable >= slab.min && chargeable <= slab.max) {
+                    ratePerKg = slab.rate;
+                    break;
+                }
+            }
+
+            if (ratePerKg === 0) {
+                errorMsg.innerText = "Rate not available for this specific weight class.";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
             // 3. Calculate Total
-            const total = chargeable * rate;
+            const total = chargeable * ratePerKg;
 
             // 4. Update UI
             document.getElementById('resActual').innerText = weight.toFixed(2) + " kg";
             document.getElementById('resVol').innerText = volWeight.toFixed(2) + " kg";
             document.getElementById('resChargeable').innerText = chargeable.toFixed(2) + " kg";
-            document.getElementById('resTotal').innerText = "$" + total.toFixed(2);
+            document.getElementById('resTotal').innerText = total.toLocaleString() + " MMK";
             document.getElementById('dispDiv').innerText = divisor;
-            document.getElementById('intlResult').style.display = 'block';
+            resultBox.style.display = 'block';
         }
     </script>
 </body>
