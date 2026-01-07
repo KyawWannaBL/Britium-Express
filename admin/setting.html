@@ -71,7 +71,7 @@
 
     <ul class="nav nav-tabs mb-4" id="settingTabs" role="tablist">
         <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#local">Local Pricing</button></li>
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#intl">International Air Cargo</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#intl">International Rates</button></li>
         <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#network">Network Expansion</button></li>
     </ul>
 
@@ -101,26 +101,16 @@
                 </div>
             </div>
 
-            <h5 class="fw-bold text-secondary mb-3 mt-4">Metro City Rates (Fixed Zones)</h5>
+            <h5 class="fw-bold text-secondary mb-3 mt-4">Metro City Rates</h5>
             <div class="row">
                 <div class="col-lg-4">
                     <div class="settings-card card-domestic">
-                        <div class="card-header-custom"><span><i class="fas fa-city me-2 text-primary"></i> Yangon Region</span></div>
+                        <div class="card-header-custom"><span><i class="fas fa-city me-2 text-primary"></i> Yangon</span></div>
                         <div class="zone-box">
-                            <input type="text" class="zone-name" value="Zone 1: Downtown">
-                            <textarea class="zone-desc" rows="2">Latha, Lanmadaw, Pabedan, Kyauktada</textarea>
+                            <input type="text" class="zone-name" value="Downtown">
                             <div class="input-group input-group-sm">
                                 <span class="input-group-text bg-white fw-bold">Price</span>
                                 <input type="number" class="form-control" value="2000">
-                                <span class="input-group-text">MMK</span>
-                            </div>
-                        </div>
-                        <div class="zone-box">
-                            <input type="text" class="zone-name" value="Zone 2: Townships">
-                            <textarea class="zone-desc" rows="2">Bahan, Sanchaung, Kamaryut</textarea>
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text bg-white fw-bold">Price</span>
-                                <input type="number" class="form-control" value="2500">
                                 <span class="input-group-text">MMK</span>
                             </div>
                         </div>
@@ -129,12 +119,12 @@
 
                 <div class="col-lg-4">
                     <div class="settings-card card-domestic">
-                        <div class="card-header-custom"><span><i class="fas fa-monument me-2 text-success"></i> Mandalay Region</span></div>
+                        <div class="card-header-custom"><span><i class="fas fa-monument me-2 text-success"></i> Mandalay</span></div>
                         <div class="zone-box">
-                            <input type="text" class="zone-name" value="Downtown Grid">
-                            <div class="input-group input-group-sm mt-2">
+                            <input type="text" class="zone-name" value="City Area">
+                            <div class="input-group input-group-sm">
                                 <span class="input-group-text bg-white fw-bold">Price</span>
-                                <input type="number" class="form-control" value="2500">
+                                <input type="number" class="form-control" value="3000">
                                 <span class="input-group-text">MMK</span>
                             </div>
                         </div>
@@ -145,8 +135,8 @@
                     <div class="settings-card card-domestic">
                         <div class="card-header-custom"><span><i class="fas fa-landmark me-2 text-warning"></i> Nay Pyi Taw</span></div>
                         <div class="zone-box">
-                            <input type="text" class="zone-name" value="Ministry Zone">
-                            <div class="input-group input-group-sm mt-2">
+                            <input type="text" class="zone-name" value="City Area">
+                            <div class="input-group input-group-sm">
                                 <span class="input-group-text bg-white fw-bold">Price</span>
                                 <input type="number" class="form-control" value="3000">
                                 <span class="input-group-text">MMK</span>
@@ -156,20 +146,18 @@
                 </div>
             </div>
 
-            <h5 class="fw-bold text-secondary mb-3 mt-4">Nationwide State/Region Rates</h5>
+            <h5 class="fw-bold text-secondary mb-3 mt-4">Inter-City Highway Rates</h5>
             <div class="settings-card">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle">
+                    <table class="table table-sm align-middle">
                         <thead class="table-light">
-                            <tr>
-                                <th>State / Region</th>
-                                <th>Base Price (for <span class="base-weight-display">2</span>kg)</th>
-                                <th>Overweight Fee (per extra kg)</th>
-                                <th>Est. Duration</th>
-                            </tr>
+                            <tr><th>Route</th><th>Base Price (2kg)</th><th>Overweight (per kg)</th></tr>
                         </thead>
-                        <tbody id="nationalRatesBody">
-                            </tbody>
+                        <tbody>
+                            <tr><td>Yangon ↔ Mandalay</td><td><input type="number" class="form-control form-control-sm" value="5000"></td><td>500 MMK</td></tr>
+                            <tr><td>Yangon ↔ Nay Pyi Taw</td><td><input type="number" class="form-control form-control-sm" value="5000"></td><td>500 MMK</td></tr>
+                            <tr><td>Nay Pyi Taw ↔ Mandalay</td><td><input type="number" class="form-control form-control-sm" value="4000"></td><td>500 MMK</td></tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -179,27 +167,78 @@
         <div class="tab-pane fade" id="intl">
             <div class="settings-card card-intl">
                 <div class="card-header-custom">
-                    <span><i class="fas fa-plane-departure me-2 text-danger"></i> International Air Cargo Rates</span>
-                    <button class="btn btn-sm btn-outline-dark" onclick="addCountryRow()"><i class="fas fa-plus me-2"></i> Add Route</button>
+                    <span><i class="fas fa-plane-departure me-2 text-danger"></i> International Agent Rates (MMK/Kg)</span>
+                    <button class="btn btn-sm btn-outline-dark" onclick="addCountryRow()"><i class="fas fa-plus me-2"></i> Add Country</button>
                 </div>
+                <div class="alert alert-warning small py-2"><i class="fas fa-info-circle me-2"></i> Rates shown below are for the standard <strong>5-10 Kg Slab</strong>. Slabs for 11-20kg and 20-30kg are calculated automatically based on the Agent Rate Sheet.</div>
+                
                 <div class="table-responsive">
                     <table class="table table-bordered align-middle" id="intlTable">
                         <thead class="bg-light">
                             <tr>
-                                <th style="width: 30%;">Country / Destination</th>
-                                <th style="width: 20%;">Rate (USD/Kg)</th>
-                                <th style="width: 15%;">Min Weight</th>
+                                <th style="width: 30%;">Country</th>
+                                <th style="width: 25%;">Base Rate (5-10kg Slab)</th>
                                 <th style="width: 25%;">Est. Duration</th>
                                 <th style="width: 10%;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><input type="text" class="form-control form-control-sm" value="United States (USA)"></td>
-                                <td><div class="input-group input-group-sm"><span class="input-group-text">$</span><input type="number" class="form-control" value="18.50"></div></td>
-                                <td><input type="text" class="form-control form-control-sm" value="1.0 Kg"></td>
+                                <td><input type="text" class="form-control form-control-sm" value="Thailand 🇹🇭"></td>
+                                <td><div class="input-group input-group-sm"><input type="number" class="form-control" value="10000"><span class="input-group-text">MMK</span></div></td>
+                                <td><input type="text" class="form-control form-control-sm" value="2-3 Days"></td>
+                                <td><button class="btn btn-sm btn-light text-danger"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control form-control-sm" value="Japan 🇯🇵"></td>
+                                <td><div class="input-group input-group-sm"><input type="number" class="form-control" value="50000"><span class="input-group-text">MMK</span></div></td>
+                                <td><input type="text" class="form-control form-control-sm" value="5-7 Days"></td>
+                                <td><button class="btn btn-sm btn-light text-danger"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control form-control-sm" value="South Korea 🇰🇷"></td>
+                                <td><div class="input-group input-group-sm"><input type="number" class="form-control" value="30000"><span class="input-group-text">MMK</span></div></td>
+                                <td><input type="text" class="form-control form-control-sm" value="5-7 Days"></td>
+                                <td><button class="btn btn-sm btn-light text-danger"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control form-control-sm" value="Singapore 🇸🇬"></td>
+                                <td><div class="input-group input-group-sm"><input type="number" class="form-control" value="32000"><span class="input-group-text">MMK</span></div></td>
+                                <td><input type="text" class="form-control form-control-sm" value="3-4 Days"></td>
+                                <td><button class="btn btn-sm btn-light text-danger"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control form-control-sm" value="Malaysia 🇲🇾"></td>
+                                <td><div class="input-group input-group-sm"><input type="number" class="form-control" value="32000"><span class="input-group-text">MMK</span></div></td>
+                                <td><input type="text" class="form-control form-control-sm" value="3-4 Days"></td>
+                                <td><button class="btn btn-sm btn-light text-danger"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+                            
+                            <tr>
+                                <td><input type="text" class="form-control form-control-sm" value="USA 🇺🇸"></td>
+                                <td><div class="input-group input-group-sm"><input type="number" class="form-control" value="114000"><span class="input-group-text">MMK</span></div></td>
                                 <td><input type="text" class="form-control form-control-sm" value="7-10 Days"></td>
-                                <td><button class="btn btn-sm btn-light text-danger" onclick="this.closest('tr').remove()"><i class="fas fa-trash"></i></button></td>
+                                <td><button class="btn btn-sm btn-light text-danger"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+
+                            <tr>
+                                <td><input type="text" class="form-control form-control-sm" value="Germany 🇩🇪"></td>
+                                <td><div class="input-group input-group-sm"><input type="number" class="form-control" value="105840"><span class="input-group-text">MMK</span></div></td>
+                                <td><input type="text" class="form-control form-control-sm" value="5-8 Days"></td>
+                                <td><button class="btn btn-sm btn-light text-danger"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control form-control-sm" value="UK 🇬🇧"></td>
+                                <td><div class="input-group input-group-sm"><input type="number" class="form-control" value="105840"><span class="input-group-text">MMK</span></div></td>
+                                <td><input type="text" class="form-control form-control-sm" value="5-8 Days"></td>
+                                <td><button class="btn btn-sm btn-light text-danger"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+
+                            <tr>
+                                <td><input type="text" class="form-control form-control-sm" value="Saudi Arabia 🇸🇦"></td>
+                                <td><div class="input-group input-group-sm"><input type="number" class="form-control" value="55300"><span class="input-group-text">MMK</span></div></td>
+                                <td><input type="text" class="form-control form-control-sm" value="5-8 Days"></td>
+                                <td><button class="btn btn-sm btn-light text-danger"><i class="fas fa-trash"></i></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -229,12 +268,12 @@
                                     </select>
                                 </div>
                                 <div class="col-md-12">
-                                    <label class="form-label">Hub Name (Internal ID)</label>
+                                    <label class="form-label">Hub Name</label>
                                     <input type="text" class="form-control" placeholder="e.g. Lashio-North-Hub-01">
                                 </div>
                                 <div class="col-md-12">
                                     <label class="form-label">Full Address</label>
-                                    <textarea class="form-control" rows="2" placeholder="Street address, Quarter, etc."></textarea>
+                                    <textarea class="form-control" rows="2"></textarea>
                                 </div>
                                 <div class="col-12 text-end">
                                     <button type="submit" class="btn btn-success fw-bold px-4">Create Hub</button>
@@ -281,46 +320,14 @@
 
     document.addEventListener("DOMContentLoaded", function() {
         const stateSelect = document.getElementById("stateSelect");
-        const rateTable = document.getElementById("nationalRatesBody");
         const baseWeightInput = document.getElementById("globalBaseWeight");
-        const baseWeightDisplays = document.querySelectorAll(".base-weight-display");
 
-        // 1. Update Base Weight Text dynamically
-        baseWeightInput.addEventListener("input", function() {
-            baseWeightDisplays.forEach(span => span.innerText = this.value);
-        });
-
-        // 2. Generate Rate Table for All States
+        // Generate Dropdown for Network Tab
         Object.keys(myanmarLocations).sort().forEach(state => {
-            // Populate Dropdown for Network Tab
             let option = document.createElement("option");
             option.value = state;
             option.text = state;
             stateSelect.appendChild(option);
-
-            // Populate National Rate Table
-            // Skip Yangon, Mandalay, NPT as they have specific zones above
-            if(!['Yangon', 'Mandalay', 'Nay Pyi Taw'].includes(state)) {
-                let row = document.createElement("tr");
-                row.innerHTML = `
-                    <td class="fw-bold text-primary">${state}</td>
-                    <td>
-                        <div class="input-group input-group-sm">
-                            <input type="number" class="form-control" value="4000">
-                            <span class="input-group-text">MMK</span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text">+</span>
-                            <input type="number" class="form-control" value="500">
-                            <span class="input-group-text">/kg</span>
-                        </div>
-                    </td>
-                    <td><input type="text" class="form-control form-control-sm" value="3-4 Days"></td>
-                `;
-                rateTable.appendChild(row);
-            }
         });
     });
 
@@ -349,9 +356,8 @@
         const newRow = table.insertRow();
         newRow.innerHTML = `
             <td><input type="text" class="form-control form-control-sm" placeholder="Country Name"></td>
-            <td><div class="input-group input-group-sm"><span class="input-group-text">$</span><input type="number" class="form-control" value="0.00"></div></td>
-            <td><input type="text" class="form-control form-control-sm" value="1.0 Kg"></td>
-            <td><input type="text" class="form-control form-control-sm" placeholder="e.g. 5-7 Days"></td>
+            <td><div class="input-group input-group-sm"><input type="number" class="form-control" value="0"><span class="input-group-text">MMK</span></div></td>
+            <td><input type="text" class="form-control form-control-sm" placeholder="Est. Days"></td>
             <td><button class="btn btn-sm btn-light text-danger" onclick="this.closest('tr').remove()"><i class="fas fa-trash"></i></button></td>
         `;
     }
