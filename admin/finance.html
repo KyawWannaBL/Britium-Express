@@ -10,31 +10,20 @@
     <style>
         :root { --admin-dark: #212529; --admin-accent: #ff6b00; --brand-blue: #0d2c54; }
         body { background-color: #e9ecef; font-family: 'Segoe UI', sans-serif; }
-        
-        /* Sidebar */
         .sidebar { height: 100vh; position: fixed; width: 250px; background: var(--admin-dark); color: white; z-index: 100; }
-        .main-content { margin-left: 250px; padding: 20px; }
+        .main-content { margin-left: 250px; padding: 20px; padding-bottom: 50px; }
         .nav-link { color: #aaa; padding: 15px; display: flex; align-items: center; }
         .nav-link:hover { color: white; background: rgba(255,255,255,0.1); }
         .nav-link.active { color: white; background: var(--brand-blue); border-left: 4px solid var(--admin-accent); }
-        
-        /* Financial Stats */
         .finance-card { color: white; padding: 25px; border-radius: 8px; position: relative; overflow: hidden; height: 100%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .finance-card h3 { font-weight: 800; margin-bottom: 5px; }
-        .finance-card p { opacity: 0.9; font-size: 0.9rem; margin: 0; }
-        .finance-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); opacity: 0.2; font-size: 3rem; }
-        
         .bg-cash { background: linear-gradient(45deg, #198754, #20c997); }
         .bg-pending { background: linear-gradient(45deg, #ffc107, #fd7e14); color: #333; }
         .bg-debt { background: linear-gradient(45deg, #dc3545, #c82333); }
-        
-        /* Table */
         .table-card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow: hidden; margin-top: 20px; }
         .status-badge { font-size: 0.75rem; padding: 5px 10px; border-radius: 50px; font-weight: 700; text-transform: uppercase; }
-        
-        .badge-collected { background-color: #d1e7dd; color: #0f5132; } /* Cash with Britium */
-        .badge-remitted { background-color: #cfe2ff; color: #084298; } /* Paid to Sender */
-        .badge-pending { background-color: #fff3cd; color: #664d03; } /* Not yet delivered */
+        .badge-collected { background-color: #d1e7dd; color: #0f5132; }
+        .badge-remitted { background-color: #cfe2ff; color: #084298; }
+        .badge-pending { background-color: #fff3cd; color: #664d03; }
     </style>
 </head>
 <body>
@@ -55,7 +44,6 @@
     <hr>
     <div class="dropdown">
         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-            <img src="https://ui-avatars.com/api/?name=Admin+Staff&background=random" alt="" width="32" height="32" class="rounded-circle me-2">
             <strong>Admin Staff</strong>
         </a>
         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
@@ -70,7 +58,7 @@
     <div class="row g-4 mb-4">
         <div class="col-md-4">
             <div class="finance-card bg-cash">
-                <i class="fas fa-hand-holding-usd finance-icon"></i>
+                <i class="fas fa-hand-holding-usd finance-icon" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); opacity: 0.2; font-size: 3rem;"></i>
                 <p>Cash on Hand (Collected)</p>
                 <h3>1,450,000 MMK</h3>
                 <small>Ready to remit to customers</small>
@@ -78,7 +66,7 @@
         </div>
         <div class="col-md-4">
             <div class="finance-card bg-pending">
-                <i class="fas fa-truck-loading finance-icon"></i>
+                <i class="fas fa-truck-loading finance-icon" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); opacity: 0.2; font-size: 3rem;"></i>
                 <p>Pending Collection</p>
                 <h3>850,000 MMK</h3>
                 <small>Parcels currently Out for Delivery</small>
@@ -86,7 +74,7 @@
         </div>
         <div class="col-md-4">
             <div class="finance-card bg-debt">
-                <i class="fas fa-file-invoice-dollar finance-icon"></i>
+                <i class="fas fa-file-invoice-dollar finance-icon" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); opacity: 0.2; font-size: 3rem;"></i>
                 <p>Service Fees Earned</p>
                 <h3>240,000 MMK</h3>
                 <small>Total delivery charges today</small>
@@ -97,8 +85,6 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="fw-bold m-0">COD Transactions</h5>
         <div class="d-flex gap-2">
-            <input type="date" class="form-control form-control-sm">
-            <button class="btn btn-outline-dark btn-sm"><i class="fas fa-filter me-2"></i> Filter</button>
             <button class="btn btn-success btn-sm text-white fw-bold"><i class="fas fa-check-double me-2"></i> Bulk Remit</button>
         </div>
     </div>
@@ -111,116 +97,47 @@
                         <th class="ps-4">Tracking ID</th>
                         <th>Sender (Client)</th>
                         <th>Amount (MMK)</th>
-                        <th>Collected From</th>
                         <th>Status</th>
-                        <th>Date Collected</th>
                         <th class="text-end pe-4">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    
                     <tr>
                         <td class="ps-4 fw-bold">BE-89744</td>
                         <td>U Ba Maung</td>
                         <td class="fw-bold text-dark">45,000</td>
-                        <td>Daw Hla (Mandalay)</td>
                         <td><span class="status-badge badge-collected">Collected</span></td>
-                        <td>Today, 10:30 AM</td>
-                        <td class="text-end pe-4">
-                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#remitModal">Remit Now</button>
-                        </td>
+                        <td class="text-end pe-4"><button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#remitModal">Remit Now</button></td>
                     </tr>
-
                     <tr>
                         <td class="ps-4 fw-bold">BE-11223</td>
                         <td>Online Shop A</td>
                         <td class="fw-bold text-muted">12,500</td>
-                        <td>Ko Ko (Yangon)</td>
                         <td><span class="status-badge badge-pending">Pending</span></td>
-                        <td>--</td>
-                        <td class="text-end pe-4">
-                            <button class="btn btn-sm btn-light border disabled">Wait</button>
-                        </td>
+                        <td class="text-end pe-4"><button class="btn btn-sm btn-light border disabled">Wait</button></td>
                     </tr>
-
-                    <tr>
-                        <td class="ps-4 fw-bold">BE-88901</td>
-                        <td>Ma Mya</td>
-                        <td class="fw-bold text-success">30,000</td>
-                        <td>U Kyaw (NPT)</td>
-                        <td><span class="status-badge badge-remitted">Paid to Client</span></td>
-                        <td>Yesterday</td>
-                        <td class="text-end pe-4">
-                            <button class="btn btn-sm btn-light border" title="View Receipt"><i class="fas fa-file-alt"></i></button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="ps-4 fw-bold">BE-77120</td>
-                        <td>Tech Store</td>
-                        <td class="fw-bold text-dark">150,000</td>
-                        <td>Mg Mg (Yangon)</td>
-                        <td><span class="status-badge badge-collected">Collected</span></td>
-                        <td>Today, 09:15 AM</td>
-                        <td class="text-end pe-4">
-                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#remitModal">Remit Now</button>
-                        </td>
-                    </tr>
-
                 </tbody>
             </table>
         </div>
-        
-        <div class="p-3 border-top d-flex justify-content-end">
-            <nav>
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
-                    <li class="page-item active"><a class="page-link bg-dark border-dark" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link text-dark" href="#">Next</a></li>
-                </ul>
-            </nav>
-        </div>
     </div>
+
+    <div class="d-flex justify-content-between mt-5 pt-4 border-top">
+        <a href="drivers.html" class="btn btn-outline-secondary px-4"><i class="fas fa-arrow-left me-2"></i> Previous</a>
+        <a href="setting.html" class="btn btn-primary px-4">Next: Settings <i class="fas fa-arrow-right ms-2"></i></a>
+    </div>
+
 </div>
 
 <div class="modal fade" id="remitModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title"><i class="fas fa-money-bill-wave me-2"></i> Remit Payment to Client</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title"><i class="fas fa-money-bill-wave me-2"></i> Remit Payment</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <form>
-                    <div class="mb-3">
-                        <label class="form-label text-muted small fw-bold">Client Name</label>
-                        <input type="text" class="form-control" value="U Ba Maung" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label text-muted small fw-bold">Amount to Transfer</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control fw-bold" value="45,000" readonly>
-                            <span class="input-group-text">MMK</span>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label text-muted small fw-bold">Payment Method</label>
-                        <select class="form-select">
-                            <option>KBZPay</option>
-                            <option>WaveMoney</option>
-                            <option>Cash (Office Pickup)</option>
-                            <option>CB Bank</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label text-muted small fw-bold">Transaction Ref / Notes</label>
-                        <input type="text" class="form-control" placeholder="Enter Transaction ID...">
-                    </div>
-                    
-                    <div class="alert alert-warning small">
-                        <i class="fas fa-info-circle me-1"></i> Confirming this will mark the COD as "Paid" in the client's dashboard.
-                    </div>
-
+                    <div class="mb-3"><label class="form-label">Amount</label><input type="text" class="form-control" value="45,000" readonly></div>
                     <button type="submit" class="btn btn-success w-100 fw-bold">Confirm Transfer</button>
                 </form>
             </div>
