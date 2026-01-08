@@ -7,18 +7,32 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
     <style>
         :root { --admin-dark: #212529; --admin-accent: #ff6b00; --brand-blue: #0d2c54; }
         body { background-color: #e9ecef; font-family: 'Segoe UI', sans-serif; }
-        .sidebar { height: 100vh; position: fixed; width: 250px; background: var(--admin-dark); color: white; z-index: 100; }
+        
+        /* SIDEBAR (Standardized) */
+        .sidebar { height: 100vh; position: fixed; top: 0; left: 0; width: 250px; background: var(--admin-dark); color: white; z-index: 1000; overflow-y: auto; }
+        .sidebar .nav-link { color: #aaa; padding: 15px 20px; font-weight: 500; border-left: 4px solid transparent; }
+        .sidebar .nav-link:hover { background: rgba(255,255,255,0.05); color: white; }
+        .sidebar .nav-link.active { background: var(--brand-blue); color: white; border-left-color: var(--admin-accent); }
+        .sidebar i { width: 25px; text-align: center; margin-right: 10px; }
+        
+        /* MAIN CONTENT */
         .main-content { margin-left: 250px; padding: 20px; padding-bottom: 50px; }
-        .nav-link { color: #aaa; padding: 15px; display: flex; align-items: center; }
-        .nav-link:hover { color: white; background: rgba(255,255,255,0.1); }
-        .nav-link.active { color: white; background: var(--brand-blue); border-left: 4px solid var(--admin-accent); }
+        
+        /* FINANCE CARDS */
         .finance-card { color: white; padding: 25px; border-radius: 8px; position: relative; overflow: hidden; height: 100%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .bg-cash { background: linear-gradient(45deg, #198754, #20c997); }
         .bg-pending { background: linear-gradient(45deg, #ffc107, #fd7e14); color: #333; }
         .bg-debt { background: linear-gradient(45deg, #dc3545, #c82333); }
+        .finance-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); opacity: 0.2; font-size: 3rem; }
+        
+        /* TABLE STYLES */
         .table-card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow: hidden; margin-top: 20px; }
         .status-badge { font-size: 0.75rem; padding: 5px 10px; border-radius: 50px; font-weight: 700; text-transform: uppercase; }
         .badge-collected { background-color: #d1e7dd; color: #0f5132; }
@@ -28,124 +42,152 @@
 </head>
 <body>
 
-<div class="sidebar d-flex flex-column p-3">
-    <a href="index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-        <span class="fs-4 fw-bold text-warning">BRITIUM ADMIN</span>
-    </a>
-    <hr>
-<ul class="nav nav-pills flex-column mb-auto mt-2">
-    <li class="nav-item"><a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-    <li class="nav-item"><a href="shipments.html" class="nav-link"><i class="fas fa-box-open"></i> Shipments</a></li>
-    <li class="nav-item"><a href="customers.html" class="nav-link"><i class="fas fa-users"></i> Customers</a></li>
-    <li class="nav-item"><a href="drivers.html" class="nav-link"><i class="fas fa-motorcycle"></i> Drivers</a></li>
-    <li class="nav-item"><a href="finance.html" class="nav-link"><i class="fas fa-wallet"></i> Finance</a></li>
-    <li class="nav-item"><a href="setting.html" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
-</ul>
-    </ul>
-    <hr>
-    <div class="dropdown">
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-            <strong>Admin Staff</strong>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-            <li><a class="dropdown-item" href="../index.html">Sign out</a></li>
+    <div class="sidebar d-flex flex-column p-0">
+        <div class="p-4 border-bottom border-secondary">
+            <h4 class="fw-bold text-white mb-0">BRITIUM<span style="color: var(--admin-accent);">ADMIN</span></h4>
+        </div>
+        
+        <ul class="nav nav-pills flex-column mb-auto mt-2">
+            <li class="nav-item"><a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li class="nav-item"><a href="shipments.html" class="nav-link"><i class="fas fa-box-open"></i> Shipments</a></li>
+            <li class="nav-item"><a href="customers.html" class="nav-link"><i class="fas fa-users"></i> Customers</a></li>
+            <li class="nav-item"><a href="drivers.html" class="nav-link"><i class="fas fa-motorcycle"></i> Drivers</a></li>
+            <li class="nav-item"><a href="finance.html" class="nav-link active"><i class="fas fa-wallet"></i> Finance</a></li>
+            <li class="nav-item"><a href="setting.html" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
         </ul>
+
+        <div class="p-3 border-top border-secondary">
+            <button onclick="logout()" class="btn btn-outline-danger w-100 btn-sm fw-bold"><i class="fas fa-sign-out-alt me-2"></i> Log Out</button>
+        </div>
     </div>
-</div>
 
-<div class="main-content">
-    <h2 class="fw-bold text-dark mb-4">COD & Finance Overview</h2>
+    <div class="main-content">
+        <h2 class="fw-bold text-dark mb-4">COD & Finance Overview</h2>
 
-    <div class="row g-4 mb-4">
-        <div class="col-md-4">
-            <div class="finance-card bg-cash">
-                <i class="fas fa-hand-holding-usd finance-icon" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); opacity: 0.2; font-size: 3rem;"></i>
-                <p>Cash on Hand (Collected)</p>
-                <h3>1,450,000 MMK</h3>
-                <small>Ready to remit to customers</small>
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="finance-card bg-cash">
+                    <i class="fas fa-hand-holding-usd finance-icon"></i>
+                    <p class="mb-1">Cash on Hand (Collected)</p>
+                    <h3 class="fw-bold mb-1">1,450,000 MMK</h3>
+                    <small class="opacity-75">Ready to remit to customers</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="finance-card bg-pending">
+                    <i class="fas fa-truck-loading finance-icon"></i>
+                    <p class="mb-1">Pending Collection</p>
+                    <h3 class="fw-bold mb-1">850,000 MMK</h3>
+                    <small class="opacity-75">Parcels currently Out for Delivery</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="finance-card bg-debt">
+                    <i class="fas fa-file-invoice-dollar finance-icon"></i>
+                    <p class="mb-1">Service Fees Earned</p>
+                    <h3 class="fw-bold mb-1">240,000 MMK</h3>
+                    <small class="opacity-75">Total delivery charges today</small>
+                </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="finance-card bg-pending">
-                <i class="fas fa-truck-loading finance-icon" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); opacity: 0.2; font-size: 3rem;"></i>
-                <p>Pending Collection</p>
-                <h3>850,000 MMK</h3>
-                <small>Parcels currently Out for Delivery</small>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold m-0 text-dark">COD Transactions</h5>
+            <div class="d-flex gap-2">
+                <button class="btn btn-success btn-sm text-white fw-bold"><i class="fas fa-check-double me-2"></i> Bulk Remit</button>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="finance-card bg-debt">
-                <i class="fas fa-file-invoice-dollar finance-icon" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); opacity: 0.2; font-size: 3rem;"></i>
-                <p>Service Fees Earned</p>
-                <h3>240,000 MMK</h3>
-                <small>Total delivery charges today</small>
+
+        <div class="table-card">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">Tracking ID</th>
+                            <th>Sender (Client)</th>
+                            <th>Amount (MMK)</th>
+                            <th>Status</th>
+                            <th class="text-end pe-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="ps-4 fw-bold text-primary">BE-89744</td>
+                            <td>U Ba Maung</td>
+                            <td class="fw-bold text-dark">45,000</td>
+                            <td><span class="status-badge badge-collected">Collected</span></td>
+                            <td class="text-end pe-4">
+                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#remitModal">Remit Now</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-4 fw-bold text-primary">BE-11223</td>
+                            <td>Online Shop A</td>
+                            <td class="fw-bold text-muted">12,500</td>
+                            <td><span class="status-badge badge-pending">Pending</span></td>
+                            <td class="text-end pe-4">
+                                <button class="btn btn-sm btn-light border disabled">Wait</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-5 pt-4 border-top">
+            <a href="drivers.html" class="btn btn-outline-secondary px-4"><i class="fas fa-arrow-left me-2"></i> Previous</a>
+            <a href="setting.html" class="btn btn-primary px-4">Next: Settings <i class="fas fa-arrow-right ms-2"></i></a>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="remitModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title"><i class="fas fa-money-bill-wave me-2"></i> Remit Payment</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form onsubmit="event.preventDefault(); alert('Remittance Processed!');">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Amount to Transfer</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control fw-bold" value="45,000" readonly>
+                                <span class="input-group-text">MMK</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">Client Account</label>
+                            <input type="text" class="form-control form-control-sm" value="KBZ Pay: 09xxxxxxxxx" readonly>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 fw-bold">Confirm Transfer</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="fw-bold m-0">COD Transactions</h5>
-        <div class="d-flex gap-2">
-            <button class="btn btn-success btn-sm text-white fw-bold"><i class="fas fa-check-double me-2"></i> Bulk Remit</button>
-        </div>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyCbrF5_QW6Nb3rBVkozT2y0KotL8clr8Jo",
+            authDomain: "britium-express.firebaseapp.com",
+            databaseURL: "https://britium-express-default-rtdb.firebaseio.com",
+            projectId: "britium-express",
+            storageBucket: "britium-express.firebasestorage.app",
+            messagingSenderId: "406522036528",
+            appId: "1:406522036528:web:7713801d6832932067c8f5"
+        };
 
-    <div class="table-card">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="bg-light">
-                    <tr>
-                        <th class="ps-4">Tracking ID</th>
-                        <th>Sender (Client)</th>
-                        <th>Amount (MMK)</th>
-                        <th>Status</th>
-                        <th class="text-end pe-4">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="ps-4 fw-bold">BE-89744</td>
-                        <td>U Ba Maung</td>
-                        <td class="fw-bold text-dark">45,000</td>
-                        <td><span class="status-badge badge-collected">Collected</span></td>
-                        <td class="text-end pe-4"><button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#remitModal">Remit Now</button></td>
-                    </tr>
-                    <tr>
-                        <td class="ps-4 fw-bold">BE-11223</td>
-                        <td>Online Shop A</td>
-                        <td class="fw-bold text-muted">12,500</td>
-                        <td><span class="status-badge badge-pending">Pending</span></td>
-                        <td class="text-end pe-4"><button class="btn btn-sm btn-light border disabled">Wait</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
 
-    <div class="d-flex justify-content-between mt-5 pt-4 border-top">
-        <a href="drivers.html" class="btn btn-outline-secondary px-4"><i class="fas fa-arrow-left me-2"></i> Previous</a>
-        <a href="setting.html" class="btn btn-primary px-4">Next: Settings <i class="fas fa-arrow-right ms-2"></i></a>
-    </div>
-
-</div>
-
-<div class="modal fade" id="remitModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title"><i class="fas fa-money-bill-wave me-2"></i> Remit Payment</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3"><label class="form-label">Amount</label><input type="text" class="form-control" value="45,000" readonly></div>
-                    <button type="submit" class="btn btn-success w-100 fw-bold">Confirm Transfer</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        function logout() {
+            auth.signOut().then(() => window.location.href = "login.html");
+        }
+    </script>
 </body>
 </html>
