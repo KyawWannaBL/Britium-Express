@@ -5,9 +5,9 @@
     <title>Britium Admin Generator (Fixed)</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 </head>
 <body class="bg-light p-5">
     <div class="card p-4 mx-auto shadow" style="max-width: 600px;">
@@ -22,14 +22,15 @@
     <script>
         // ⚠️ STEP 1: PASTE YOUR REAL FIREBASE KEYS HERE
         // Go to Firebase Console -> Project Settings -> General -> Your Apps -> Web
-           const firebaseConfig = {
-           apiKey: "AIzaSyCbrF5_QW6Nb3rBVkozT2y0KotL8clr8Jo",
-           authDomain: "britium-express.firebaseapp.com",
-           projectId: "britium-express",
-           storageBucket: "britium-express.firebasestorage.app",
-           messagingSenderId: "406522036528",
-           appId: "1:406522036528:web:7713801d6832932067c8f5"
+	const firebaseConfig = {
+        apiKey: "AIzaSyCbrF5_QW6Nb3rBVkozT2y0KotL8clr8Jo",
+        authDomain: "britium-express.firebaseapp.com",
+        projectId: "britium-express",
+        storageBucket: "britium-express.firebasestorage.app",
+        messagingSenderId: "406522036528",
+        appId: "1:406522036528:web:7713801d6832932067c8f5"
 };
+        };
 
         // Initialize Firebase
         try {
@@ -39,8 +40,11 @@
 
             // The Accounts You Requested
             const accounts = [
+                // Super Admins (With OTP Phone Number)
                 { email: "mgkyawwanna@gmail.com", role: "super_admin", phone: "09887777585", pass: "Britium2026!" },
                 { email: "md@britiumventures.com", role: "super_admin", phone: "09887777585", pass: "Britium2026!" },
+                
+                // Managers (No Phone Specified)
                 { email: "hod@britiumexpress.com", role: "manager", phone: "", pass: "Manager2026!" },
                 { email: "hod_pm@britiumventures.com", role: "manager", phone: "", pass: "Manager2026!" }
             ];
@@ -62,10 +66,8 @@
                         } catch (authError) {
                             if (authError.code === 'auth/email-already-in-use') {
                                 statusDiv.innerText += "⚠️ Exists. Updating Role... ";
-                                // If user exists, we need to find their UID to update the role.
-                                // NOTE: Client SDK cannot look up UID by email directly for security.
-                                // We will assume the user can login or we just skip.
-                                // For a simple fixer, we try to sign in to get the UID.
+                                // We need to find the UID to update the role.
+                                // We try to sign in to get the UID.
                                 try {
                                     const login = await auth.signInWithEmailAndPassword(acc.email, acc.pass);
                                     uid = login.user.uid;
