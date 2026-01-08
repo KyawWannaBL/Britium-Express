@@ -7,161 +7,185 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
     <style>
         :root { --admin-dark: #212529; --admin-accent: #ff6b00; --brand-blue: #0d2c54; }
         body { background-color: #e9ecef; font-family: 'Segoe UI', sans-serif; }
-        .sidebar { height: 100vh; position: fixed; width: 250px; background: var(--admin-dark); color: white; z-index: 100; }
+        
+        /* SIDEBAR (Standardized) */
+        .sidebar { height: 100vh; position: fixed; top: 0; left: 0; width: 250px; background: var(--admin-dark); color: white; z-index: 1000; overflow-y: auto; }
+        .sidebar .nav-link { color: #aaa; padding: 15px 20px; font-weight: 500; border-left: 4px solid transparent; }
+        .sidebar .nav-link:hover { background: rgba(255,255,255,0.05); color: white; }
+        .sidebar .nav-link.active { background: var(--brand-blue); color: white; border-left-color: var(--admin-accent); }
+        .sidebar i { width: 25px; text-align: center; margin-right: 10px; }
+        
+        /* MAIN CONTENT */
         .main-content { margin-left: 250px; padding: 20px; padding-bottom: 50px; }
-        .nav-link { color: #aaa; padding: 15px; display: flex; align-items: center; }
-        .nav-link:hover { color: white; background: rgba(255,255,255,0.1); }
-        .nav-link.active { color: white; background: var(--brand-blue); border-left: 4px solid var(--admin-accent); }
+        
+        /* DRIVER CARDS */
         .driver-card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.3s; height: 100%; border-top: 4px solid transparent; }
         .driver-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .driver-card.available { border-top-color: #28a745; }
         .driver-card.busy { border-top-color: #ffc107; }
         .driver-card.offline { border-top-color: #6c757d; }
         .avatar { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid #f8f9fa; }
-        .table-card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow: hidden; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-<div class="sidebar d-flex flex-column p-3">
-    <a href="index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-        <span class="fs-4 fw-bold text-warning">BRITIUM ADMIN</span>
-    </a>
-    <hr>
-<ul class="nav nav-pills flex-column mb-auto mt-2">
-    <li class="nav-item"><a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-    <li class="nav-item"><a href="shipments.html" class="nav-link"><i class="fas fa-box-open"></i> Shipments</a></li>
-    <li class="nav-item"><a href="customers.html" class="nav-link"><i class="fas fa-users"></i> Customers</a></li>
-    <li class="nav-item"><a href="drivers.html" class="nav-link"><i class="fas fa-motorcycle"></i> Drivers</a></li>
-    <li class="nav-item"><a href="finance.html" class="nav-link"><i class="fas fa-wallet"></i> Finance</a></li>
-    <li class="nav-item"><a href="setting.html" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
-</ul>
-    </ul>
-    <hr>
-    <div class="dropdown">
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-            <strong>Admin Staff</strong>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-            <li><a class="dropdown-item" href="../index.html">Sign out</a></li>
+    <div class="sidebar d-flex flex-column p-0">
+        <div class="p-4 border-bottom border-secondary">
+            <h4 class="fw-bold text-white mb-0">BRITIUM<span style="color: var(--admin-accent);">ADMIN</span></h4>
+        </div>
+        
+        <ul class="nav nav-pills flex-column mb-auto mt-2">
+            <li class="nav-item"><a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li class="nav-item"><a href="shipments.html" class="nav-link"><i class="fas fa-box-open"></i> Shipments</a></li>
+            <li class="nav-item"><a href="customers.html" class="nav-link"><i class="fas fa-users"></i> Customers</a></li>
+            <li class="nav-item"><a href="drivers.html" class="nav-link active"><i class="fas fa-motorcycle"></i> Drivers</a></li>
+            <li class="nav-item"><a href="finance.html" class="nav-link"><i class="fas fa-wallet"></i> Finance</a></li>
+            <li class="nav-item"><a href="setting.html" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
         </ul>
-    </div>
-</div>
-<div class="main-content">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold text-dark">Fleet Management</h2>
-        <button class="btn btn-warning fw-bold text-white" data-bs-toggle="modal" data-bs-target="#addDriverModal" style="background-color: var(--admin-accent);">
-            <i class="fas fa-plus me-2"></i> Add Driver
-        </button>
-    </div>
 
-    <div class="row g-3 mb-4">
-        <div class="col-md-3">
-            <div class="card p-3 border-0 shadow-sm">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div><h6 class="text-muted mb-0">Total Fleet</h6><h3 class="fw-bold mb-0">24</h3></div>
-                    <i class="fas fa-users fa-2x text-primary opacity-50"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card p-3 border-0 shadow-sm">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div><h6 class="text-muted mb-0">Available</h6><h3 class="fw-bold text-success mb-0">12</h3></div>
-                    <i class="fas fa-check-circle fa-2x text-success opacity-50"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card p-3 border-0 shadow-sm">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div><h6 class="text-muted mb-0">On Delivery</h6><h3 class="fw-bold text-warning mb-0">8</h3></div>
-                    <i class="fas fa-shipping-fast fa-2x text-warning opacity-50"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card p-3 border-0 shadow-sm">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div><h6 class="text-muted mb-0">Offline</h6><h3 class="fw-bold text-secondary mb-0">4</h3></div>
-                    <i class="fas fa-power-off fa-2x text-secondary opacity-50"></i>
-                </div>
-            </div>
+        <div class="p-3 border-top border-secondary">
+            <button onclick="logout()" class="btn btn-outline-danger w-100 btn-sm fw-bold"><i class="fas fa-sign-out-alt me-2"></i> Log Out</button>
         </div>
     </div>
 
-    <h5 class="fw-bold text-dark mb-3">Active Riders</h5>
-    <div class="row g-4">
-        <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="driver-card p-3 text-center busy">
-                <img src="https://ui-avatars.com/api/?name=Ko+Aung&background=0d6efd&color=fff" class="avatar mb-3">
-                <h5 class="fw-bold mb-1">Ko Aung</h5>
-                <p class="text-muted small mb-2"><i class="fas fa-motorcycle me-1"></i> 7A-1234 (Motorbike)</p>
-                <span class="badge bg-warning text-dark mb-3">Busy (2 Orders)</span>
-                <div class="d-grid mt-3"><button class="btn btn-outline-dark btn-sm">View Location</button></div>
-            </div>
+    <div class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold text-dark">Fleet Management</h2>
+            <button class="btn btn-warning fw-bold text-white" data-bs-toggle="modal" data-bs-target="#addDriverModal" style="background-color: var(--admin-accent); border:none;">
+                <i class="fas fa-plus me-2"></i> Add Driver
+            </button>
         </div>
-        <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="driver-card p-3 text-center available">
-                <img src="https://ui-avatars.com/api/?name=Ko+Zaw&background=198754&color=fff" class="avatar mb-3">
-                <h5 class="fw-bold mb-1">Ko Zaw</h5>
-                <p class="text-muted small mb-2"><i class="fas fa-truck me-1"></i> 2B-5566 (Light Truck)</p>
-                <span class="badge bg-success mb-3">Available</span>
-                <div class="d-grid mt-3"><button class="btn btn-outline-dark btn-sm">Assign Order</button></div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="driver-card p-3 text-center busy">
-                <img src="https://ui-avatars.com/api/?name=Mg+Mg&background=ffc107&color=000" class="avatar mb-3">
-                <h5 class="fw-bold mb-1">Mg Mg</h5>
-                <p class="text-muted small mb-2"><i class="fas fa-motorcycle me-1"></i> 9G-9988 (Motorbike)</p>
-                <span class="badge bg-warning text-dark mb-3">Busy (1 Order)</span>
-                <div class="d-grid mt-3"><button class="btn btn-outline-dark btn-sm">View Location</button></div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="driver-card p-3 text-center offline">
-                <img src="https://ui-avatars.com/api/?name=U+Kyaw&background=6c757d&color=fff" class="avatar mb-3">
-                <h5 class="fw-bold mb-1">U Kyaw</h5>
-                <p class="text-muted small mb-2"><i class="fas fa-truck-moving me-1"></i> 3C-4444 (Box Truck)</p>
-                <span class="badge bg-secondary mb-3">Offline</span>
-                <div class="d-grid mt-3"><button class="btn btn-outline-secondary btn-sm disabled">Call Driver</button></div>
-            </div>
-        </div>
-    </div>
 
-    <div class="d-flex justify-content-between mt-5 pt-4 border-top">
-        <a href="customers.html" class="btn btn-outline-secondary px-4"><i class="fas fa-arrow-left me-2"></i> Previous</a>
-        <a href="finance.html" class="btn btn-primary px-4">Next: Finance <i class="fas fa-arrow-right ms-2"></i></a>
-    </div>
-
-</div>
-
-<div class="modal fade" id="addDriverModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i> Register New Driver</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3"><label class="form-label">Full Name</label><input type="text" class="form-control" placeholder="e.g. Ko Mya"></div>
-                    <div class="mb-3"><label class="form-label">Phone Number</label><input type="text" class="form-control" placeholder="09xxxxxxxxx"></div>
-                    <div class="row mb-3">
-                        <div class="col-6"><label class="form-label">Vehicle Type</label><select class="form-select"><option>Motorcycle</option><option>Light Truck</option></select></div>
-                        <div class="col-6"><label class="form-label">License Plate</label><input type="text" class="form-control" placeholder="1A-1234"></div>
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card p-3 border-0 shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div><h6 class="text-muted mb-0">Total Fleet</h6><h3 class="fw-bold mb-0">24</h3></div>
+                        <i class="fas fa-users fa-2x text-primary opacity-50"></i>
                     </div>
-                    <button type="submit" class="btn btn-success w-100 fw-bold">Save Driver</button>
-                </form>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card p-3 border-0 shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div><h6 class="text-muted mb-0">Available</h6><h3 class="fw-bold text-success mb-0">12</h3></div>
+                        <i class="fas fa-check-circle fa-2x text-success opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card p-3 border-0 shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div><h6 class="text-muted mb-0">On Delivery</h6><h3 class="fw-bold text-warning mb-0">8</h3></div>
+                        <i class="fas fa-shipping-fast fa-2x text-warning opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card p-3 border-0 shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div><h6 class="text-muted mb-0">Offline</h6><h3 class="fw-bold text-secondary mb-0">4</h3></div>
+                        <i class="fas fa-power-off fa-2x text-secondary opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="fw-bold text-dark mb-3">Active Riders</h5>
+        
+        <div class="row g-4">
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="driver-card p-3 text-center busy">
+                    <img src="https://ui-avatars.com/api/?name=Ko+Aung&background=0d6efd&color=fff" class="avatar mb-3">
+                    <h5 class="fw-bold mb-1">Ko Aung</h5>
+                    <p class="text-muted small mb-2"><i class="fas fa-motorcycle me-1"></i> 7A-1234 (Motorbike)</p>
+                    <span class="badge bg-warning text-dark mb-3">Busy (2 Orders)</span>
+                    <div class="d-grid mt-3"><button class="btn btn-outline-dark btn-sm">View Location</button></div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="driver-card p-3 text-center available">
+                    <img src="https://ui-avatars.com/api/?name=Ko+Zaw&background=198754&color=fff" class="avatar mb-3">
+                    <h5 class="fw-bold mb-1">Ko Zaw</h5>
+                    <p class="text-muted small mb-2"><i class="fas fa-truck me-1"></i> 2B-5566 (Light Truck)</p>
+                    <span class="badge bg-success mb-3">Available</span>
+                    <div class="d-grid mt-3"><button class="btn btn-outline-dark btn-sm">Assign Order</button></div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="driver-card p-3 text-center busy">
+                    <img src="https://ui-avatars.com/api/?name=Mg+Mg&background=ffc107&color=000" class="avatar mb-3">
+                    <h5 class="fw-bold mb-1">Mg Mg</h5>
+                    <p class="text-muted small mb-2"><i class="fas fa-motorcycle me-1"></i> 9G-9988 (Motorbike)</p>
+                    <span class="badge bg-warning text-dark mb-3">Busy (1 Order)</span>
+                    <div class="d-grid mt-3"><button class="btn btn-outline-dark btn-sm">View Location</button></div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="driver-card p-3 text-center offline">
+                    <img src="https://ui-avatars.com/api/?name=U+Kyaw&background=6c757d&color=fff" class="avatar mb-3">
+                    <h5 class="fw-bold mb-1">U Kyaw</h5>
+                    <p class="text-muted small mb-2"><i class="fas fa-truck-moving me-1"></i> 3C-4444 (Box Truck)</p>
+                    <span class="badge bg-secondary mb-3">Offline</span>
+                    <div class="d-grid mt-3"><button class="btn btn-outline-secondary btn-sm disabled">Call Driver</button></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="addDriverModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i> Register New Driver</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3"><label class="form-label">Full Name</label><input type="text" class="form-control" placeholder="e.g. Ko Mya"></div>
+                        <div class="mb-3"><label class="form-label">Phone Number</label><input type="text" class="form-control" placeholder="09xxxxxxxxx"></div>
+                        <div class="row mb-3">
+                            <div class="col-6"><label class="form-label">Vehicle Type</label><select class="form-select"><option>Motorcycle</option><option>Light Truck</option></select></div>
+                            <div class="col-6"><label class="form-label">License Plate</label><input type="text" class="form-control" placeholder="1A-1234"></div>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 fw-bold">Save Driver</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyCbrF5_QW6Nb3rBVkozT2y0KotL8clr8Jo",
+            authDomain: "britium-express.firebaseapp.com",
+            databaseURL: "https://britium-express-default-rtdb.firebaseio.com",
+            projectId: "britium-express",
+            storageBucket: "britium-express.firebasestorage.app",
+            messagingSenderId: "406522036528",
+            appId: "1:406522036528:web:7713801d6832932067c8f5"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        function logout() {
+            auth.signOut().then(() => window.location.href = "login.html");
+        }
+    </script>
 </body>
 </html>
