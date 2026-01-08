@@ -7,16 +7,23 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
     <style>
         :root { --admin-dark: #212529; --admin-accent: #ff6b00; --brand-blue: #0d2c54; }
         body { background-color: #e9ecef; font-family: 'Segoe UI', sans-serif; }
         
         /* Sidebar */
-        .sidebar { height: 100vh; position: fixed; width: 250px; background: var(--admin-dark); color: white; z-index: 100; overflow-y: auto; }
+        .sidebar { height: 100vh; position: fixed; top: 0; left: 0; width: 250px; background: var(--admin-dark); color: white; z-index: 1000; overflow-y: auto; }
+        .sidebar .nav-link { color: #aaa; padding: 15px 20px; font-weight: 500; border-left: 4px solid transparent; }
+        .sidebar .nav-link:hover { background: rgba(255,255,255,0.05); color: white; }
+        .sidebar .nav-link.active { background: var(--brand-blue); color: white; border-left-color: var(--admin-accent); }
+        .sidebar i { width: 25px; text-align: center; margin-right: 10px; }
+        
+        /* Main Content */
         .main-content { margin-left: 250px; padding: 20px; padding-bottom: 50px; }
-        .nav-link { color: #aaa; padding: 15px; display: flex; align-items: center; }
-        .nav-link:hover { color: white; background: rgba(255,255,255,0.1); }
-        .nav-link.active { color: white; background: var(--brand-blue); border-left: 4px solid var(--admin-accent); }
         
         /* Cards */
         .settings-card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 25px; margin-bottom: 25px; border-top: 3px solid transparent; }
@@ -39,28 +46,22 @@
 </head>
 <body>
 
-<div class="sidebar d-flex flex-column p-3">
-    <a href="index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-        <span class="fs-4 fw-bold text-warning">BRITIUM ADMIN</span>
-    </a>
-    <hr>
-   <ul class="nav nav-pills flex-column mb-auto mt-2">
-    <li class="nav-item"><a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-    <li class="nav-item"><a href="shipments.html" class="nav-link"><i class="fas fa-box-open"></i> Shipments</a></li>
-    <li class="nav-item"><a href="customers.html" class="nav-link"><i class="fas fa-users"></i> Customers</a></li>
-    <li class="nav-item"><a href="drivers.html" class="nav-link"><i class="fas fa-motorcycle"></i> Drivers</a></li>
-    <li class="nav-item"><a href="finance.html" class="nav-link"><i class="fas fa-wallet"></i> Finance</a></li>
-    <li class="nav-item"><a href="setting.html" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
-</ul>
+<div class="sidebar d-flex flex-column p-0">
+    <div class="p-4 border-bottom border-secondary">
+        <h4 class="fw-bold text-white mb-0">BRITIUM<span style="color: var(--admin-accent);">ADMIN</span></h4>
+    </div>
+    
+    <ul class="nav nav-pills flex-column mb-auto mt-2">
+        <li class="nav-item"><a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li class="nav-item"><a href="shipments.html" class="nav-link"><i class="fas fa-box-open"></i> Shipments</a></li>
+        <li class="nav-item"><a href="customers.html" class="nav-link"><i class="fas fa-users"></i> Customers</a></li>
+        <li class="nav-item"><a href="drivers.html" class="nav-link"><i class="fas fa-motorcycle"></i> Drivers</a></li>
+        <li class="nav-item"><a href="finance.html" class="nav-link"><i class="fas fa-wallet"></i> Finance</a></li>
+        <li class="nav-item"><a href="setting.html" class="nav-link active"><i class="fas fa-cog"></i> Settings</a></li>
     </ul>
-    <hr>
-    <div class="dropdown">
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-            <strong>Admin Staff</strong>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-            <li><a class="dropdown-item" href="../index.html">Sign out</a></li>
-        </ul>
+
+    <div class="p-3 border-top border-secondary">
+        <button onclick="logout()" class="btn btn-outline-danger w-100 btn-sm fw-bold"><i class="fas fa-sign-out-alt me-2"></i> Log Out</button>
     </div>
 </div>
 
@@ -79,17 +80,14 @@
     <div class="tab-content">
         
         <div class="tab-pane fade show active" id="local">
-            
             <div class="settings-card" style="border-top-color: #6f42c1;">
                 <div class="card-header-custom">
                     <span><i class="fas fa-calculator me-2" style="color: #6f42c1;"></i> National Rate Formula</span>
                 </div>
-                
                 <div class="formula-box text-center">
                     <span class="text-muted small text-uppercase fw-bold d-block mb-2">Calculation Logic</span>
                     <span class="formula-text">Total Price = [Base Price] + ((Actual Weight - Base Weight) × [Extra Fee/Kg])</span>
                 </div>
-
                 <div class="row align-items-end">
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Standard Base Weight</label>
@@ -117,7 +115,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-lg-4">
                     <div class="settings-card card-domestic">
                         <div class="card-header-custom"><span><i class="fas fa-monument me-2 text-success"></i> Mandalay</span></div>
@@ -131,7 +128,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-lg-4">
                     <div class="settings-card card-domestic">
                         <div class="card-header-custom"><span><i class="fas fa-landmark me-2 text-warning"></i> Nay Pyi Taw</span></div>
@@ -162,7 +158,6 @@
                     </table>
                 </div>
             </div>
-
         </div>
 
         <div class="tab-pane fade" id="intl">
@@ -214,14 +209,12 @@
                                 <td><input type="text" class="form-control form-control-sm" value="3-4 Days"></td>
                                 <td><button class="btn btn-sm btn-light text-danger"><i class="fas fa-trash"></i></button></td>
                             </tr>
-                            
                             <tr>
                                 <td><input type="text" class="form-control form-control-sm" value="USA 🇺🇸"></td>
                                 <td><div class="input-group input-group-sm"><input type="number" class="form-control" value="114000"><span class="input-group-text">MMK</span></div></td>
                                 <td><input type="text" class="form-control form-control-sm" value="7-10 Days"></td>
                                 <td><button class="btn btn-sm btn-light text-danger"><i class="fas fa-trash"></i></button></td>
                             </tr>
-
                             <tr>
                                 <td><input type="text" class="form-control form-control-sm" value="Germany 🇩🇪"></td>
                                 <td><div class="input-group input-group-sm"><input type="number" class="form-control" value="105840"><span class="input-group-text">MMK</span></div></td>
@@ -234,7 +227,6 @@
                                 <td><input type="text" class="form-control form-control-sm" value="5-8 Days"></td>
                                 <td><button class="btn btn-sm btn-light text-danger"><i class="fas fa-trash"></i></button></td>
                             </tr>
-
                             <tr>
                                 <td><input type="text" class="form-control form-control-sm" value="Saudi Arabia 🇸🇦"></td>
                                 <td><div class="input-group input-group-sm"><input type="number" class="form-control" value="55300"><span class="input-group-text">MMK</span></div></td>
@@ -298,7 +290,24 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    // Comprehensive Myanmar Data Object
+    // 1. FIREBASE CONFIG
+    const firebaseConfig = {
+        apiKey: "AIzaSyCbrF5_QW6Nb3rBVkozT2y0KotL8clr8Jo",
+        authDomain: "britium-express.firebaseapp.com",
+        projectId: "britium-express",
+        storageBucket: "britium-express.firebasestorage.app",
+        messagingSenderId: "406522036528",
+        appId: "1:406522036528:web:7713801d6832932067c8f5"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function logout() {
+        auth.signOut().then(() => window.location.href = "login.html");
+    }
+
+    // 2. MYANMAR DATA
     const myanmarLocations = {
         "Yangon": ["Kamaryut", "Bahan", "Sanchaung", "Hlaing", "Mayangone", "Insein", "Mingaladon", "North Okkalapa", "South Okkalapa", "Yankin", "Thingangyun", "Tamwe", "South Dagon", "North Dagon", "East Dagon", "Dagon Seikkan", "Thaketa", "Dawbon", "Pazundaung", "Botahtaung", "Kyauktada", "Pabedan", "Latha", "Lanmadaw", "Ahlone", "Kyeemyindaung", "Hlaing Tharyar", "Shwepyithar"],
         "Mandalay": ["Chanayethazan", "Chanmyathazi", "Maha Aungmye", "Pyigyidagun", "Aungmyethazan", "Amarapura", "Patheingyi", "Pyin Oo Lwin", "Kyaukse", "Meiktila", "Myingyan", "Nyaung-U", "Mogok"],
@@ -321,8 +330,6 @@
 
     document.addEventListener("DOMContentLoaded", function() {
         const stateSelect = document.getElementById("stateSelect");
-        const baseWeightInput = document.getElementById("globalBaseWeight");
-
         // Generate Dropdown for Network Tab
         Object.keys(myanmarLocations).sort().forEach(state => {
             let option = document.createElement("option");
