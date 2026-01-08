@@ -6,9 +6,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
     <style>
         :root { --admin-dark: #212529; --brand-blue: #0d2c54; --brand-orange: #ff6b00; }
         body { background-color: #f4f6f9; font-family: 'Segoe UI', sans-serif; }
+        
+        /* SIDEBAR (Standardized) */
         .sidebar { height: 100vh; position: fixed; top: 0; left: 0; width: 250px; background: var(--admin-dark); color: white; z-index: 1000; overflow-y: auto; }
         .sidebar .nav-link { color: #aaa; padding: 15px 20px; font-weight: 500; border-left: 4px solid transparent; }
         .sidebar .nav-link:hover { background: rgba(255,255,255,0.05); color: white; }
@@ -37,12 +43,79 @@
     </div>
 
     <div class="main-content">
-        <h2 class="fw-bold mb-4">Customer Directory</h2>
-        <div class="alert alert-info">Customer data is auto-generated from shipment history.</div>
+        <h2 class="fw-bold mb-4">Customer Database</h2>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">Customer Name</th>
+                            <th>Phone</th>
+                            <th>Total Shipments</th>
+                            <th>Last Active</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customerTable">
+                        <tr><td colspan="5" class="text-center py-5">Scanning database...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script>
-        function logout() { window.location.href="login.html"; }
+        const firebaseConfig = {
+            apiKey: "AIzaSyCbrF5_QW6Nb3rBVkozT2y0KotL8clr8Jo",
+            authDomain: "britium-express.firebaseapp.com",
+            databaseURL: "https://britium-express-default-rtdb.firebaseio.com",
+            projectId: "britium-express",
+            storageBucket: "britium-express.firebasestorage.app",
+            messagingSenderId: "406522036528",
+            appId: "1:406522036528:web:7713801d6832932067c8f5"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        auth.onAuthStateChanged(user => { if (!user) window.location.href="login.html"; else loadCustomers(); });
+        function logout() { auth.signOut(); }
+
+        function loadCustomers() {
+            db.ref('shipments').on('value', snap => {
+                const data = snap.val();
+                if (!data) { document.getElementById('customerTable').innerHTML = "<tr><td colspan='5' class='text-center'>No Data</td></tr>"; return; }
+
+                // Group by Sender Phone to find unique customers
+                const customers = {};
+                Object.values(data).forEach(item => {
+                    const phone = item.sender_phone || "Unknown";
+                    if (!customers[phone]) {
+                        customers[phone] = { 
+                            name: item.sender_name, 
+                            count: 0, 
+                            last: item.timestamp 
+                        };
+                    }
+                    customers[phone].count++;
+                    if (item.timestamp > customers[phone].last) customers[phone].last = item.timestamp;
+                });
+
+                let html = "";
+                Object.entries(customers).forEach(([phone, info]) => {
+                    html += `
+                        <tr>
+                            <td class="ps-4 fw-bold text-primary">${info.name || 'Unknown'}</td>
+                            <td>${phone}</td>
+                            <td><span class="badge bg-secondary">${info.count} Orders</span></td>
+                            <td>${new Date(info.last).toLocaleDateString()}</td>
+                            <td><button class="btn btn-sm btn-outline-dark">History</button></td>
+                        </tr>
+                    `;
+                });
+                document.getElementById('customerTable').innerHTML = html;
+            });
+        }
     </script>
 </body>
 </html>
