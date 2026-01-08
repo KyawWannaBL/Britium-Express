@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login | Britium Express</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
     <style>
         body { background-color: #0d2c54; height: 100vh; display: flex; align-items: center; justify-content: center; font-family: sans-serif; }
         .login-card { background: white; padding: 40px; border-radius: 10px; width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .brand-color { color: #ff6b00; }
         .btn-login { background-color: #0d2c54; color: white; width: 100%; padding: 12px; font-weight: bold; border: none; transition: 0.3s; }
         .btn-login:hover { background-color: #ff6b00; }
     </style>
@@ -28,7 +32,7 @@
                 <label class="form-label small fw-bold">Password</label>
                 <input type="password" id="password" class="form-control" placeholder="••••••••" required>
             </div>
-            <button type="submit" class="btn btn-login mb-3">SECURE LOGIN</button>
+            <button type="submit" class="btn btn-login mb-3" id="submitBtn">SECURE LOGIN</button>
         </form>
         
         <div id="errorMsg" class="text-danger small fw-bold mt-2" style="display:none;"></div>
@@ -37,64 +41,78 @@
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
-        import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
-
-        // CONFIG HERE
+    <script>
+        // 1. CONFIGURATION
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
+            apiKey: "AIzaSyCbrF5_QW6Nb3rBVkozT2y0KotL8clr8Jo",
             authDomain: "britium-express.firebaseapp.com",
             databaseURL: "https://britium-express-default-rtdb.firebaseio.com",
             projectId: "britium-express",
-            storageBucket: "britium-express.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef"
+            storageBucket: "britium-express.firebasestorage.app",
+            messagingSenderId: "406522036528",
+            appId: "1:406522036528:web:7713801d6832932067c8f5"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
+        // 2. INITIALIZE
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
 
+        // 3. AUTO-REDIRECT IF ALREADY LOGGED IN
+        // If the user is already authenticated, send them straight to Index
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                window.location.href = "index.html";
+            }
+        });
+
+        // 4. HANDLE LOGIN
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
+            
             const email = document.getElementById('email').value;
             const pass = document.getElementById('password').value;
             const errorDiv = document.getElementById('errorMsg');
+            const btn = document.getElementById('submitBtn');
 
+            // UI Feedback
             errorDiv.style.display = 'none';
-            errorDiv.innerText = 'Verifying Credentials...';
-            errorDiv.style.display = 'block';
-            errorDiv.className = 'text-primary small fw-bold mt-2';
+            btn.innerText = 'Verifying...';
+            btn.disabled = true;
 
-            signInWithEmailAndPassword(auth, email, pass)
+            auth.signInWithEmailAndPassword(email, pass)
                 .then((userCredential) => {
+                    // Check Role in Database
                     const user = userCredential.user;
-                    
-                    // CHECK IF USER IS ADMIN/MANAGER IN DATABASE
-                    const dbRef = ref(db);
-                    get(child(dbRef, `users/${user.uid}`)).then((snapshot) => {
-                        if (snapshot.exists()) {
-                            const role = snapshot.val().role;
-                            if (role === 'super_admin' || role === 'manager') {
-                                window.location.href = "index.html"; // Success! Go to Dashboard
+                    db.ref('users/' + user.uid).once('value')
+                        .then((snapshot) => {
+                            if (snapshot.exists()) {
+                                const role = snapshot.val().role;
+                                if (role === 'super_admin' || role === 'manager') {
+                                    window.location.href = "index.html"; // SUCCESS -> Go to Dashboard
+                                } else {
+                                    throw new Error("Access Denied: You are not an Admin.");
+                                }
                             } else {
-                                auth.signOut();
-                                errorDiv.className = 'text-danger small fw-bold mt-2';
-                                errorDiv.innerText = "Access Denied: You do not have Admin permissions.";
+                                // Allow login even if role missing (fallback for manual accounts)
+                                window.location.href = "index.html"; 
                             }
-                        } else {
+                        })
+                        .catch((err) => {
                             auth.signOut();
-                            errorDiv.className = 'text-danger small fw-bold mt-2';
-                            errorDiv.innerText = "User profile not found.";
-                        }
-                    });
+                            showError(err.message);
+                        });
                 })
                 .catch((error) => {
-                    errorDiv.className = 'text-danger small fw-bold mt-2';
-                    errorDiv.innerText = "Error: " + error.message;
+                    showError("Invalid Email or Password.");
                 });
+
+            function showError(msg) {
+                errorDiv.style.display = 'block';
+                errorDiv.innerText = msg;
+                btn.innerText = 'SECURE LOGIN';
+                btn.disabled = false;
+            }
         });
     </script>
 </body>
