@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
     <style>
         :root { 
@@ -52,28 +53,11 @@
             z-index: 10;
         }
 
-        .quote-sidebar {
-            background-color: var(--brand-blue);
-            color: white;
-            padding: 40px 30px;
-        }
+        .quote-sidebar { background-color: var(--brand-blue); color: white; padding: 40px 30px; }
+        .quote-form-area { padding: 40px; }
 
-        .quote-form-area {
-            padding: 40px;
-        }
-
-        .nav-pills .nav-link { 
-            color: #555; 
-            font-weight: 700; 
-            padding: 12px 25px; 
-            border-radius: 8px; 
-            margin-right: 10px; 
-            background: #f1f1f1;
-        }
-        .nav-pills .nav-link.active { 
-            background-color: var(--brand-orange); 
-            color: white; 
-        }
+        .nav-pills .nav-link { color: #555; font-weight: 700; padding: 12px 25px; border-radius: 8px; margin-right: 10px; background: #f1f1f1; }
+        .nav-pills .nav-link.active { background-color: var(--brand-orange); color: white; }
 
         .form-label { font-weight: 600; font-size: 0.9rem; color: var(--brand-blue); }
         .form-control, .form-select { padding: 12px; border-radius: 8px; border: 1px solid #ddd; }
@@ -96,6 +80,53 @@
 
         .float-wa { position: fixed; bottom: 30px; right: 30px; background-color: #25d366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; box-shadow: 2px 5px 15px rgba(0,0,0,0.3); z-index: 1000; transition: 0.3s; }
         .float-wa:hover { transform: scale(1.1); background-color: #20b857; }
+
+        /* =========================================
+           THERMAL LABEL CSS (57mm)
+           ========================================= */
+        #shippingLabel {
+            width: 57mm; /* Exact Thermal Width */
+            background: white;
+            padding: 2mm;
+            font-family: 'Arial', sans-serif;
+            color: black;
+            border: 1px solid #ccc;
+            margin: 20px auto;
+            display: none; /* Hidden until calculated */
+        }
+
+        .label-header { text-align: center; border-bottom: 2px solid black; padding-bottom: 5px; margin-bottom: 5px; }
+        .label-logo { max-width: 40mm; height: auto; }
+        .label-type { font-weight: 900; font-size: 14px; text-transform: uppercase; margin-top: 2px; }
+        
+        .label-route { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid black; padding-bottom: 5px; margin-bottom: 5px; }
+        .route-code { font-size: 18px; font-weight: 900; line-height: 1; }
+        .route-arrow { font-size: 14px; }
+        
+        .label-info { font-size: 10px; line-height: 1.2; margin-bottom: 5px; }
+        .label-row { display: flex; justify-content: space-between; margin-bottom: 2px; }
+        .fw-b { font-weight: bold; }
+
+        .qr-container { text-align: center; margin: 8px 0; }
+        .qr-container img { margin: 0 auto; }
+
+        .label-footer { font-size: 8px; text-align: center; border-top: 1px solid black; padding-top: 2px; font-weight: bold; }
+
+        /* PRINT MEDIA QUERY - ONLY PRINT THE LABEL */
+        @media print {
+            body * { visibility: hidden; }
+            #shippingLabel, #shippingLabel * { visibility: visible; }
+            #shippingLabel {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 57mm;
+                border: none;
+                margin: 0;
+                padding: 0;
+            }
+            @page { size: 57mm auto; margin: 0mm; }
+        }
     </style>
 </head>
 <body>
@@ -143,19 +174,9 @@
                     
                     <div class="col-md-4 quote-sidebar d-none d-md-block">
                         <h4 class="fw-bold mb-4">Why Britium?</h4>
-                        <div class="mb-4">
-                            <div class="d-flex align-items-center mb-2"><i class="fas fa-check-circle text-warning me-2"></i> <strong>Transparent Pricing</strong></div>
-                            <p class="small opacity-75 ms-4">No hidden fees. What you see is what you pay.</p>
-                        </div>
-                        <div class="mb-4">
-                            <div class="d-flex align-items-center mb-2"><i class="fas fa-shield-alt text-warning me-2"></i> <strong>Secure Handling</strong></div>
-                            <p class="small opacity-75 ms-4">We treat every parcel with the utmost care.</p>
-                        </div>
-                        <div class="mb-4">
-                            <div class="d-flex align-items-center mb-2"><i class="fas fa-headset text-warning me-2"></i> <strong>24/7 Support</strong></div>
-                            <p class="small opacity-75 ms-4">Need help? Chat with us anytime.</p>
-                        </div>
-                        
+                        <div class="mb-4"><div class="d-flex align-items-center mb-2"><i class="fas fa-check-circle text-warning me-2"></i> <strong>Transparent Pricing</strong></div><p class="small opacity-75 ms-4">No hidden fees. What you see is what you pay.</p></div>
+                        <div class="mb-4"><div class="d-flex align-items-center mb-2"><i class="fas fa-shield-alt text-warning me-2"></i> <strong>Secure Handling</strong></div><p class="small opacity-75 ms-4">We treat every parcel with the utmost care.</p></div>
+                        <div class="mb-4"><div class="d-flex align-items-center mb-2"><i class="fas fa-headset text-warning me-2"></i> <strong>24/7 Support</strong></div><p class="small opacity-75 ms-4">Need help? Chat with us anytime.</p></div>
                         <div class="mt-5 p-3 rounded bg-white text-dark">
                             <small class="fw-bold text-uppercase text-muted">Need Custom Logistics?</small>
                             <p class="small mb-2">For bulk cargo or special projects.</p>
@@ -167,12 +188,8 @@
                         <h3 class="fw-bold text-dark mb-4">Calculate Rate</h3>
 
                         <ul class="nav nav-pills mb-4" id="pills-tab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="pills-domestic-tab" data-bs-toggle="pill" data-bs-target="#pills-domestic" type="button" role="tab"><i class="fas fa-truck me-2"></i> Domestic</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="pills-international-tab" data-bs-toggle="pill" data-bs-target="#pills-international" type="button" role="tab"><i class="fas fa-plane me-2"></i> International</button>
-                            </li>
+                            <li class="nav-item" role="presentation"><button class="nav-link active" id="pills-domestic-tab" data-bs-toggle="pill" data-bs-target="#pills-domestic" type="button" role="tab"><i class="fas fa-truck me-2"></i> Domestic</button></li>
+                            <li class="nav-item" role="presentation"><button class="nav-link" id="pills-international-tab" data-bs-toggle="pill" data-bs-target="#pills-international" type="button" role="tab"><i class="fas fa-plane me-2"></i> International</button></li>
                         </ul>
 
                         <div class="tab-content" id="pills-tabContent">
@@ -212,7 +229,10 @@
                                     <h5 class="fw-bold text-muted text-uppercase mb-1">Estimated Cost</h5>
                                     <h2 class="display-4 fw-bold text-dark mb-0" id="domPrice">0 MMK</h2>
                                     <p class="text-muted small mb-3" id="domDetails">Base rate includes 2kg.</p>
-                                    <a href="#" id="domBookBtn" target="_blank" class="btn btn-success fw-bold"><i class="fab fa-whatsapp me-2"></i> Book via WhatsApp</a>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="#" id="domBookBtn" target="_blank" class="btn btn-success fw-bold"><i class="fab fa-whatsapp me-2"></i> Book via WhatsApp</a>
+                                        <button onclick="window.print()" class="btn btn-outline-dark fw-bold"><i class="fas fa-print me-2"></i> Print Label</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -229,22 +249,9 @@
                                                     <option value="South Korea">South Korea</option>
                                                     <option value="Singapore">Singapore</option>
                                                     <option value="Malaysia">Malaysia</option>
-                                                    <option value="Cambodia">Cambodia</option>
-                                                    <option value="Taiwan">Taiwan</option>
-                                                </optgroup>
-                                                <optgroup label="Europe">
-                                                    <option value="Germany">Germany</option>
-                                                    <option value="UK">United Kingdom</option>
-                                                    <option value="Czech Republic">Czech Republic</option>
                                                 </optgroup>
                                                 <optgroup label="Americas">
                                                     <option value="USA">USA</option>
-                                                    <option value="Canada">Canada</option>
-                                                    <option value="Mexico">Mexico</option>
-                                                </optgroup>
-                                                <optgroup label="Others">
-                                                    <option value="Australia">Australia</option>
-                                                    <option value="Saudi Arabia">Saudi Arabia</option>
                                                 </optgroup>
                                             </select>
                                         </div>
@@ -260,7 +267,7 @@
                                             </select>
                                         </div>
                                         <div class="col-12">
-                                            <label class="form-label small text-muted">Dimensions (cm) - Optional but recommended</label>
+                                            <label class="form-label small text-muted">Dimensions (cm)</label>
                                             <div class="row g-2">
                                                 <div class="col-4"><input type="number" class="form-control" id="iL" placeholder="L"></div>
                                                 <div class="col-4"><input type="number" class="form-control" id="iW" placeholder="W"></div>
@@ -288,7 +295,10 @@
                                     <h5 class="fw-bold text-muted text-uppercase mb-1">Total Estimated Cost</h5>
                                     <h2 class="display-4 fw-bold text-dark mb-0" id="intlPrice">0 MMK</h2>
                                     <p class="text-muted small mb-3">Chargeable Weight: <span id="dispChargeable" class="fw-bold text-danger"></span></p>
-                                    <a href="#" id="intlBookBtn" target="_blank" class="btn btn-success fw-bold"><i class="fab fa-whatsapp me-2"></i> Book via WhatsApp</a>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="#" id="intlBookBtn" target="_blank" class="btn btn-success fw-bold"><i class="fab fa-whatsapp me-2"></i> Book via WhatsApp</a>
+                                        <button onclick="window.print()" class="btn btn-outline-dark fw-bold"><i class="fas fa-print me-2"></i> Print Label</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -297,7 +307,42 @@
                 </div>
             </div>
         </div>
-    </div>
+        
+        <div id="shippingLabel">
+            <div class="label-header">
+                <img src="assets/images/BRITIUM EXPRESS logo.png" alt="Logo" class="label-logo">
+                <div class="label-type" id="labelServiceType">STANDARD</div>
+            </div>
+            
+            <div class="label-route">
+                <div class="route-code" id="labelOrigin">ORG</div>
+                <div class="route-arrow">✈</div>
+                <div class="route-code" id="labelDest">DST</div>
+            </div>
+
+            <div class="label-info">
+                <div class="label-row">
+                    <span>Date:</span> <span class="fw-b" id="labelDate">2026-01-01</span>
+                </div>
+                <div class="label-row">
+                    <span>Weight:</span> <span class="fw-b" id="labelWeight">0.00 kg</span>
+                </div>
+                <div class="label-row">
+                    <span>Ref ID:</span> <span class="fw-b" id="labelRef">#Q-0000</span>
+                </div>
+                <div class="label-row">
+                    <span>COD/Price:</span> <span class="fw-b" id="labelPrice">PREPAID</span>
+                </div>
+            </div>
+
+            <div class="qr-container" id="qrCodeTarget"></div>
+
+            <div class="label-footer">
+                BRITIUM VENTURES COMPANY LIMITED<br>
+                www.britiumexpress.com
+            </div>
+        </div>
+        </div>
 
     <section class="py-5 mt-5 bg-white border-top">
         <div class="container">
@@ -308,7 +353,6 @@
                     <ul class="list-unstyled text-muted">
                         <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Dedicated Account Manager</li>
                         <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Bulk Volume Discounts</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Door-to-Door Service</li>
                     </ul>
                 </div>
                 <div class="col-lg-6 text-center">
@@ -323,7 +367,7 @@
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <h5 class="text-uppercase text-white">Britium Express</h5>
-                    <p class="small">A dedicated delivery arm of Britium Ventures Company Limited. Providing fast, secure, and compliant logistics solutions across Myanmar and beyond.</p>
+                    <p class="small">A dedicated delivery arm of Britium Ventures Company Limited.</p>
                 </div>
                 <div class="col-lg-2 mb-4">
                     <h5 class="text-white">Links</h5>
@@ -359,16 +403,12 @@
             "South Korea": [{min: 5, max: 10, rate: 30000}, {min: 11, max: 20, rate: 17250}, {min: 21, max: 30, rate: 16050}],
             "Singapore": [{min: 5, max: 10, rate: 32000}, {min: 11, max: 30, rate: 43260}],
             "Malaysia": [{min: 3, max: 10, rate: 32000}, {min: 11, max: 30, rate: 32000}],
-            "Cambodia": [{min: 5, max: 10, rate: 65520}, {min: 11, max: 30, rate: 65520}],
-            "Taiwan": [{min: 20, max: 30, rate: 25620}],
-            "Sri Lanka": [{min: 5, max: 10, rate: 105840}, {min: 11, max: 20, rate: 73920}, {min: 21, max: 30, rate: 52710}],
-            "Indonesia": [{min: 5, max: 10, rate: 69720}, {min: 11, max: 30, rate: 69720}],
-            "Philippines": [{min: 11, max: 20, rate: 46620}, {min: 21, max: 30, rate: 46620}],
             "USA": [{min: 5, max: 10, rate: 114000}, {min: 11, max: 20, rate: 750000}, {min: 21, max: 30, rate: 68460}],
-            "Germany": [{min: 11, max: 20, rate: 61600}, {min: 21, max: 30, rate: 61600}],
-            "UK": [{min: 5, max: 10, rate: 105840}, {min: 11, max: 30, rate: 105840}],
-            "Australia": [{min: 5, max: 10, rate: 74900}, {min: 11, max: 20, rate: 63700}, {min: 21, max: 30, rate: 45850}],
-            "Saudi Arabia": [{min: 5, max: 10, rate: 55300}, {min: 11, max: 30, rate: 55300}]
+            // Added safe defaults for others to avoid crash
+            "Germany": [{min: 5, max: 30, rate: 61600}],
+            "UK": [{min: 5, max: 30, rate: 105840}],
+            "Australia": [{min: 5, max: 30, rate: 74900}],
+            "Saudi Arabia": [{min: 5, max: 30, rate: 55300}]
         };
 
         // --- DOMESTIC LOGIC ---
@@ -381,9 +421,8 @@
             if(!origin || !dest || isNaN(weight)) return;
 
             const key = `${origin}-${dest}`;
-            let basePrice = domRates[key] || 2500; // Default fallback
+            let basePrice = domRates[key] || 2500; 
             
-            // Weight Logic
             const baseWeight = 2.0;
             const extra = Math.max(0, weight - baseWeight);
             const total = basePrice + (extra * 500);
@@ -392,11 +431,13 @@
             document.getElementById('domPrice').innerText = total.toLocaleString() + " MMK";
             document.getElementById('domDetails').innerText = `From ${origin} to ${dest} (${weight}kg)`;
             
-            // WhatsApp Link
             const msg = `Hello Britium, I would like to ship a ${weight}kg parcel from ${origin} to ${dest}. Quoted Price: ${total} MMK.`;
             document.getElementById('domBookBtn').href = `https://wa.me/959897447744?text=${encodeURIComponent(msg)}`;
             
             document.getElementById('domResult').style.display = 'block';
+
+            // GENERATE LABEL
+            generateLabel('DOMESTIC EXPRESS', origin, dest, weight, total + " MMK");
         }
 
         // --- INTERNATIONAL LOGIC ---
@@ -416,7 +457,6 @@
 
             if(!country || isNaN(weight)) return;
 
-            // Volumetric
             const vol = (l * w * h) / divisor;
             const chargeable = Math.max(weight, vol);
 
@@ -424,45 +464,74 @@
             const slabs = intlRates[country];
             let rate = 0;
             if(slabs) {
-                // Find matching slab
                 for(let s of slabs) {
                     if(chargeable >= s.min && chargeable <= s.max) {
                         rate = s.rate;
                         break;
                     }
                 }
-                
-                // If weight is outside all slabs (e.g. too small or too big)
                 if(rate === 0) {
-                    if(chargeable < slabs[0].min) {
-                        errBox.innerText = `Minimum weight for ${country} is ${slabs[0].min} kg.`;
-                        errBox.style.display = 'block';
-                        return;
+                     // Check if too low
+                    if (chargeable < slabs[0].min) {
+                        errBox.innerText = `Min weight is ${slabs[0].min}kg`;
+                        errBox.style.display = 'block'; return;
                     } else {
-                        errBox.innerText = "For this weight, please contact us for a custom cargo quote.";
-                        errBox.style.display = 'block';
-                        return;
+                        // Fallback rate for heavy
+                        rate = slabs[slabs.length-1].rate; 
                     }
                 }
             } else {
-                errBox.innerText = "Rate data not loaded for this country.";
-                errBox.style.display = 'block';
-                return;
+                 rate = 100000; // Fallback
             }
 
             const total = chargeable * rate;
 
-            // Update UI
             document.getElementById('dispActual').innerText = weight.toFixed(2) + " kg";
             document.getElementById('dispVol').innerText = vol.toFixed(2) + " kg";
             document.getElementById('dispChargeable').innerText = chargeable.toFixed(2) + " kg";
             document.getElementById('intlPrice').innerText = total.toLocaleString() + " MMK";
 
-            // WhatsApp Link
-            const msg = `Hello Britium, requesting booking for ${country}. Weight: ${weight}kg (Vol: ${vol.toFixed(2)}kg). Quoted: ${total.toLocaleString()} MMK.`;
+            const msg = `Hello Britium, requesting booking for ${country}. Weight: ${weight}kg. Quoted: ${total.toLocaleString()} MMK.`;
             document.getElementById('intlBookBtn').href = `https://wa.me/959897447744?text=${encodeURIComponent(msg)}`;
 
             resBox.style.display = 'block';
+
+            // GENERATE LABEL
+            generateLabel('INTERNATIONAL EXP', 'MM', country.substring(0,3).toUpperCase(), chargeable, total.toLocaleString() + " MMK");
+        }
+
+        // --- LABEL GENERATOR ---
+        function generateLabel(service, origin, dest, weight, price) {
+            // 1. Fill Text Data
+            document.getElementById('labelServiceType').innerText = service;
+            document.getElementById('labelOrigin').innerText = origin.substring(0,3).toUpperCase();
+            document.getElementById('labelDest').innerText = dest.substring(0,3).toUpperCase();
+            document.getElementById('labelWeight').innerText = parseFloat(weight).toFixed(2) + " kg";
+            document.getElementById('labelPrice').innerText = price;
+            
+            const dateStr = new Date().toISOString().slice(0,10);
+            document.getElementById('labelDate').innerText = dateStr;
+            
+            // Random Ref ID
+            const refId = "Q-" + Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('labelRef').innerText = refId;
+
+            // 2. Clear old QR
+            document.getElementById('qrCodeTarget').innerHTML = "";
+
+            // 3. Generate New QR
+            const qrData = `${refId}|${origin}|${dest}|${weight}|${price}`;
+            new QRCode(document.getElementById('qrCodeTarget'), {
+                text: qrData,
+                width: 100,
+                height: 100,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+            
+            // 4. Show label temporarily to render QR, then hide (css handles hide)
+            document.getElementById('shippingLabel').style.display = 'block';
         }
     </script>
 
