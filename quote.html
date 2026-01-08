@@ -4,158 +4,315 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get a Quote | Britium Express</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --brand-blue: #0d2c54; --brand-orange: #ff6b00; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; }
-        .navbar-brand { font-weight: 900; color: var(--brand-blue) !important; text-transform: uppercase; }
-        .nav-link { font-weight: 500; color: #444 !important; margin-left: 15px; text-transform: uppercase; font-size: 0.9rem; }
-        .nav-link.active { color: var(--brand-orange) !important; }
-        .btn-portal { border: 2px solid var(--brand-blue); color: var(--brand-blue); font-weight: 700; padding: 6px 20px; border-radius: 5px; }
-        .price-display { background: #e3f2fd; border: 2px dashed var(--brand-blue); padding: 30px; text-align: center; border-radius: 8px; }
+        :root { 
+            --brand-blue: #0d2c54; 
+            --brand-orange: #ff6b00; 
+            --light-gray: #f8f9fa; 
+        }
+        
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            color: #333; 
+            background-color: #f9f9f9;
+        }
+
+        /* Navigation */
+        .top-bar { background-color: var(--brand-blue); color: white; padding: 10px 0; font-size: 0.9rem; }
+        .navbar { background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 15px 0; }
+        .navbar-brand img { height: 70px; width: auto; }
+        .nav-link { font-weight: 500; color: #444 !important; margin-left: 15px; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { color: var(--brand-orange) !important; }
+        .btn-portal { border: 2px solid var(--brand-blue); color: var(--brand-blue); font-weight: 700; padding: 8px 25px; border-radius: 5px; transition: 0.3s; }
+        .btn-portal:hover { background-color: var(--brand-blue); color: white; }
+
+        /* Hero Section */
+        .page-hero { 
+            background: linear-gradient(rgba(13, 44, 84, 0.9), rgba(13, 44, 84, 0.9)), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); 
+            background-size: cover; 
+            background-position: center; 
+            padding: 80px 0; 
+            color: white; 
+            text-align: center;
+        }
+
+        /* Quote Box */
+        .quote-container {
+            margin-top: -50px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+        }
+
+        .quote-sidebar {
+            background-color: var(--brand-blue);
+            color: white;
+            padding: 40px 30px;
+        }
+
+        .quote-form-area {
+            padding: 40px;
+        }
+
+        .nav-pills .nav-link { 
+            color: #555; 
+            font-weight: 700; 
+            padding: 12px 25px; 
+            border-radius: 8px; 
+            margin-right: 10px; 
+            background: #f1f1f1;
+        }
+        .nav-pills .nav-link.active { 
+            background-color: var(--brand-orange); 
+            color: white; 
+        }
+
+        .form-label { font-weight: 600; font-size: 0.9rem; color: var(--brand-blue); }
+        .form-control, .form-select { padding: 12px; border-radius: 8px; border: 1px solid #ddd; }
+        .form-control:focus, .form-select:focus { border-color: var(--brand-orange); box-shadow: none; }
+
+        .result-box {
+            background: #f8fcfd;
+            border: 2px dashed #bce0fd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+            display: none;
+        }
+
+        /* Footer */
+        footer { background-color: #111; color: #aaa; padding: 80px 0 30px; margin-top: 80px; }
+        footer h5 { color: white; font-weight: 700; margin-bottom: 25px; }
+        footer a { color: #aaa; text-decoration: none; display: block; margin-bottom: 12px; transition: 0.2s; }
+        footer a:hover { color: var(--brand-orange); padding-left: 5px; }
+
+        .float-wa { position: fixed; bottom: 30px; right: 30px; background-color: #25d366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; box-shadow: 2px 5px 15px rgba(0,0,0,0.3); z-index: 1000; transition: 0.3s; }
+        .float-wa:hover { transform: scale(1.1); background-color: #20b857; }
     </style>
 </head>
 <body>
 
+    <div class="top-bar">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div><span class="me-3"><i class="fas fa-phone-alt me-2"></i> +95 9 897 4477 44</span> <span><i class="fas fa-envelope me-2"></i> info@britiumexpress.com</span></div>
+            <div class="mt-2 mt-md-0"><span class="me-3"><i class="fas fa-clock me-2"></i> Mon-Sat: 9:00am - 5:30pm</span></div>
+        </div>
+    </div>
+
     <nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <i class="fas fa-shipping-fast me-2"></i> Britium <span style="color:var(--brand-orange)">Express</span>
+                <img src="assets/images/BRITIUM EXPRESS logo.png" alt="Britium Express Logo">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent"><span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="navContent">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link" href="tracking.html">Track & Trace</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="services.html">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="quote.html">Get Quote</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="quote.html">Get Quote</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="news.html">News</a></li> <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="news.html">News</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
                     <li class="nav-item ms-lg-3"><a href="login.html" class="btn btn-portal">Login</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-    <header class="quote-header">
+
+    <header class="page-hero">
         <div class="container">
-            <h1 class="display-4 fw-bold">Shipping Rate Calculator</h1>
-            <p class="lead opacity-75">Check our specific Yangon City rates below.</p>
+            <h1 class="fw-bold display-5 mb-3">Get A Shipping Quote</h1>
+            <p class="lead opacity-75">Instant pricing for Domestic and International Shipments.</p>
         </div>
     </header>
 
-    <section class="pb-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="calculator-card">
-                        <div class="row g-5">
-                            <div class="col-md-7">
-                                <h4 class="fw-bold mb-4 text-secondary"><i class="fas fa-sliders-h me-2"></i> Shipment Details</h4>
-                                <form id="rateForm">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="quote-container row g-0">
+                    
+                    <div class="col-md-4 quote-sidebar d-none d-md-block">
+                        <h4 class="fw-bold mb-4">Why Britium?</h4>
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-2"><i class="fas fa-check-circle text-warning me-2"></i> <strong>Transparent Pricing</strong></div>
+                            <p class="small opacity-75 ms-4">No hidden fees. What you see is what you pay.</p>
+                        </div>
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-2"><i class="fas fa-shield-alt text-warning me-2"></i> <strong>Secure Handling</strong></div>
+                            <p class="small opacity-75 ms-4">We treat every parcel with the utmost care.</p>
+                        </div>
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-2"><i class="fas fa-headset text-warning me-2"></i> <strong>24/7 Support</strong></div>
+                            <p class="small opacity-75 ms-4">Need help? Chat with us anytime.</p>
+                        </div>
+                        
+                        <div class="mt-5 p-3 rounded bg-white text-dark">
+                            <small class="fw-bold text-uppercase text-muted">Need Custom Logistics?</small>
+                            <p class="small mb-2">For bulk cargo or special projects.</p>
+                            <a href="contact.html" class="btn btn-sm btn-outline-primary w-100 fw-bold">Contact Sales</a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8 quote-form-area">
+                        <h3 class="fw-bold text-dark mb-4">Calculate Rate</h3>
+
+                        <ul class="nav nav-pills mb-4" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="pills-domestic-tab" data-bs-toggle="pill" data-bs-target="#pills-domestic" type="button" role="tab"><i class="fas fa-truck me-2"></i> Domestic</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-international-tab" data-bs-toggle="pill" data-bs-target="#pills-international" type="button" role="tab"><i class="fas fa-plane me-2"></i> International</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="pills-tabContent">
+                            
+                            <div class="tab-pane fade show active" id="pills-domestic" role="tabpanel">
+                                <form id="domForm" onsubmit="calcDomestic(event)">
                                     <div class="row g-3">
-                                        <div class="col-md-12">
-                                            <label class="form-label fw-bold">Origin</label>
-                                            <select class="form-select form-select-lg" disabled>
-                                                <option selected>From: Yangon</option>
+                                        <div class="col-md-6">
+                                            <label class="form-label">From (Origin)</label>
+                                            <select class="form-select" id="dOrigin" required>
+                                                <option value="" selected disabled>Select Origin</option>
+                                                <option value="Yangon">Yangon</option>
+                                                <option value="Mandalay">Mandalay</option>
+                                                <option value="Nay Pyi Taw">Nay Pyi Taw</option>
                                             </select>
                                         </div>
-                                        
                                         <div class="col-md-6">
-                                            <label class="form-label fw-bold">Destination Region</label>
-                                            <select class="form-select form-select-lg" id="destinationRegion" onchange="toggleTownships()">
-                                                <option value="yangon" selected>Yangon City</option>
-                                                <option value="mandalay">Mandalay Region</option>
-                                                <option value="other">Other States/Regions</option>
+                                            <label class="form-label">To (Destination)</label>
+                                            <select class="form-select" id="dDest" required>
+                                                <option value="" selected disabled>Select Destination</option>
+                                                <option value="Yangon">Yangon</option>
+                                                <option value="Mandalay">Mandalay</option>
+                                                <option value="Nay Pyi Taw">Nay Pyi Taw</option>
                                             </select>
                                         </div>
-
                                         <div class="col-md-6">
-                                            <label class="form-label fw-bold">Select Township</label>
-                                            <select class="form-select form-select-lg" id="yangonTownship" onchange="calculateRate()">
-                                                <option value="" disabled selected>-- Select Area --</option>
-                                                
-                                                <optgroup label="Zone 1 - Downtown & Inner City">
-                                                    <option value="3000">Ahlone</option>
-                                                    <option value="3000">Bahan</option>
-                                                    <option value="3000">Botahtaung</option>
-                                                    <option value="3000">Dagon</option>
-                                                    <option value="3000">Dawbon</option>
-                                                    <option value="3000">Hlaing</option>
-                                                    <option value="3000">Insein</option>
-                                                    <option value="3000">Kamaryut</option>
-                                                    <option value="3000">Kyauktada</option>
-                                                    <option value="3000">Kyimyindaing</option>
-                                                    <option value="3000">Lanmataw</option>
-                                                    <option value="3000">Latha</option>
-                                                    <option value="3000">Mayangone</option>
-                                                    <option value="3000">Mingalar Taung Nyunt</option>
-                                                    <option value="3000">North Okkalapa</option>
-                                                    <option value="3000">Pabedan</option>
-                                                    <option value="3000">Pazundaung</option>
-                                                    <option value="3000">Sanchaung</option>
-                                                    <option value="3000">South Oakkalapa</option>
-                                                    <option value="3000">Tamwe</option>
-                                                    <option value="3000">Thaketa</option>
-                                                    <option value="3000">Thingangyun</option>
-                                                    <option value="3000">Yankin</option>
-                                                </optgroup>
-
-                                                <optgroup label="Zone 2 - Outer City">
-                                                    <option value="3500">Dagon Seikken</option>
-                                                    <option value="3500">East Dagon</option>
-                                                    <option value="3500">Hlaing Thar Yar</option>
-                                                    <option value="3500">Mingalar Don</option>
-                                                    <option value="3500">North Dagon</option>
-                                                    <option value="3500">Shwe Paukkan</option>
-                                                    <option value="3500">Shwe Pyi Thar</option>
-                                                    <option value="3500">South Dagon</option>
-                                                </optgroup>
-
-                                                <optgroup label="Zone 3 - Periphery">
-                                                    <option value="4500">Htauk Kyant</option>
-                                                    <option value="4500">Hlegu</option>
-                                                    <option value="4500">Hmawbi</option>
-                                                    <option value="4500">Lay Daung Kan</option>
-                                                    <option value="4500">Thanlyin</option>
-                                                </optgroup>
-                                            </select>
+                                            <label class="form-label">Weight (Kg)</label>
+                                            <input type="number" class="form-control" id="dWeight" placeholder="e.g. 2.5" step="0.1" required>
                                         </div>
-
-                                        <div class="col-md-6">
-                                            <label class="form-label fw-bold">Weight (Kg)</label>
-                                            <input type="number" class="form-control form-control-lg" id="weight" value="1" min="0.5" step="0.5" oninput="calculateRate()">
-                                        </div>
-
-                                        <div class="col-12 mt-4">
-                                            <label class="form-label small text-muted">Dimensions (L x W x H cm) - Optional</label>
-                                            <div class="input-group">
-                                                <input type="number" class="form-control" placeholder="L">
-                                                <span class="input-group-text">x</span>
-                                                <input type="number" class="form-control" placeholder="W">
-                                                <span class="input-group-text">x</span>
-                                                <input type="number" class="form-control" placeholder="H">
-                                            </div>
+                                        <div class="col-md-6 d-flex align-items-end">
+                                            <button type="submit" class="btn btn-warning w-100 fw-bold text-white py-2" style="background-color: var(--brand-orange);">Calculate Price</button>
                                         </div>
                                     </div>
                                 </form>
-                            </div>
 
-                            <div class="col-md-5">
-                                <div class="price-display">
-                                    <h6 class="text-uppercase text-muted fw-bold ls-1">Estimated Delivery Cost</h6>
-                                    <div class="total-price" id="resultPrice">-- MMK</div>
-                                    <div class="text-success fw-bold mb-3" id="resultTime">Select a Township</div>
-                                    
-                                    <hr class="my-3 opacity-25">
-                                    
-                                    <div class="d-grid gap-2">
-                                        <a href="login.html" class="btn btn-warning btn-lg fw-bold text-white" style="background-color: var(--brand-orange);">BOOK NOW</a>
-                                        <small class="text-center text-muted fst-italic mt-2" style="font-size: 0.75rem;">*Base rate covers 1st Kg. Additional weight +500 MMK/Kg.</small>
-                                    </div>
+                                <div id="domResult" class="result-box text-center">
+                                    <h5 class="fw-bold text-muted text-uppercase mb-1">Estimated Cost</h5>
+                                    <h2 class="display-4 fw-bold text-dark mb-0" id="domPrice">0 MMK</h2>
+                                    <p class="text-muted small mb-3" id="domDetails">Base rate includes 2kg.</p>
+                                    <a href="#" id="domBookBtn" target="_blank" class="btn btn-success fw-bold"><i class="fab fa-whatsapp me-2"></i> Book via WhatsApp</a>
                                 </div>
                             </div>
+
+                            <div class="tab-pane fade" id="pills-international" role="tabpanel">
+                                <form id="intlForm" onsubmit="calcIntl(event)">
+                                    <div class="row g-3">
+                                        <div class="col-md-12">
+                                            <label class="form-label">Destination Country</label>
+                                            <select class="form-select" id="iCountry" required>
+                                                <option value="" selected disabled>Select Country</option>
+                                                <optgroup label="Asia">
+                                                    <option value="Thailand">Thailand</option>
+                                                    <option value="Japan">Japan</option>
+                                                    <option value="South Korea">South Korea</option>
+                                                    <option value="Singapore">Singapore</option>
+                                                    <option value="Malaysia">Malaysia</option>
+                                                    <option value="Cambodia">Cambodia</option>
+                                                    <option value="Taiwan">Taiwan</option>
+                                                </optgroup>
+                                                <optgroup label="Europe">
+                                                    <option value="Germany">Germany</option>
+                                                    <option value="UK">United Kingdom</option>
+                                                    <option value="Czech Republic">Czech Republic</option>
+                                                </optgroup>
+                                                <optgroup label="Americas">
+                                                    <option value="USA">USA</option>
+                                                    <option value="Canada">Canada</option>
+                                                    <option value="Mexico">Mexico</option>
+                                                </optgroup>
+                                                <optgroup label="Others">
+                                                    <option value="Australia">Australia</option>
+                                                    <option value="Saudi Arabia">Saudi Arabia</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Actual Weight (Kg)</label>
+                                            <input type="number" class="form-control" id="iWeight" placeholder="e.g. 5.0" step="0.1" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Divisor (Volume)</label>
+                                            <select class="form-select" id="iDivisor">
+                                                <option value="5000">Standard (5000)</option>
+                                                <option value="6000">Courier (6000)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label small text-muted">Dimensions (cm) - Optional but recommended</label>
+                                            <div class="row g-2">
+                                                <div class="col-4"><input type="number" class="form-control" id="iL" placeholder="L"></div>
+                                                <div class="col-4"><input type="number" class="form-control" id="iW" placeholder="W"></div>
+                                                <div class="col-4"><input type="number" class="form-control" id="iH" placeholder="H"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-4">
+                                            <div id="intlError" class="alert alert-danger p-2 small mb-2" style="display:none;"></div>
+                                            <button type="submit" class="btn btn-primary w-100 fw-bold py-2" style="background-color: var(--brand-blue);">Get International Quote</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <div id="intlResult" class="result-box text-center">
+                                    <div class="row mb-3">
+                                        <div class="col-6 border-end">
+                                            <small class="text-muted d-block fw-bold">Actual</small>
+                                            <span id="dispActual">0 kg</span>
+                                        </div>
+                                        <div class="col-6">
+                                            <small class="text-muted d-block fw-bold">Volumetric</small>
+                                            <span id="dispVol">0 kg</span>
+                                        </div>
+                                    </div>
+                                    <h5 class="fw-bold text-muted text-uppercase mb-1">Total Estimated Cost</h5>
+                                    <h2 class="display-4 fw-bold text-dark mb-0" id="intlPrice">0 MMK</h2>
+                                    <p class="text-muted small mb-3">Chargeable Weight: <span id="dispChargeable" class="fw-bold text-danger"></span></p>
+                                    <a href="#" id="intlBookBtn" target="_blank" class="btn btn-success fw-bold"><i class="fab fa-whatsapp me-2"></i> Book via WhatsApp</a>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="py-5 mt-5 bg-white border-top">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h3 class="fw-bold text-dark mb-3">Special Shipment?</h3>
+                    <p class="text-muted">For shipments over 100kg, hazardous materials, or complex logistics requirements, please request a custom quotation directly from our sales team.</p>
+                    <ul class="list-unstyled text-muted">
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Dedicated Account Manager</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Bulk Volume Discounts</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Door-to-Door Service</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <a href="contact.html" class="btn btn-outline-dark btn-lg px-5">Contact Sales Team</a>
                 </div>
             </div>
         </div>
@@ -165,95 +322,149 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 mb-4">
-                    <h5 class="text-uppercase">Britium Express</h5>
-                    <p class="small text-muted">A dedicated delivery arm of Britium Ventures Company Limited. Providing fast, secure, and compliant logistics solutions.</p>
+                    <h5 class="text-uppercase text-white">Britium Express</h5>
+                    <p class="small">A dedicated delivery arm of Britium Ventures Company Limited. Providing fast, secure, and compliant logistics solutions across Myanmar and beyond.</p>
                 </div>
                 <div class="col-lg-2 mb-4">
-                    <h5>Links</h5>
-                    <a href="index.html" class="d-block mb-2">Track Package</a>
-                    <a href="services.html" class="d-block mb-2">Services</a>
-                    <a href="quote.html" class="d-block mb-2">Get Quote</a>
+                    <h5 class="text-white">Links</h5>
+                    <a href="tracking.html">Track Package</a>
+                    <a href="services.html">Services</a>
+                    <a href="contact.html">Contact</a>
                 </div>
-                <div class="col-lg-6 mb-4">
-                    <h5>Reach Out</h5>
-                    <div class="d-flex mb-2">
-                        <i class="fas fa-map-marker-alt me-3 mt-1 text-warning"></i>
-                        <span class="small text-muted">Britium Ventures Company Limited, YANGON, Yangon 11451 My.</span>
-                    </div>
-                    <div class="d-flex mb-2">
-                        <i class="fas fa-phone me-3 mt-1 text-warning"></i>
-                        <span class="small text-muted">+95-9-897447744, +95-9-897447755</span>
-                    </div>
+                <div class="col-lg-3 mb-4">
+                    <h5 class="text-white">Contact Us</h5>
+                    <p class="mb-1"><i class="fas fa-phone me-2"></i> +95 9 897 4477 44</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> No. 277, East Dagon Township, Yangon.</p>
                 </div>
             </div>
-            <div class="border-top border-secondary pt-3 mt-3 text-center small text-muted">
-                &copy; 2026 Britium Ventures Company Limited. All Rights Reserved.
-            </div>
+            <div class="border-top border-secondary pt-3 mt-3 text-center small">&copy; 2026 Britium Ventures Company Limited.</div>
         </div>
     </footer>
 
-    <a href="https://wa.me/959897447744" class="float-wa" title="Chat on WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    <a href="https://wa.me/959897447744" class="float-wa"><i class="fab fa-whatsapp"></i></a>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        function toggleTownships() {
-            const region = document.getElementById('destinationRegion').value;
-            const yangonSelect = document.getElementById('yangonTownship');
+        // --- DATA OBJECTS ---
+        const domRates = {
+            "Yangon-Mandalay": 5000, "Mandalay-Yangon": 5000,
+            "Yangon-Nay Pyi Taw": 5000, "Nay Pyi Taw-Yangon": 5000,
+            "Nay Pyi Taw-Mandalay": 4000, "Mandalay-Nay Pyi Taw": 4000,
+            "Yangon-Yangon": 2000, "Mandalay-Mandalay": 3000, "Nay Pyi Taw-Nay Pyi Taw": 3000
+        };
+
+        const intlRates = {
+            "Thailand": [{min: 5, max: 10, rate: 10000}, {min: 11, max: 20, rate: 9000}, {min: 21, max: 30, rate: 8000}],
+            "Japan": [{min: 5, max: 10, rate: 50000}, {min: 11, max: 20, rate: 47000}, {min: 21, max: 30, rate: 28500}],
+            "South Korea": [{min: 5, max: 10, rate: 30000}, {min: 11, max: 20, rate: 17250}, {min: 21, max: 30, rate: 16050}],
+            "Singapore": [{min: 5, max: 10, rate: 32000}, {min: 11, max: 30, rate: 43260}],
+            "Malaysia": [{min: 3, max: 10, rate: 32000}, {min: 11, max: 30, rate: 32000}],
+            "Cambodia": [{min: 5, max: 10, rate: 65520}, {min: 11, max: 30, rate: 65520}],
+            "Taiwan": [{min: 20, max: 30, rate: 25620}],
+            "Sri Lanka": [{min: 5, max: 10, rate: 105840}, {min: 11, max: 20, rate: 73920}, {min: 21, max: 30, rate: 52710}],
+            "Indonesia": [{min: 5, max: 10, rate: 69720}, {min: 11, max: 30, rate: 69720}],
+            "Philippines": [{min: 11, max: 20, rate: 46620}, {min: 21, max: 30, rate: 46620}],
+            "USA": [{min: 5, max: 10, rate: 114000}, {min: 11, max: 20, rate: 750000}, {min: 21, max: 30, rate: 68460}],
+            "Germany": [{min: 11, max: 20, rate: 61600}, {min: 21, max: 30, rate: 61600}],
+            "UK": [{min: 5, max: 10, rate: 105840}, {min: 11, max: 30, rate: 105840}],
+            "Australia": [{min: 5, max: 10, rate: 74900}, {min: 11, max: 20, rate: 63700}, {min: 21, max: 30, rate: 45850}],
+            "Saudi Arabia": [{min: 5, max: 10, rate: 55300}, {min: 11, max: 30, rate: 55300}]
+        };
+
+        // --- DOMESTIC LOGIC ---
+        function calcDomestic(e) {
+            e.preventDefault();
+            const origin = document.getElementById('dOrigin').value;
+            const dest = document.getElementById('dDest').value;
+            const weight = parseFloat(document.getElementById('dWeight').value);
+
+            if(!origin || !dest || isNaN(weight)) return;
+
+            const key = `${origin}-${dest}`;
+            let basePrice = domRates[key] || 2500; // Default fallback
             
-            if (region === 'yangon') {
-                yangonSelect.disabled = false;
-                document.getElementById('resultTime').innerHTML = 'Select a Township';
-            } else {
-                yangonSelect.disabled = true;
-                yangonSelect.value = ""; // Reset
-                
-                // Demo logic for non-Yangon
-                if(region === 'mandalay') {
-                    document.getElementById('resultPrice').innerText = "3,000 MMK"; 
-                    document.getElementById('resultTime').innerText = "Standard Rate (Base)";
-                } else {
-                    document.getElementById('resultPrice').innerText = "Call for Quote";
-                    document.getElementById('resultTime').innerText = "Remote Area";
-                }
-            }
+            // Weight Logic
+            const baseWeight = 2.0;
+            const extra = Math.max(0, weight - baseWeight);
+            const total = basePrice + (extra * 500);
+
+            // Update UI
+            document.getElementById('domPrice').innerText = total.toLocaleString() + " MMK";
+            document.getElementById('domDetails').innerText = `From ${origin} to ${dest} (${weight}kg)`;
+            
+            // WhatsApp Link
+            const msg = `Hello Britium, I would like to ship a ${weight}kg parcel from ${origin} to ${dest}. Quoted Price: ${total} MMK.`;
+            document.getElementById('domBookBtn').href = `https://wa.me/959897447744?text=${encodeURIComponent(msg)}`;
+            
+            document.getElementById('domResult').style.display = 'block';
         }
 
-        function calculateRate() {
-            // 1. Get Values
-            const region = document.getElementById('destinationRegion').value;
-            const townshipSelect = document.getElementById('yangonTownship');
-            const weight = parseFloat(document.getElementById('weight').value) || 0;
+        // --- INTERNATIONAL LOGIC ---
+        function calcIntl(e) {
+            e.preventDefault();
+            const country = document.getElementById('iCountry').value;
+            const weight = parseFloat(document.getElementById('iWeight').value);
+            const divisor = parseFloat(document.getElementById('iDivisor').value);
+            const l = parseFloat(document.getElementById('iL').value) || 0;
+            const w = parseFloat(document.getElementById('iW').value) || 0;
+            const h = parseFloat(document.getElementById('iH').value) || 0;
             
-            // Only calculate if Yangon is selected
-            if (region !== 'yangon') return;
+            const errBox = document.getElementById('intlError');
+            const resBox = document.getElementById('intlResult');
+            errBox.style.display = 'none';
+            resBox.style.display = 'none';
 
-            // Get the base price from the dropdown value (3000, 3500, or 4500)
-            let baseRate = parseInt(townshipSelect.value);
+            if(!country || isNaN(weight)) return;
 
-            if (isNaN(baseRate)) {
-                document.getElementById('resultPrice').innerText = "-- MMK";
+            // Volumetric
+            const vol = (l * w * h) / divisor;
+            const chargeable = Math.max(weight, vol);
+
+            // Get Rate
+            const slabs = intlRates[country];
+            let rate = 0;
+            if(slabs) {
+                // Find matching slab
+                for(let s of slabs) {
+                    if(chargeable >= s.min && chargeable <= s.max) {
+                        rate = s.rate;
+                        break;
+                    }
+                }
+                
+                // If weight is outside all slabs (e.g. too small or too big)
+                if(rate === 0) {
+                    if(chargeable < slabs[0].min) {
+                        errBox.innerText = `Minimum weight for ${country} is ${slabs[0].min} kg.`;
+                        errBox.style.display = 'block';
+                        return;
+                    } else {
+                        errBox.innerText = "For this weight, please contact us for a custom cargo quote.";
+                        errBox.style.display = 'block';
+                        return;
+                    }
+                }
+            } else {
+                errBox.innerText = "Rate data not loaded for this country.";
+                errBox.style.display = 'block';
                 return;
             }
 
-            // 2. Weight Logic (First 1kg free in base rate, then +500 per kg)
-            let extraWeightCost = 0;
-            if (weight > 1) {
-                extraWeightCost = (weight - 1) * 500;
-            }
+            const total = chargeable * rate;
 
-            let total = baseRate + extraWeightCost;
+            // Update UI
+            document.getElementById('dispActual').innerText = weight.toFixed(2) + " kg";
+            document.getElementById('dispVol').innerText = vol.toFixed(2) + " kg";
+            document.getElementById('dispChargeable').innerText = chargeable.toFixed(2) + " kg";
+            document.getElementById('intlPrice').innerText = total.toLocaleString() + " MMK";
 
-            // Format Output
-            let formattedPrice = total.toLocaleString() + " MMK";
+            // WhatsApp Link
+            const msg = `Hello Britium, requesting booking for ${country}. Weight: ${weight}kg (Vol: ${vol.toFixed(2)}kg). Quoted: ${total.toLocaleString()} MMK.`;
+            document.getElementById('intlBookBtn').href = `https://wa.me/959897447744?text=${encodeURIComponent(msg)}`;
 
-            // 3. Update Display
-            document.getElementById('resultPrice').innerText = formattedPrice;
-            document.getElementById('resultTime').innerHTML = '<i class="fas fa-motorcycle me-1"></i> Delivery: 1-2 Days';
+            resBox.style.display = 'block';
         }
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
