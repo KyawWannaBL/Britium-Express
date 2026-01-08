@@ -3,179 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get a Quote & Label | Britium Express</title>
+    <title>Secure Booking | Britium Express</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
     
     <style>
-        :root { 
-            --brand-blue: #0d2c54; 
-            --brand-orange: #ff6b00; 
-            --light-gray: #f8f9fa; 
-        }
-        
-        body { 
-            font-family: 'Roboto', sans-serif; 
-            color: #333; 
-            background-color: #f9f9f9;
-        }
+        :root { --brand-blue: #0d2c54; --brand-orange: #ff6b00; --light-gray: #f8f9fa; }
+        body { font-family: 'Roboto', sans-serif; color: #333; background-color: #f9f9f9; }
 
-        /* Navigation */
+        /* UI Styles */
         .top-bar { background-color: var(--brand-blue); color: white; padding: 10px 0; font-size: 0.9rem; }
         .navbar { background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 15px 0; }
         .navbar-brand img { height: 70px; width: auto; }
-        .nav-link { font-weight: 500; color: #444 !important; margin-left: 15px; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; }
-        .nav-link:hover, .nav-link.active { color: var(--brand-orange) !important; }
-        .btn-portal { border: 2px solid var(--brand-blue); color: var(--brand-blue); font-weight: 700; padding: 8px 25px; border-radius: 5px; transition: 0.3s; }
-        .btn-portal:hover { background-color: var(--brand-blue); color: white; }
+        .nav-link { font-weight: 500; color: #444 !important; text-transform: uppercase; font-size: 0.9rem; }
+        .nav-link.active { color: var(--brand-orange) !important; }
+        .btn-portal { border: 2px solid var(--brand-blue); color: var(--brand-blue); font-weight: 700; padding: 8px 25px; border-radius: 5px; }
 
-        /* Hero Section */
-        .page-hero { 
-            background: linear-gradient(rgba(13, 44, 84, 0.9), rgba(13, 44, 84, 0.9)), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); 
-            background-size: cover; 
-            background-position: center; 
-            padding: 80px 0; 
-            color: white; 
-            text-align: center;
-        }
-
-        /* Quote Box */
-        .quote-container {
-            margin-top: -50px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-            position: relative;
-            z-index: 10;
-        }
-
+        .page-hero { background: linear-gradient(rgba(13,44,84,0.9), rgba(13,44,84,0.9)), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); background-size: cover; padding: 80px 0; color: white; text-align: center; }
+        .quote-container { margin-top: -50px; background: white; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); overflow: hidden; position: relative; z-index: 10; }
+        
         .quote-sidebar { background-color: var(--brand-blue); color: white; padding: 40px 30px; }
         .quote-form-area { padding: 40px; }
+        
+        .form-section-title { font-size: 0.85rem; font-weight: 700; color: #888; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 15px; margin-top: 15px; letter-spacing: 1px; }
+        .form-label { font-size: 0.85rem; font-weight: 600; color: var(--brand-blue); }
+        
+        .compliance-box { background: #fff3cd; border: 1px solid #ffecb5; padding: 15px; border-radius: 8px; font-size: 0.9rem; margin-top: 20px; }
+        .compliance-box input[type="checkbox"] { transform: scale(1.2); margin-right: 10px; }
 
-        .nav-pills .nav-link { color: #555; font-weight: 700; padding: 12px 25px; border-radius: 8px; margin-right: 10px; background: #f1f1f1; }
-        .nav-pills .nav-link.active { background-color: var(--brand-orange); color: white; }
+        .result-box { background: #f8fcfd; border: 2px dashed #bce0fd; border-radius: 10px; padding: 20px; margin-top: 25px; display: none; }
 
-        .form-label { font-weight: 600; font-size: 0.85rem; color: var(--brand-blue); text-transform: uppercase; }
-        .form-control, .form-select { padding: 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 0.95rem; }
-        .form-control:focus, .form-select:focus { border-color: var(--brand-orange); box-shadow: none; }
-
-        .form-section-title {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #888;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
-            margin-bottom: 15px;
-            margin-top: 10px;
-        }
-
-        .result-box {
-            background: #f8fcfd;
-            border: 2px dashed #bce0fd;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 25px;
-            display: none;
-        }
-
-        /* Footer */
-        footer { background-color: #111; color: #aaa; padding: 80px 0 30px; margin-top: 80px; }
-        footer h5 { color: white; font-weight: 700; margin-bottom: 25px; }
-        footer a { color: #aaa; text-decoration: none; display: block; margin-bottom: 12px; transition: 0.2s; }
-        footer a:hover { color: var(--brand-orange); padding-left: 5px; }
-
-        .float-wa { position: fixed; bottom: 30px; right: 30px; background-color: #25d366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; box-shadow: 2px 5px 15px rgba(0,0,0,0.3); z-index: 1000; transition: 0.3s; }
-        .float-wa:hover { transform: scale(1.1); background-color: #20b857; }
-
-        /* =========================================
-           THERMAL LABEL CSS (57mm x Dynamic Length)
-           ========================================= */
-        #shippingLabel {
-            width: 57mm; 
-            background: white;
-            padding: 2mm;
-            font-family: 'Arial', sans-serif;
-            color: black;
-            border: 1px solid #ccc;
-            margin: 20px auto;
-            display: none;
-        }
-
+        /* Thermal Label CSS */
+        #shippingLabel { width: 57mm; background: white; padding: 2mm; font-family: 'Arial', sans-serif; color: black; border: 1px solid #ccc; margin: 20px auto; display: none; }
         .label-header { text-align: center; border-bottom: 2px solid black; padding-bottom: 5px; margin-bottom: 5px; }
         .label-logo { max-width: 40mm; height: auto; }
-        .label-type { font-weight: 900; font-size: 14px; text-transform: uppercase; margin-top: 2px; }
-        
         .label-route { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid black; padding-bottom: 5px; margin-bottom: 5px; }
-        .route-code { font-size: 20px; font-weight: 900; line-height: 1; }
-        .route-arrow { font-size: 16px; }
-        
+        .route-code { font-size: 18px; font-weight: 900; }
         .label-addr { font-size: 10px; border-bottom: 1px dashed black; padding-bottom: 5px; margin-bottom: 5px; }
-        .label-addr strong { display: block; font-size: 11px; text-transform: uppercase; }
-        
         .label-info { font-size: 10px; line-height: 1.3; margin-bottom: 5px; }
         .label-row { display: flex; justify-content: space-between; }
-        .fw-b { font-weight: bold; }
-
         .qr-container { text-align: center; margin: 8px 0; }
-        .qr-container img { margin: 0 auto; }
-
         .label-footer { font-size: 8px; text-align: center; border-top: 1px solid black; padding-top: 2px; font-weight: bold; }
 
         @media print {
             body * { visibility: hidden; }
             #shippingLabel, #shippingLabel * { visibility: visible; }
-            #shippingLabel {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 57mm;
-                border: none;
-                margin: 0;
-                padding: 0;
-            }
+            #shippingLabel { position: absolute; left: 0; top: 0; width: 57mm; border: none; margin: 0; padding: 0; }
             @page { size: 57mm auto; margin: 0mm; }
         }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-            <div><span class="me-3"><i class="fas fa-phone-alt me-2"></i> +95 9 897 4477 44</span> <span><i class="fas fa-envelope me-2"></i> info@britiumexpress.com</span></div>
-            <div class="mt-2 mt-md-0"><span class="me-3"><i class="fas fa-clock me-2"></i> Mon-Sat: 9:00am - 5:30pm</span></div>
-        </div>
-    </div>
-
+    <div class="top-bar"><div class="container text-center text-md-start"><span><i class="fas fa-phone-alt me-2"></i> +95 9 897 4477 44</span></div></div>
     <nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="assets/images/BRITIUM EXPRESS logo.png" alt="Britium Express Logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navContent">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="tracking.html">Track & Trace</a></li>
-                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="quote.html">Get Quote</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="news.html">News</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item ms-lg-3"><a href="login.html" class="btn btn-portal">Login</a></li>
-                </ul>
-            </div>
+            <a class="navbar-brand" href="index.html"><img src="assets/images/BRITIUM EXPRESS logo.png" alt="Logo"></a>
+            <div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link active" href="quote.html">Get Quote</a></li><li class="nav-item"><a class="nav-link" href="login.html">Login</a></li></ul></div>
         </div>
     </nav>
 
     <header class="page-hero">
         <div class="container">
-            <h1 class="fw-bold display-5 mb-3">Get A Shipping Quote</h1>
-            <p class="lead opacity-75">Fill in details to generate a shipping label.</p>
+            <h1 class="fw-bold display-5 mb-3">Secure Booking Portal</h1>
+            <p class="lead opacity-75">Identity Verified Shipping & Compliance Check.</p>
         </div>
     </header>
 
@@ -185,160 +85,150 @@
                 <div class="quote-container row g-0">
                     
                     <div class="col-md-4 quote-sidebar d-none d-md-block">
-                        <h4 class="fw-bold mb-4">Why Britium?</h4>
-                        <div class="mb-4"><div class="d-flex align-items-center mb-2"><i class="fas fa-check-circle text-warning me-2"></i> <strong>Transparent Pricing</strong></div><p class="small opacity-75 ms-4">No hidden fees. What you see is what you pay.</p></div>
-                        <div class="mb-4"><div class="d-flex align-items-center mb-2"><i class="fas fa-shield-alt text-warning me-2"></i> <strong>Secure Handling</strong></div><p class="small opacity-75 ms-4">We treat every parcel with the utmost care.</p></div>
-                        <div class="mt-5 p-3 rounded bg-white text-dark">
-                            <small class="fw-bold text-uppercase text-muted">Need Custom Logistics?</small>
-                            <p class="small mb-2">For bulk cargo or special projects.</p>
-                            <a href="contact.html" class="btn btn-sm btn-outline-primary w-100 fw-bold">Contact Sales</a>
-                        </div>
+                        <h4 class="fw-bold mb-4">Security Policy</h4>
+                        <div class="mb-4"><small class="opacity-75">To comply with logistics regulations, all senders must verify their identity.</small></div>
+                        <ul class="list-unstyled small opacity-75">
+                            <li class="mb-2"><i class="fas fa-id-card me-2"></i> NRC/Passport Required</li>
+                            <li class="mb-2"><i class="fas fa-ban me-2"></i> No Prohibited Items</li>
+                            <li class="mb-2"><i class="fas fa-file-contract me-2"></i> Legal Declarations</li>
+                        </ul>
                     </div>
 
                     <div class="col-md-8 quote-form-area">
-                        <h3 class="fw-bold text-dark mb-4">Calculate Rate & Label</h3>
+                        <h3 class="fw-bold text-dark mb-4">New Shipment</h3>
 
                         <ul class="nav nav-pills mb-4" id="pills-tab" role="tablist">
-                            <li class="nav-item" role="presentation"><button class="nav-link active" id="pills-domestic-tab" data-bs-toggle="pill" data-bs-target="#pills-domestic" type="button" role="tab"><i class="fas fa-truck me-2"></i> Domestic</button></li>
-                            <li class="nav-item" role="presentation"><button class="nav-link" id="pills-international-tab" data-bs-toggle="pill" data-bs-target="#pills-international" type="button" role="tab"><i class="fas fa-plane me-2"></i> International</button></li>
+                            <li class="nav-item"><button class="nav-link active" id="pills-domestic-tab" data-bs-toggle="pill" data-bs-target="#pills-domestic">Domestic</button></li>
+                            <li class="nav-item"><button class="nav-link" id="pills-international-tab" data-bs-toggle="pill" data-bs-target="#pills-international">International</button></li>
                         </ul>
 
                         <div class="tab-content" id="pills-tabContent">
                             
-                            <div class="tab-pane fade show active" id="pills-domestic" role="tabpanel">
-                                <form id="domForm" onsubmit="calcDomestic(event)">
+                            <div class="tab-pane fade show active" id="pills-domestic">
+                                <form id="domForm">
+                                    <div class="form-section-title">1. KYC IDENTITY VERIFICATION</div>
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-12">
+                                            <label class="form-label text-danger">Sender Full Name (Must match ID)</label>
+                                            <input type="text" class="form-control" id="dSenderName" placeholder="e.g. U Kyaw Kyaw" required oninput="validateDom()">
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label">Phone Number</label>
+                                            <input type="tel" class="form-control" id="dSenderPhone" placeholder="09..." required oninput="validateDom()">
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label">Upload National ID (Front)</label>
+                                            <input type="file" class="form-control" id="dSenderID" accept="image/*" required onchange="validateDom()">
+                                            <div class="form-text small text-muted">Files are encrypted.</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-section-title">2. SHIPMENT INFO</div>
                                     
-                                    <div class="form-section-title">1. SENDER INFO</div>
-                                    <div class="row g-2">
-                                        <div class="col-6"><input type="text" class="form-control" id="dSenderName" placeholder="Sender Name" required></div>
-                                        <div class="col-6"><input type="tel" class="form-control" id="dSenderPhone" placeholder="Sender Phone" required></div>
-                                    </div>
-
-                                    <div class="form-section-title">2. RECEIVER INFO</div>
-                                    <div class="row g-2">
-                                        <div class="col-6"><input type="text" class="form-control" id="dReceiverName" placeholder="Receiver Name" required></div>
-                                        <div class="col-6"><input type="tel" class="form-control" id="dReceiverPhone" placeholder="Receiver Phone" required></div>
-                                        <div class="col-12"><input type="text" class="form-control" id="dReceiverAddress" placeholder="Receiver Address / Township" required></div>
-                                    </div>
-
-                                    <div class="form-section-title">3. SHIPMENT DETAILS</div>
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Origin</label>
-                                            <select class="form-select" id="dOrigin" required>
-                                                <option value="" selected disabled>Select Origin</option>
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-6">
+                                            <label class="form-label">Origin City</label>
+                                            <select class="form-select" id="dOrigin" onchange="loadTownships('dOrigin', 'dSenderTownship')">
+                                                <option selected disabled>Select City</option>
                                                 <option value="Yangon">Yangon</option>
                                                 <option value="Mandalay">Mandalay</option>
                                                 <option value="Nay Pyi Taw">Nay Pyi Taw</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Destination</label>
-                                            <select class="form-select" id="dDest" required>
-                                                <option value="" selected disabled>Select Destination</option>
-                                                <option value="Yangon">Yangon</option>
+                                        <div class="col-6">
+                                            <label class="form-label">Destination City</label>
+                                            <select class="form-select" id="dDest" onchange="loadTownships('dDest', 'dReceiverTownship')">
+                                                <option selected disabled>Select City</option>
                                                 <option value="Mandalay">Mandalay</option>
+                                                <option value="Yangon">Yangon</option>
                                                 <option value="Nay Pyi Taw">Nay Pyi Taw</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-6">
+                                    </div>
+
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-6">
+                                            <label class="form-label">Sender Township</label>
+                                            <select class="form-select" id="dSenderTownship" disabled>
+                                                <option>Select City First</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label">Receiver Township</label>
+                                            <select class="form-select" id="dReceiverTownship" disabled>
+                                                <option>Select City First</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-12">
                                             <label class="form-label">Weight (Kg)</label>
-                                            <input type="number" class="form-control" id="dWeight" placeholder="e.g. 2.5" step="0.1" required>
-                                        </div>
-                                        <div class="col-md-6 d-flex align-items-end">
-                                            <button type="submit" class="btn btn-warning w-100 fw-bold text-white py-2" style="background-color: var(--brand-orange);">Calculate & Create Label</button>
+                                            <input type="number" class="form-control" id="dWeight" placeholder="0.0" step="0.1" required>
                                         </div>
                                     </div>
-                                </form>
 
+                                    <div class="form-section-title">3. RECEIVER DETAILS</div>
+                                    <div class="row g-2">
+                                        <div class="col-6"><input type="text" class="form-control" id="dRecName" placeholder="Receiver Name" required></div>
+                                        <div class="col-6"><input type="text" class="form-control" id="dRecPhone" placeholder="Receiver Phone" required></div>
+                                        <div class="col-12"><input type="text" class="form-control" id="dRecAddr" placeholder="Full Street Address" required></div>
+                                    </div>
+
+                                    <div class="compliance-box">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="dCompliance" onchange="validateDom()">
+                                            <label class="form-check-label fw-bold" for="dCompliance">
+                                                I declare that this shipment contains NO prohibited items (Drugs, Weapons, Batteries, Liquids) and I agree to Britium Express Terms & Conditions.
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" id="dSubmitBtn" class="btn btn-warning w-100 fw-bold mt-4 py-3 text-white" disabled onclick="processBooking('dom')">
+                                        <i class="fas fa-lock me-2"></i> VERIFY ID & BOOK SHIPMENT
+                                    </button>
+                                </form>
+                                
                                 <div id="domResult" class="result-box text-center">
-                                    <h5 class="fw-bold text-muted text-uppercase mb-1">Estimated Cost</h5>
-                                    <h2 class="display-4 fw-bold text-dark mb-0" id="domPrice">0 MMK</h2>
-                                    <p class="text-muted small mb-3" id="domDetails">Base rate includes 2kg.</p>
-                                    <div class="d-flex justify-content-center gap-2">
-                                        <a href="#" id="domBookBtn" target="_blank" class="btn btn-success fw-bold"><i class="fab fa-whatsapp me-2"></i> Book via WhatsApp</a>
-                                        <button onclick="window.print()" class="btn btn-outline-dark fw-bold"><i class="fas fa-print me-2"></i> Print Label</button>
+                                    <h5 class="fw-bold text-success"><i class="fas fa-check-circle"></i> Booking Confirmed!</h5>
+                                    <p>Your ID has been securely uploaded to the Admin Dashboard.</p>
+                                    <h2 class="fw-bold" id="domPriceDisplay">0 MMK</h2>
+                                    <div class="d-flex justify-content-center gap-2 mt-3">
+                                        <button onclick="window.print()" class="btn btn-dark"><i class="fas fa-print me-2"></i> Print Label</button>
+                                        <a href="tracking.html" class="btn btn-outline-primary">Track Status</a>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="tab-pane fade" id="pills-international" role="tabpanel">
-                                <form id="intlForm" onsubmit="calcIntl(event)">
+                            
+                            <div class="tab-pane fade" id="pills-international">
+                                <form id="intlForm">
+                                    <div class="form-section-title">1. KYC IDENTITY VERIFICATION</div>
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-12"><label class="text-danger small fw-bold">SENDER NAME (MATCH ID)</label><input type="text" class="form-control" id="iSenderName" required oninput="validateIntl()"></div>
+                                        <div class="col-6"><input type="file" class="form-control" id="iSenderID" accept="image/*" required onchange="validateIntl()"></div>
+                                        <div class="col-6"><input type="tel" class="form-control" id="iSenderPhone" placeholder="Phone" required></div>
+                                    </div>
                                     
-                                    <div class="form-section-title">1. SENDER INFO</div>
-                                    <div class="row g-2">
-                                        <div class="col-6"><input type="text" class="form-control" id="iSenderName" placeholder="Sender Name" required></div>
-                                        <div class="col-6"><input type="tel" class="form-control" id="iSenderPhone" placeholder="Sender Phone" required></div>
+                                    <div class="form-section-title">2. SHIPMENT INFO</div>
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-12"><select class="form-select" id="iCountry"><option value="Thailand">Thailand</option><option value="Singapore">Singapore</option><option value="USA">USA</option></select></div>
+                                        <div class="col-6"><input type="number" class="form-control" id="iWeight" placeholder="Weight" required></div>
                                     </div>
-
-                                    <div class="form-section-title">2. RECEIVER INFO</div>
-                                    <div class="row g-2">
-                                        <div class="col-6"><input type="text" class="form-control" id="iReceiverName" placeholder="Receiver Name" required></div>
-                                        <div class="col-6"><input type="tel" class="form-control" id="iReceiverPhone" placeholder="Receiver Phone" required></div>
-                                        <div class="col-12"><input type="text" class="form-control" id="iReceiverAddress" placeholder="Receiver Address / City" required></div>
-                                    </div>
-
-                                    <div class="form-section-title">3. SHIPMENT DETAILS</div>
-                                    <div class="row g-3">
-                                        <div class="col-md-12">
-                                            <label class="form-label">Destination Country</label>
-                                            <select class="form-select" id="iCountry" required>
-                                                <option value="" selected disabled>Select Country</option>
-                                                <optgroup label="Asia">
-                                                    <option value="Thailand">Thailand</option>
-                                                    <option value="Japan">Japan</option>
-                                                    <option value="Singapore">Singapore</option>
-                                                    <option value="Malaysia">Malaysia</option>
-                                                </optgroup>
-                                                <optgroup label="Global">
-                                                    <option value="USA">USA</option>
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Actual Weight (Kg)</label>
-                                            <input type="number" class="form-control" id="iWeight" placeholder="e.g. 5.0" step="0.1" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Divisor</label>
-                                            <select class="form-select" id="iDivisor">
-                                                <option value="5000">Standard (5000)</option>
-                                                <option value="6000">Courier (6000)</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12">
-                                            <label class="form-label small text-muted">Dimensions (cm) - Optional</label>
-                                            <div class="row g-2">
-                                                <div class="col-4"><input type="number" class="form-control" id="iL" placeholder="L"></div>
-                                                <div class="col-4"><input type="number" class="form-control" id="iW" placeholder="W"></div>
-                                                <div class="col-4"><input type="number" class="form-control" id="iH" placeholder="H"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 mt-4">
-                                            <div id="intlError" class="alert alert-danger p-2 small mb-2" style="display:none;"></div>
-                                            <button type="submit" class="btn btn-primary w-100 fw-bold py-2" style="background-color: var(--brand-blue);">Get International Quote</button>
+                                    
+                                    <div class="compliance-box">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="iCompliance" onchange="validateIntl()">
+                                            <label class="form-check-label fw-bold" for="iCompliance">I agree to International Air Cargo Regulations (No Dangerous Goods). Confirmed ID Match.</label>
                                         </div>
                                     </div>
+                                    
+                                    <button type="button" id="iSubmitBtn" class="btn btn-primary w-100 fw-bold mt-4 py-3" disabled onclick="processBooking('intl')">
+                                        <i class="fas fa-plane me-2"></i> VERIFY & BOOK CARGO
+                                    </button>
                                 </form>
-
                                 <div id="intlResult" class="result-box text-center">
-                                    <div class="row mb-3">
-                                        <div class="col-6 border-end">
-                                            <small class="text-muted d-block fw-bold">Actual</small>
-                                            <span id="dispActual">0 kg</span>
-                                        </div>
-                                        <div class="col-6">
-                                            <small class="text-muted d-block fw-bold">Volumetric</small>
-                                            <span id="dispVol">0 kg</span>
-                                        </div>
-                                    </div>
-                                    <h5 class="fw-bold text-muted text-uppercase mb-1">Total Estimated Cost</h5>
-                                    <h2 class="display-4 fw-bold text-dark mb-0" id="intlPrice">0 MMK</h2>
-                                    <p class="text-muted small mb-3">Chargeable Weight: <span id="dispChargeable" class="fw-bold text-danger"></span></p>
-                                    <div class="d-flex justify-content-center gap-2">
-                                        <a href="#" id="intlBookBtn" target="_blank" class="btn btn-success fw-bold"><i class="fab fa-whatsapp me-2"></i> Book via WhatsApp</a>
-                                        <button onclick="window.print()" class="btn btn-outline-dark fw-bold"><i class="fas fa-print me-2"></i> Print Label</button>
-                                    </div>
+                                    <h2 id="intlPriceDisplay">0 MMK</h2>
+                                    <button onclick="window.print()" class="btn btn-dark mt-2">Print Label</button>
                                 </div>
                             </div>
 
@@ -347,249 +237,185 @@
                 </div>
             </div>
         </div>
-        
+
         <div id="shippingLabel">
             <div class="label-header">
                 <img src="assets/images/BRITIUM EXPRESS logo.png" alt="Logo" class="label-logo">
-                <div class="label-type" id="labelServiceType">STANDARD</div>
+                <div class="label-type" id="lblService">SERVICE</div>
             </div>
-            
             <div class="label-route">
-                <div class="route-code" id="labelOrigin">ORG</div>
-                <div class="route-arrow">✈</div>
-                <div class="route-code" id="labelDest">DST</div>
+                <div class="route-code" id="lblOrg">ORG</div><div class="route-arrow">✈</div><div class="route-code" id="lblDst">DST</div>
             </div>
-
             <div class="label-addr">
-                <span class="small text-muted">To (Receiver):</span><br>
-                <strong style="font-size: 14px;" id="labelRecName">RECEIVER NAME</strong>
-                <div id="labelRecAddr">Township / Address</div>
-                <div class="small">Tel: <span id="labelRecPhone"></span></div>
+                <span class="small text-muted">To:</span> <strong id="lblRecName">NAME</strong>
+                <div id="lblRecAddr">Address</div>
+                <div class="small">Tel: <span id="lblRecPhone"></span></div>
             </div>
-
-            <div class="label-info" style="border-bottom: 1px dashed black; padding-bottom: 5px;">
-                <span class="small text-muted">From:</span> <span id="labelSendName">Sender Name</span>
-            </div>
-
             <div class="label-info">
-                <div class="label-row">
-                    <span>Date:</span> <span class="fw-b" id="labelDate">2026-01-01</span>
-                </div>
-                <div class="label-row">
-                    <span>Weight:</span> <span class="fw-b" id="labelWeight">0.00 kg</span>
-                </div>
-                <div class="label-row">
-                    <span>Ref ID:</span> <span class="fw-b" id="labelRef">#Q-0000</span>
-                </div>
-                <div class="label-row">
-                    <span>COD/Price:</span> <span class="fw-b" id="labelPrice">PREPAID</span>
-                </div>
+                <div class="label-row"><span>Ref:</span> <span class="fw-b" id="lblRef">#Q-0000</span></div>
+                <div class="label-row"><span>Sender:</span> <span class="fw-b" id="lblSendName">Verified</span></div>
+                <div class="label-row"><span>Route:</span> <span class="fw-b" id="lblTownshipRoute">City-City</span></div>
+                <div class="label-row"><span>Weight/Price:</span> <span class="fw-b" id="lblDetails">0kg / 0MMK</span></div>
             </div>
-
             <div class="qr-container" id="qrCodeTarget"></div>
-
-            <div class="label-footer">
-                BRITIUM VENTURES COMPANY LIMITED<br>
-                www.britiumexpress.com
-            </div>
+            <div class="label-footer">ID VERIFIED • SECURITY CHECKED</div>
         </div>
-        </div>
-
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <h5 class="text-uppercase text-white">Britium Express</h5>
-                    <p class="small">A dedicated delivery arm of Britium Ventures Company Limited.</p>
-                </div>
-                <div class="col-lg-2 mb-4">
-                    <h5 class="text-white">Links</h5>
-                    <a href="tracking.html">Track Package</a>
-                    <a href="services.html">Services</a>
-                    <a href="contact.html">Contact</a>
-                </div>
-                <div class="col-lg-3 mb-4">
-                    <h5 class="text-white">Contact Us</h5>
-                    <p class="mb-1"><i class="fas fa-phone me-2"></i> +95 9 897 4477 44</p>
-                    <p><i class="fas fa-map-marker-alt me-2"></i> No. 277, East Dagon Township, Yangon.</p>
-                </div>
-            </div>
-            <div class="border-top border-secondary pt-3 mt-3 text-center small">&copy; 2026 Britium Ventures Company Limited.</div>
-        </div>
-    </footer>
-
-    <a href="https://wa.me/959897447744" class="float-wa"><i class="fab fa-whatsapp"></i></a>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
 
     <script>
-        // --- DATA OBJECTS ---
-        const domRates = {
-            "Yangon-Mandalay": 5000, "Mandalay-Yangon": 5000,
-            "Yangon-Nay Pyi Taw": 5000, "Nay Pyi Taw-Yangon": 5000,
-            "Nay Pyi Taw-Mandalay": 4000, "Mandalay-Nay Pyi Taw": 4000,
-            "Yangon-Yangon": 2000, "Mandalay-Mandalay": 3000, "Nay Pyi Taw-Nay Pyi Taw": 3000
+        // 1. CONFIGURATION
+        const firebaseConfig = {
+            apiKey: "AIzaSyCbrF5_QW6Nb3rBVkozT2y0KotL8clr8Jo",
+            authDomain: "britium-express.firebaseapp.com",
+            databaseURL: "https://britium-express-default-rtdb.firebaseio.com",
+            projectId: "britium-express",
+            storageBucket: "britium-express.firebasestorage.app",
+            messagingSenderId: "406522036528",
+            appId: "1:406522036528:web:7713801d6832932067c8f5"
         };
 
-        const intlRates = {
-            "Thailand": [{min: 5, max: 10, rate: 10000}, {min: 11, max: 20, rate: 9000}, {min: 21, max: 30, rate: 8000}],
-            "Japan": [{min: 5, max: 10, rate: 50000}, {min: 11, max: 20, rate: 47000}, {min: 21, max: 30, rate: 28500}],
-            "Singapore": [{min: 5, max: 10, rate: 32000}, {min: 11, max: 30, rate: 43260}],
-            "Malaysia": [{min: 3, max: 10, rate: 32000}, {min: 11, max: 30, rate: 32000}],
-            "USA": [{min: 5, max: 10, rate: 114000}, {min: 11, max: 20, rate: 750000}, {min: 21, max: 30, rate: 68460}]
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const storage = firebase.storage();
+
+        // 2. LOCATIONS DATA
+        const myanmarLocations = {
+            "Yangon": ["Kamaryut", "Bahan", "Sanchaung", "Hlaing", "Insein", "Mingaladon", "North Okkalapa", "South Okkalapa", "Yankin", "Thingangyun", "Tamwe", "South Dagon", "North Dagon", "East Dagon", "Thaketa", "Dawbon", "Pazundaung", "Botahtaung", "Kyauktada", "Latha", "Lanmadaw", "Ahlone", "Kyeemyindaung", "Hlaing Tharyar", "Shwepyithar"],
+            "Mandalay": ["Chanayethazan", "Chanmyathazi", "Maha Aungmye", "Pyigyidagun", "Aungmyethazan", "Amarapura", "Patheingyi", "Pyin Oo Lwin"],
+            "Nay Pyi Taw": ["Zabuthiri", "Dekkhinathiri", "Ottarathiri", "Pobbathiri", "Zeyarthiri", "Pyinmana", "Lewe", "Tatkon"]
         };
 
-        // --- DOMESTIC LOGIC ---
-        function calcDomestic(e) {
-            e.preventDefault();
-            // Shipment
-            const origin = document.getElementById('dOrigin').value;
-            const dest = document.getElementById('dDest').value;
-            const weight = parseFloat(document.getElementById('dWeight').value);
-            // Info
-            const sName = document.getElementById('dSenderName').value;
-            const rName = document.getElementById('dReceiverName').value;
-            const rPhone = document.getElementById('dReceiverPhone').value;
-            const rAddr = document.getElementById('dReceiverAddress').value;
-
-            if(!origin || !dest || isNaN(weight)) return;
-
-            const key = `${origin}-${dest}`;
-            let basePrice = domRates[key] || 2500; 
-            const baseWeight = 2.0;
-            const extra = Math.max(0, weight - baseWeight);
-            const total = basePrice + (extra * 500);
-
-            // Update UI
-            document.getElementById('domPrice').innerText = total.toLocaleString() + " MMK";
-            document.getElementById('domDetails').innerText = `From ${origin} to ${dest} (${weight}kg)`;
+        function loadTownships(cityId, townshipId) {
+            const city = document.getElementById(cityId).value;
+            const tspSelect = document.getElementById(townshipId);
+            tspSelect.innerHTML = '<option selected disabled>Select Township...</option>';
             
-            const msg = `Booking:\nFrom: ${sName}\nTo: ${rName}\nRoute: ${origin}-${dest}\nWeight: ${weight}kg\nPrice: ${total}`;
-            document.getElementById('domBookBtn').href = `https://wa.me/959897447744?text=${encodeURIComponent(msg)}`;
-            
-            document.getElementById('domResult').style.display = 'block';
-
-            // GENERATE LABEL
-            const data = {
-                service: 'DOMESTIC',
-                origin: origin,
-                dest: dest,
-                weight: weight,
-                price: total + " MMK",
-                sName: sName,
-                rName: rName,
-                rPhone: rPhone,
-                rAddr: rAddr
-            };
-            generateLabel(data);
-        }
-
-        // --- INTERNATIONAL LOGIC ---
-        function calcIntl(e) {
-            e.preventDefault();
-            const country = document.getElementById('iCountry').value;
-            const weight = parseFloat(document.getElementById('iWeight').value);
-            const divisor = parseFloat(document.getElementById('iDivisor').value);
-            const l = parseFloat(document.getElementById('iL').value) || 0;
-            const w = parseFloat(document.getElementById('iW').value) || 0;
-            const h = parseFloat(document.getElementById('iH').value) || 0;
-            
-            // Info
-            const sName = document.getElementById('iSenderName').value;
-            const rName = document.getElementById('iReceiverName').value;
-            const rPhone = document.getElementById('iReceiverPhone').value;
-            const rAddr = document.getElementById('iReceiverAddress').value;
-
-            const errBox = document.getElementById('intlError');
-            const resBox = document.getElementById('intlResult');
-            errBox.style.display = 'none';
-            resBox.style.display = 'none';
-
-            if(!country || isNaN(weight)) return;
-
-            const vol = (l * w * h) / divisor;
-            const chargeable = Math.max(weight, vol);
-
-            // Get Rate
-            const slabs = intlRates[country];
-            let rate = 100000; // default
-            if(slabs) {
-                for(let s of slabs) {
-                    if(chargeable >= s.min && chargeable <= s.max) {
-                        rate = s.rate;
-                        break;
-                    }
-                }
-                if(slabs[0].min > chargeable) {
-                     errBox.innerText = `Min weight is ${slabs[0].min}kg`;
-                     errBox.style.display = 'block'; return;
-                }
+            if (myanmarLocations[city]) {
+                tspSelect.disabled = false;
+                myanmarLocations[city].sort().forEach(tsp => {
+                    let opt = document.createElement('option');
+                    opt.value = tsp;
+                    opt.innerHTML = tsp;
+                    tspSelect.appendChild(opt);
+                });
+            } else {
+                tspSelect.disabled = true;
             }
-
-            const total = chargeable * rate;
-
-            document.getElementById('dispActual').innerText = weight.toFixed(2) + " kg";
-            document.getElementById('dispVol').innerText = vol.toFixed(2) + " kg";
-            document.getElementById('dispChargeable').innerText = chargeable.toFixed(2) + " kg";
-            document.getElementById('intlPrice').innerText = total.toLocaleString() + " MMK";
-
-            const msg = `INTL Booking:\nTo: ${country}\nWeight: ${weight}kg\nPrice: ${total}`;
-            document.getElementById('intlBookBtn').href = `https://wa.me/959897447744?text=${encodeURIComponent(msg)}`;
-
-            resBox.style.display = 'block';
-
-            // GENERATE LABEL
-            const data = {
-                service: 'INTL EXP',
-                origin: 'MM',
-                dest: country.substring(0,3).toUpperCase(),
-                weight: chargeable,
-                price: total.toLocaleString() + " MMK",
-                sName: sName,
-                rName: rName,
-                rPhone: rPhone,
-                rAddr: rAddr + ", " + country
-            };
-            generateLabel(data);
         }
 
-        // --- LABEL GENERATOR ---
-        function generateLabel(d) {
-            // 1. Fill Text Data
-            document.getElementById('labelServiceType').innerText = d.service;
-            document.getElementById('labelOrigin').innerText = d.origin.substring(0,3).toUpperCase();
-            document.getElementById('labelDest').innerText = d.dest.substring(0,3).toUpperCase();
-            document.getElementById('labelWeight').innerText = parseFloat(d.weight).toFixed(2) + " kg";
-            document.getElementById('labelPrice').innerText = d.price;
-            
-            document.getElementById('labelRecName').innerText = d.rName;
-            document.getElementById('labelRecAddr').innerText = d.rAddr;
-            document.getElementById('labelRecPhone').innerText = d.rPhone;
-            document.getElementById('labelSendName').innerText = d.sName;
-            
-            const dateStr = new Date().toISOString().slice(0,10);
-            document.getElementById('labelDate').innerText = dateStr;
-            
-            // Random Ref ID
-            const refId = "Q-" + Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('labelRef').innerText = refId;
+        // 3. VALIDATION
+        function validateDom() {
+            const name = document.getElementById('dSenderName').value;
+            const file = document.getElementById('dSenderID').files.length > 0;
+            const check = document.getElementById('dCompliance').checked;
+            document.getElementById('dSubmitBtn').disabled = !(name && file && check);
+        }
 
-            // 2. Generate Sorting QR Code (Pipe Separated)
+        function validateIntl() {
+            const name = document.getElementById('iSenderName').value;
+            const file = document.getElementById('iSenderID').files.length > 0;
+            const check = document.getElementById('iCompliance').checked;
+            document.getElementById('iSubmitBtn').disabled = !(name && file && check);
+        }
+
+        // 4. BOOKING PROCESS
+        async function processBooking(type) {
+            const btn = document.getElementById(type === 'dom' ? 'dSubmitBtn' : 'iSubmitBtn');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading ID & Processing...';
+
+            try {
+                const prefix = type === 'dom' ? 'd' : 'i';
+                const sName = document.getElementById(prefix + 'SenderName').value;
+                const file = document.getElementById(prefix + 'SenderID').files[0];
+                const weight = document.getElementById(prefix === 'dom' ? 'dWeight' : 'iWeight').value || 1;
+                
+                let origin, dest, price, sTownship, rTownship;
+                
+                if(type === 'dom') {
+                    origin = document.getElementById('dOrigin').value;
+                    dest = document.getElementById('dDest').value;
+                    sTownship = document.getElementById('dSenderTownship').value;
+                    rTownship = document.getElementById('dReceiverTownship').value;
+                    price = (2500 + (Math.max(0, weight - 2) * 500));
+                } else {
+                    origin = "MM";
+                    dest = document.getElementById('iCountry').value;
+                    price = weight * 10000;
+                    sTownship = "N/A"; rTownship = "N/A";
+                }
+
+                // Upload ID
+                const storageRef = storage.ref(`ids/${Date.now()}_${file.name}`);
+                const snapshot = await storageRef.put(file);
+                const downloadURL = await snapshot.ref.getDownloadURL();
+
+                // Save Data
+                const refId = "BE-" + Math.floor(100000 + Math.random() * 900000);
+                const bookingData = {
+                    tracking_id: refId,
+                    sender_name: sName,
+                    sender_phone: document.getElementById(prefix + (type==='dom'?'SenderPhone':'SenderPhone')).value,
+                    receiver_name: type==='dom' ? document.getElementById('dRecName').value : document.getElementById('iReceiverName').value,
+                    origin: origin,
+                    destination: dest,
+                    sender_township: sTownship,
+                    receiver_township: rTownship,
+                    weight: weight,
+                    price: price,
+                    status: "Pending",
+                    id_image_url: downloadURL,
+                    timestamp: Date.now()
+                };
+
+                await db.ref('shipments/' + refId).set(bookingData);
+
+                // Generate Label
+                generateLabel(bookingData);
+                
+                if(type === 'dom') {
+                    document.getElementById('domResult').style.display = 'block';
+                    document.getElementById('domPriceDisplay').innerText = price + " MMK";
+                } else {
+                    document.getElementById('intlResult').style.display = 'block';
+                    document.getElementById('intlPriceDisplay').innerText = price + " MMK";
+                }
+                
+                btn.innerHTML = '<i class="fas fa-check"></i> Success';
+
+            } catch (error) {
+                console.error(error);
+                alert("Error: " + error.message);
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+
+        function generateLabel(data) {
+            const isDom = data.destination === 'Yangon' || data.destination === 'Mandalay' || data.destination === 'Nay Pyi Taw';
+            document.getElementById('lblService').innerText = isDom ? 'DOMESTIC' : 'INTL CARGO';
+            document.getElementById('lblOrg').innerText = data.origin.substring(0,3).toUpperCase();
+            document.getElementById('lblDst').innerText = data.destination.substring(0,3).toUpperCase();
+            document.getElementById('lblRecName').innerText = data.receiver_name;
+            document.getElementById('lblRecAddr').innerText = data.receiver_township !== "N/A" ? data.receiver_township + ", " + data.destination : data.destination;
+            document.getElementById('lblRef').innerText = data.tracking_id;
+            document.getElementById('lblSendName').innerText = data.sender_name;
+            
+            // Show Township Routing
+            const routeStr = data.sender_township !== "N/A" ? `${data.sender_township} > ${data.receiver_township}` : "Standard";
+            document.getElementById('lblTownshipRoute').innerText = routeStr;
+            
+            document.getElementById('lblDetails').innerText = `${data.weight}kg / ${data.price}MMK`;
+            
+            // QR Code
             document.getElementById('qrCodeTarget').innerHTML = "";
-            const qrPayload = `ID:${refId}|ORG:${d.origin}|DST:${d.dest}|RCV:${d.rName}|PH:${d.rPhone}|ADDR:${d.rAddr}`;
-            
             new QRCode(document.getElementById('qrCodeTarget'), {
-                text: qrPayload,
-                width: 110,
-                height: 110,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.L
+                text: `${data.tracking_id}|${data.origin}|${data.destination}|${data.receiver_township}`,
+                width: 100, height: 100
             });
-            
-            // 3. Ready to print
             document.getElementById('shippingLabel').style.display = 'block';
         }
     </script>
-
 </body>
 </html>
