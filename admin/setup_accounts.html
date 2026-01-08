@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Britium Admin Setup</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light p-5">
+    <div class="card p-4 mx-auto" style="max-width: 600px;">
+        <h3>⚠️ Admin Account Generator</h3>
+        <p>Click the button below to create the Super Admin and Manager accounts defined in your requirements.</p>
+        <button id="runSetup" class="btn btn-primary">CREATE ACCOUNTS NOW</button>
+        <div id="status" class="mt-3 text-muted" style="white-space: pre-line;"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+
+        // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCbrF5_QW6Nb3rBVkozT2y0KotL8clr8Jo",
+  authDomain: "britium-express.firebaseapp.com",
+  projectId: "britium-express",
+  storageBucket: "britium-express.firebasestorage.app",
+  messagingSenderId: "406522036528",
+  appId: "1:406522036528:web:7713801d6832932067c8f5"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        // THE ACCOUNTS TO CREATE
+        const accounts = [
+            { email: "mgkyawwanna@gmail.com", role: "super_admin", phone: "09887777585", pass: "Britium2026!" },
+            { email: "md@britiumventures.com", role: "super_admin", phone: "09887777585", pass: "Britium2026!" },
+            { email: "hod@britiumexpress.com", role: "manager", phone: "", pass: "Manager2026!" },
+            { email: "hod_pm@britiumventures.com", role: "manager", phone: "", pass: "Manager2026!" }
+        ];
+
+        document.getElementById('runSetup').addEventListener('click', async () => {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = "Processing...";
+
+            for (const acc of accounts) {
+                try {
+                    // 1. Create Auth User
+                    const userCredential = await createUserWithEmailAndPassword(auth, acc.email, acc.pass);
+                    const user = userCredential.user;
+
+                    // 2. Save Role to Database
+                    await set(ref(db, 'users/' + user.uid), {
+                        email: acc.email,
+                        role: acc.role,
+                        phone: acc.phone,
+                        createdAt: new Date().toISOString()
+                    });
+
+                    statusDiv.innerHTML += `✅ Created: ${acc.email} (${acc.role})\n`;
+                } catch (error) {
+                    statusDiv.innerHTML += `❌ Error (${acc.email}): ${error.message}\n`;
+                }
+            }
+            statusDiv.innerHTML += "\nDONE! You can now delete this file and log in.";
+        });
+    </script>
+</body>
+</html>
