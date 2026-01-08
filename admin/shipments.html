@@ -14,12 +14,13 @@
         :root { --admin-dark: #212529; --brand-blue: #0d2c54; --brand-orange: #ff6b00; }
         body { background-color: #f4f6f9; font-family: 'Segoe UI', sans-serif; }
         
-        /* Sidebar CSS (Must Match Dashboard) */
+        /* SIDEBAR (Standardized) */
         .sidebar { height: 100vh; position: fixed; top: 0; left: 0; width: 250px; background: var(--admin-dark); color: white; z-index: 1000; overflow-y: auto; }
         .sidebar .nav-link { color: #aaa; padding: 15px 20px; font-weight: 500; border-left: 4px solid transparent; }
         .sidebar .nav-link:hover { background: rgba(255,255,255,0.05); color: white; }
         .sidebar .nav-link.active { background: var(--brand-blue); color: white; border-left-color: var(--brand-orange); }
         .sidebar i { width: 25px; text-align: center; margin-right: 10px; }
+        
         .main-content { margin-left: 250px; padding: 20px; }
     </style>
 </head>
@@ -38,14 +39,17 @@
             <li class="nav-item"><a href="setting.html" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
         </ul>
         <div class="p-3 border-top border-secondary">
-            <button onclick="auth.signOut()" class="btn btn-outline-danger w-100 btn-sm fw-bold">Log Out</button>
+            <button onclick="logout()" class="btn btn-outline-danger w-100 btn-sm fw-bold">Log Out</button>
         </div>
     </div>
 
     <div class="main-content">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold">All Shipments</h2>
-            <button class="btn btn-primary" onclick="location.reload()"><i class="fas fa-sync me-2"></i> Refresh</button>
+            <h2 class="fw-bold">Shipment Management</h2>
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-dark" onclick="location.reload()"><i class="fas fa-sync"></i></button>
+                <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-file-export me-2"></i> Export CSV</button>
+            </div>
         </div>
 
         <div class="card border-0 shadow-sm rounded-3">
@@ -58,12 +62,13 @@
                                 <th>Status</th>
                                 <th>Sender</th>
                                 <th>Receiver</th>
+                                <th>Route</th>
                                 <th>Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="shipmentTable">
-                            <tr><td colspan="6" class="text-center py-5">Loading data...</td></tr>
+                            <tr><td colspan="7" class="text-center py-5 text-muted"><i class="fas fa-spinner fa-spin me-2"></i> Connecting to Database...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -72,7 +77,7 @@
     </div>
 
     <script>
-        // CONFIGURATION
+        // 1. CONFIGURATION
         const firebaseConfig = {
             apiKey: "AIzaSyCbrF5_QW6Nb3rBVkozT2y0KotL8clr8Jo",
             authDomain: "britium-express.firebaseapp.com",
@@ -87,33 +92,51 @@
         const db = firebase.database();
         const auth = firebase.auth();
 
-        // AUTH CHECK
+        // 2. AUTH GUARD
         auth.onAuthStateChanged((user) => {
-            if (!user) window.location.href = "login.html";
-            else loadShipments();
+            if (!user) {
+                window.location.href = "login.html";
+            } else {
+                loadShipments();
+            }
         });
 
+        // 3. LOAD DATA
         function loadShipments() {
+            const table = document.getElementById('shipmentTable');
+            
             db.ref('shipments').on('value', (snapshot) => {
                 const data = snapshot.val();
-                const table = document.getElementById('shipmentTable');
                 
                 if (!data) {
-                    table.innerHTML = "<tr><td colspan='6' class='text-center py-5'>No active shipments found.</td></tr>";
+                    table.innerHTML = "<tr><td colspan='7' class='text-center py-5'>No shipment data found.</td></tr>";
                     return;
                 }
 
                 let html = "";
-                // Reverse to show newest first
+                // Reverse entries to show newest first
                 Object.entries(data).reverse().forEach(([key, item]) => {
                     html += `
                         <tr>
-                            <td class="ps-4 fw-bold text-primary">#${key}</td>
+                            <td class="ps-4 fw-bold text-primary">
+                                <a href="#" class="text-decoration-none">${item.tracking_id || key}</a>
+                            </td>
                             <td><span class="badge ${getStatusBadge(item.status)}">${item.status}</span></td>
-                            <td>${item.sender_name || 'N/A'}</td>
-                            <td>${item.receiver_name || 'N/A'}</td>
-                            <td>${new Date(item.timestamp).toLocaleDateString()}</td>
-                            <td><button class="btn btn-sm btn-outline-dark">View</button></td>
+                            <td>
+                                <div class="fw-bold">${item.sender_name || 'N/A'}</div>
+                                <div class="small text-muted">${item.sender_phone || ''}</div>
+                            </td>
+                            <td>
+                                <div class="fw-bold">${item.receiver_name || 'N/A'}</div>
+                                <div class="small text-muted">${item.receiver_phone || ''}</div>
+                            </td>
+                            <td>
+                                <div class="small fw-bold">${item.origin || '?'} <i class="fas fa-arrow-right text-muted mx-1"></i> ${item.destination || '?'}</div>
+                            </td>
+                            <td class="text-muted small">${new Date(item.timestamp).toLocaleDateString()}</td>
+                            <td>
+                                <button class="btn btn-sm btn-light border" onclick="viewDetails('${key}')">View</button>
+                            </td>
                         </tr>
                     `;
                 });
@@ -121,11 +144,25 @@
             });
         }
 
+        // 4. HELPERS
         function getStatusBadge(status) {
             if (status === 'Delivered') return 'bg-success';
             if (status === 'Pending') return 'bg-warning text-dark';
             if (status === 'Cancelled') return 'bg-danger';
-            return 'bg-primary';
+            return 'bg-secondary';
+        }
+
+        function logout() {
+            auth.signOut();
+        }
+
+        function exportData() {
+            alert("Export functionality coming soon in v1.1 update.");
+        }
+
+        function viewDetails(id) {
+            // Placeholder for detail modal or page
+            alert("Viewing details for: " + id);
         }
     </script>
 </body>
