@@ -2,261 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Customers | Britium Admin</title>
+    <title>Customers | Britium Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root { --admin-dark: #212529; --admin-accent: #ff6b00; --brand-blue: #0d2c54; }
-        body { background-color: #e9ecef; font-family: 'Segoe UI', sans-serif; }
-        .sidebar { height: 100vh; position: fixed; width: 250px; background: var(--admin-dark); color: white; z-index: 100; }
-        .main-content { margin-left: 250px; padding: 20px; padding-bottom: 50px; }
-        .nav-link { color: #aaa; padding: 15px; display: flex; align-items: center; }
-        .nav-link:hover { color: white; background: rgba(255,255,255,0.1); }
-        .nav-link.active { color: white; background: var(--brand-blue); border-left: 4px solid var(--admin-accent); }
-        .table-card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow: hidden; margin-top: 20px; }
-        .avatar-sm { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; margin-right: 10px; background-color: #eee; }
-        .badge-vip { background-color: #6610f2; color: white; }
-        .badge-regular { background-color: #6c757d; color: white; }
-        .badge-corp { background-color: #0d6efd; color: white; }
+        :root { --admin-dark: #212529; --brand-blue: #0d2c54; --brand-orange: #ff6b00; }
+        body { background-color: #f4f6f9; font-family: 'Segoe UI', sans-serif; }
+        .sidebar { height: 100vh; position: fixed; top: 0; left: 0; width: 250px; background: var(--admin-dark); color: white; z-index: 1000; overflow-y: auto; }
+        .sidebar .nav-link { color: #aaa; padding: 15px 20px; font-weight: 500; border-left: 4px solid transparent; }
+        .sidebar .nav-link:hover { background: rgba(255,255,255,0.05); color: white; }
+        .sidebar .nav-link.active { background: var(--brand-blue); color: white; border-left-color: var(--brand-orange); }
+        .sidebar i { width: 25px; text-align: center; margin-right: 10px; }
+        .main-content { margin-left: 250px; padding: 20px; }
     </style>
 </head>
 <body>
 
-<div class="sidebar d-flex flex-column p-3">
-    <a href="index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-        <span class="fs-4 fw-bold text-warning">BRITIUM ADMIN</span>
-    </a>
-    <hr>
-<ul class="nav nav-pills flex-column mb-auto mt-2">
-    <li class="nav-item"><a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-    <li class="nav-item"><a href="shipments.html" class="nav-link"><i class="fas fa-box-open"></i> Shipments</a></li>
-    <li class="nav-item"><a href="customers.html" class="nav-link"><i class="fas fa-users"></i> Customers</a></li>
-    <li class="nav-item"><a href="drivers.html" class="nav-link"><i class="fas fa-motorcycle"></i> Drivers</a></li>
-    <li class="nav-item"><a href="finance.html" class="nav-link"><i class="fas fa-wallet"></i> Finance</a></li>
-    <li class="nav-item"><a href="setting.html" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
-</ul>
-    </ul>
-    <hr>
-    <div class="dropdown">
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-            <strong>Admin Staff</strong>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-            <li><a class="dropdown-item" href="../index.html">Sign out</a></li>
+    <div class="sidebar d-flex flex-column p-0">
+        <div class="p-4 border-bottom border-secondary">
+            <h4 class="fw-bold text-white mb-0">BRITIUM<span style="color: var(--brand-orange);">ADMIN</span></h4>
+        </div>
+        <ul class="nav nav-pills flex-column mb-auto mt-2">
+            <li class="nav-item"><a href="index.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li class="nav-item"><a href="shipments.html" class="nav-link"><i class="fas fa-box-open"></i> Shipments</a></li>
+            <li class="nav-item"><a href="customers.html" class="nav-link active"><i class="fas fa-users"></i> Customers</a></li>
+            <li class="nav-item"><a href="drivers.html" class="nav-link"><i class="fas fa-motorcycle"></i> Drivers</a></li>
+            <li class="nav-item"><a href="finance.html" class="nav-link"><i class="fas fa-wallet"></i> Finance</a></li>
+            <li class="nav-item"><a href="setting.html" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
         </ul>
-    </div>
-</div>
-<div class="main-content">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold text-dark">Customer Database</h2>
-        <button class="btn btn-warning fw-bold text-white" data-bs-toggle="modal" data-bs-target="#addCustomerModal" style="background-color: var(--admin-accent);">
-            <i class="fas fa-user-plus me-2"></i> Add Customer
-        </button>
-    </div>
-
-    <div class="row g-4 mb-4">
-        <div class="col-md-3">
-            <div class="card p-3 border-0 shadow-sm border-start border-primary border-4">
-                <h6 class="text-muted">Total Clients</h6>
-                <h3 class="fw-bold mb-0">1,204</h3>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card p-3 border-0 shadow-sm border-start border-success border-4">
-                <h6 class="text-muted">Active This Month</h6>
-                <h3 class="fw-bold mb-0">850</h3>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card p-3 border-0 shadow-sm border-start border-info border-4">
-                <h6 class="text-muted">Corporate Accounts</h6>
-                <h3 class="fw-bold mb-0">45</h3>
-            </div>
+        <div class="p-3 border-top border-secondary">
+            <button onclick="logout()" class="btn btn-outline-danger w-100 btn-sm fw-bold">Log Out</button>
         </div>
     </div>
 
-    <div class="card p-3 border-0 shadow-sm mb-4">
-        <div class="row g-2">
-            <div class="col-md-5">
-                <input type="text" class="form-control" placeholder="Search by Name, Phone, or Shop Name...">
-            </div>
-            <div class="col-md-3">
-                <select class="form-select">
-                    <option selected>All Types</option>
-                    <option>Individual</option>
-                    <option>Online Shop</option>
-                    <option>Corporate</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <select class="form-select">
-                    <option selected>Active</option>
-                    <option>Banned</option>
-                </select>
-            </div>
-            <div class="col-md-2 d-grid">
-                <button class="btn btn-dark">Filter</button>
-            </div>
-        </div>
+    <div class="main-content">
+        <h2 class="fw-bold mb-4">Customer Directory</h2>
+        <div class="alert alert-info">Customer data is auto-generated from shipment history.</div>
     </div>
 
-    <div class="table-card">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="bg-light">
-                    <tr>
-                        <th class="ps-4">Customer Name</th>
-                        <th>Phone / Contact</th>
-                        <th>Type</th>
-                        <th>Total Shipments</th>
-                        <th>Total Spend</th>
-                        <th>Joined Date</th>
-                        <th class="text-end pe-4">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="ps-4">
-                            <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=Tech+Store&background=6610f2&color=fff" class="avatar-sm">
-                                <div>
-                                    <div class="fw-bold">Tech Store Myanmar</div>
-                                    <small class="text-muted">U Ba Maung</small>
-                                </div>
-                            </div>
-                        </td>
-                        <td>09-8974477xx</td>
-                        <td><span class="badge badge-vip rounded-pill">VIP Seller</span></td>
-                        <td class="fw-bold text-center">1,540</td>
-                        <td>4.5M MMK</td>
-                        <td class="small text-muted">Jan 2024</td>
-                        <td class="text-end pe-4">
-                            <button class="btn btn-sm btn-light border" title="View Profile"><i class="fas fa-eye"></i></button>
-                            <button class="btn btn-sm btn-light border" title="Edit"><i class="fas fa-edit"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="ps-4">
-                            <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=ABC+Co&background=0d6efd&color=fff" class="avatar-sm">
-                                <div>
-                                    <div class="fw-bold">ABC Trading Co., Ltd.</div>
-                                    <small class="text-muted">Daw Hla (Manager)</small>
-                                </div>
-                            </div>
-                        </td>
-                        <td>09-4222999xx</td>
-                        <td><span class="badge badge-corp rounded-pill">Corporate</span></td>
-                        <td class="fw-bold text-center">320</td>
-                        <td>1.2M MMK</td>
-                        <td class="small text-muted">Mar 2024</td>
-                        <td class="text-end pe-4">
-                            <button class="btn btn-sm btn-light border" title="View Profile"><i class="fas fa-eye"></i></button>
-                            <button class="btn btn-sm btn-light border" title="Edit"><i class="fas fa-edit"></i></button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="p-3 border-top d-flex justify-content-end">
-            <nav>
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
-                    <li class="page-item active"><a class="page-link bg-dark border-dark" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link text-dark" href="#">Next</a></li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-
-    <div class="d-flex justify-content-between mt-5 pt-4 border-top">
-        <a href="shipments.html" class="btn btn-outline-secondary px-4"><i class="fas fa-arrow-left me-2"></i> Previous</a>
-        <a href="drivers.html" class="btn btn-primary px-4">Next: Drivers <i class="fas fa-arrow-right ms-2"></i></a>
-    </div>
-
-</div>
-
-<div class="modal fade" id="addCustomerModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i> Register New Customer</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label">Full Name / Shop Name</label>
-                        <input type="text" class="form-control" placeholder="e.g. U Ba Maung">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Phone Number</label>
-                        <input type="text" class="form-control" placeholder="09xxxxxxxxx">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email (Optional)</label>
-                        <input type="email" class="form-control" placeholder="name@example.com">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Default Pickup Address</label>
-                        <textarea class="form-control" rows="2"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Account Type</label>
-                        <select class="form-select">
-                            <option>Regular (Individual)</option>
-                            <option>Online Shop (VIP)</option>
-                            <option>Corporate (Monthly Billing)</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-success w-100 fw-bold">Create Account</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const tableBody = document.querySelector("tbody");
-        
-        // 1. Get the list we saved in Step 1
-        let customers = JSON.parse(localStorage.getItem('britium_customers')) || [];
-
-        // 2. If we have data, CLEAR the hardcoded fake rows
-        if (customers.length > 0) {
-            tableBody.innerHTML = ""; // Wipe table clean
-        }
-
-        // 3. Loop through saved customers and build table rows
-        customers.forEach((cust, index) => {
-            let row = `
-                <tr>
-                    <td class="ps-4">
-                        <div class="d-flex align-items-center">
-                            <img src="https://ui-avatars.com/api/?name=${cust.name}&background=random" class="avatar-sm">
-                            <div>
-                                <div class="fw-bold">${cust.name}</div>
-                                <small class="text-muted">${cust.contact || 'Owner'}</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td>${cust.phone}</td>
-                    <td><span class="badge bg-success rounded-pill">${cust.type}</span></td>
-                    <td class="fw-bold text-center">${cust.shipments || 0}</td>
-                    <td>${cust.spend || '0 MMK'}</td>
-                    <td class="small text-muted">${cust.joined}</td>
-                    <td class="text-end pe-4">
-                        <button class="btn btn-sm btn-light border" title="Edit"><i class="fas fa-edit"></i></button>
-                    </td>
-                </tr>
-            `;
-            tableBody.innerHTML += row;
-        });
-    });
-</script>
+        function logout() { window.location.href="login.html"; }
+    </script>
 </body>
 </html>
