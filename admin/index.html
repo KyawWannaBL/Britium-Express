@@ -1,130 +1,446 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Britium Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+import React from 'react';
+import { Link } from 'react-router-dom';
+import {
+  Package,
+  Truck,
+  MapPin,
+  Shield,
+  ArrowRight,
+  Phone,
+  Mail,
+  CheckCircle,
+  Globe,
+  Zap,
+  Users,
+  Award,
+  FileText,
+  Briefcase,
+  Wrench
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { ROUTE_PATHS } from '@/lib/index';
+import { useLanguageContext } from '@/lib/LanguageContext';
+import { IMAGES } from '@/assets/images';
 
-    <style>
-        :root { --admin-dark: #212529; --brand-blue: #0d2c54; --brand-orange: #ff6b00; }
-        body { background-color: #f4f6f9; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
-        .sidebar { height: 100vh; position: fixed; top: 0; left: 0; width: 250px; background: var(--admin-dark); color: white; z-index: 1000; overflow-y: auto; }
-        .sidebar .nav-link { color: #aaa; padding: 15px 20px; font-weight: 500; border-left: 4px solid transparent; }
-        .sidebar .nav-link:hover { background: rgba(255,255,255,0.05); color: white; }
-        .sidebar .nav-link.active { background: var(--brand-blue); color: white; border-left-color: var(--brand-orange); }
-        .sidebar i { width: 25px; text-align: center; margin-right: 10px; }
-        .main-content { margin-left: 250px; padding: 20px; }
-        .stat-card { background: white; border-radius: 10px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; align-items: center; }
-        .stat-icon { width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-right: 20px; }
-    </style>
-</head>
-<body>
+// Replace these paths with your actual file locations
+import deliveryBikePark from '@/assets/images/rider.jpg';
+import deliveryTeam from '@/assets/images/Ko thiha.jpg';
 
-    <div class="sidebar d-flex flex-column p-0">
-        <div class="p-4 border-bottom border-secondary">
-            <h4 class="fw-bold text-white mb-0">BRITIUM<span style="color: var(--brand-orange);">ADMIN</span></h4>
+export default function HomePage() {
+  const { t } = useLanguageContext();
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-br from-navy-900 via-navy-800 to-navy-700 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-900/50 via-transparent to-navy-900/70" />
+        <img
+          src={IMAGES.LOGISTICS_HERO_1}
+          alt="Logistics Operations"
+          className="absolute inset-0 w-full h-full object-cover opacity-20"
+        />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="flex items-center gap-4 mb-6">
+                <img
+                  src={IMAGES.BRITIUM_LOGO_55}
+                  alt="Britium Express Logo"
+                  className="h-16 w-auto"
+                />
+                <div>
+                  <h2 className="text-2xl font-bold text-gold">BRITIUM EXPRESS</h2>
+                  <p className="text-navy-200 text-sm">{t('hero.title')}</p>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
+                  Myanmar's Most <span className="text-gold">Trusted</span> Logistics Partner
+                </h1>
+                <p className="text-xl lg:text-2xl text-navy-200">
+                  {t('hero.subtitle')}
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button asChild size="lg" className="bg-gold hover:bg-gold/90 text-navy-900 font-bold">
+                  <Link to={ROUTE_PATHS.SERVICES}>
+                    {t('hero.cta.services')}
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="border-gold text-gold hover:bg-gold hover:text-navy-900">
+                  <Link to={ROUTE_PATHS.PUBLIC_TRACKING}>
+                    {t('hero.cta.track')}
+                  </Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="relative">
+              <img
+                src={deliveryBikePark}
+                alt="Delivery Service"
+                className="rounded-2xl shadow-2xl w-full object-cover"
+              />
+            </div>
+          </div>
         </div>
-        <ul class="nav nav-pills flex-column mb-auto mt-2">
-            <li class="nav-item"><a href="index.html" class="nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-            <li class="nav-item"><a href="shipments.html" class="nav-link"><i class="fas fa-box-open"></i> Shipments</a></li>
-            <li class="nav-item"><a href="customers.html" class="nav-link"><i class="fas fa-users"></i> Customers</a></li>
-            <li class="nav-item"><a href="drivers.html" class="nav-link"><i class="fas fa-motorcycle"></i> Drivers</a></li>
-            <li class="nav-item"><a href="finance.html" class="nav-link"><i class="fas fa-wallet"></i> Finance</a></li>
-            <li class="nav-item"><a href="setting.html" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
-        </ul>
-        <div class="p-3 border-top border-secondary">
-            <button onclick="logout()" class="btn btn-outline-danger w-100 btn-sm fw-bold"><i class="fas fa-sign-out-alt me-2"></i> Log Out</button>
+      </section>
+
+      {/* Company Overview */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">About Britium Ventures</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Britium Ventures Co., Ltd. is a leading Myanmar-based logistics provider, committed to delivering seamless, reliable, and cost-effective solutions across the logistics spectrum.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <img
+                src={IMAGES.WAREHOUSE_OPS_1}
+                alt="Warehouse Operations"
+                className="rounded-2xl shadow-lg"
+              />
+            </div>
+            <div className="space-y-6">
+              <h3 className="text-3xl font-bold text-gray-900">Our Vision</h3>
+              <p className="text-lg text-gray-600">
+                To be Myanmar's most trusted and forward-moving logistics partner—delivering reliability, compliance, and customer-first solutions that drive progress across industries.
+              </p>
+
+              <h3 className="text-3xl font-bold text-gray-900">Our Mission</h3>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-gold mt-1 flex-shrink-0" />
+                  <p className="text-gray-600">Deliver tailored logistics services that meet evolving client needs with precision and care</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-gold mt-1 flex-shrink-0" />
+                  <p className="text-gray-600">Uphold trust, transparency, and compliance in every transaction</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-gold mt-1 flex-shrink-0" />
+                  <p className="text-gray-600">Continuously enhance efficiency through smart coordination</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-gold mt-1 flex-shrink-0" />
+                  <p className="text-gray-600">Promote sustainable practices in supply chain movement</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
+
+      {/* Integrated Capabilities */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Integrated Capabilities</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              We bring structure and clarity to the complexity of global trade with our comprehensive suite of services.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center mb-4">
+                  <Truck className="w-6 h-6 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Logistics Service</h3>
+                <p className="text-gray-600 mb-4">
+                  Full-spectrum support including freight forwarding, warehousing, inventory management, and multimodal transportation.
+                </p>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Air, Sea & Land Freight</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Warehousing & Storage</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Inventory Management</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center mb-4">
+                  <FileText className="w-6 h-6 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Customs Brokerage</h3>
+                <p className="text-gray-600 mb-4">
+                  Licensed brokerage for import/export customs clearance, ensuring adherence to regulations with minimal delays.
+                </p>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Import/Export Clearance</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />FDA Applications</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Compliance Management</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center mb-4">
+                  <Globe className="w-6 h-6 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Trading Service</h3>
+                <p className="text-gray-600 mb-4">
+                  Streamlined international and domestic trading facilitation, providing reliable market access and documentation compliance.
+                </p>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Market Access</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Documentation</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Trade Facilitation</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center mb-4">
+                  <Package className="w-6 h-6 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Product Sourcing</h3>
+                <p className="text-gray-600 mb-4">
+                  End-to-end product procurement and supplier vetting solutions, ensuring quality, cost-effectiveness, and timely delivery.
+                </p>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Supplier Vetting</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Quality Assurance</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Procurement Management</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center mb-4">
+                  <Briefcase className="w-6 h-6 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Consulting Service</h3>
+                <p className="text-gray-600 mb-4">
+                  In-depth advisory in logistics, trade compliance, market entry, and operational strategy for sustainable growth.
+                </p>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Market Entry Strategy</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Trade Compliance</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Operational Strategy</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center mb-4">
+                  <Wrench className="w-6 h-6 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Engineering Service</h3>
+                <p className="text-gray-600 mb-4">
+                  Custom engineering solutions including technical planning, consulting, and installation for industrial development.
+                </p>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Technical Planning</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Installation Services</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Industrial Development</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Britium Express Delivery */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <img
+                  src={IMAGES.BRITIUM_LOGO_55}
+                  alt="Britium Express"
+                  className="h-12 w-auto"
+                />
+                <div>
+                  <h2 className="text-3xl font-bold text-navy-900">BRITIUM EXPRESS</h2>
+                  <p className="text-gold font-semibold">Fast & Reliable Delivery</p>
+                </div>
+              </div>
+
+              <p className="text-lg text-gray-600">
+                As the dedicated express delivery arm of Britium Ventures, Britium Express delivers more than just parcels—we deliver trust. Connecting Myanmar's key economic hubs: Yangon, Mandalay, and Nay Pyi Taw.
+              </p>
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gold/10 rounded-full flex items-center justify-center">
+                    <Zap className="w-4 h-4 text-gold" />
+                  </div>
+                  <span className="font-semibold">Same-day delivery in major cities</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gold/10 rounded-full flex items-center justify-center">
+                    <Shield className="w-4 h-4 text-gold" />
+                  </div>
+                  <span className="font-semibold">Real-time tracking & notifications</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gold/10 rounded-full flex items-center justify-center">
+                    <Users className="w-4 h-4 text-gold" />
+                  </div>
+                  <span className="font-semibold">Professional & caring staff</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4 pt-6">
+                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <div className="text-2xl font-bold text-navy-900">3,000</div>
+                  <div className="text-sm text-gray-600">MMK Yangon Zone A</div>
+                </div>
+                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <div className="text-2xl font-bold text-navy-900">5,000</div>
+                  <div className="text-sm text-gray-600">MMK Mandalay</div>
+                </div>
+                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <div className="text-2xl font-bold text-navy-900">5,000</div>
+                  <div className="text-sm text-gray-600">MMK Nay Pyi Taw</div>
+                </div>
+              </div>
+
+              <Button asChild size="lg" className="bg-gold hover:bg-gold/90 text-navy-900">
+                <Link to={ROUTE_PATHS.PUBLIC_TRACKING}>
+                  Track Your Package
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              </Button>
+            </div>
+
+            <div className="relative">
+              <img
+                src={deliveryTeam}
+                alt="Express Delivery Team"
+                className="rounded-2xl shadow-lg w-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us */}
+      <section className="py-20 bg-navy-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">Why Choose Britium Ventures?</h2>
+            <p className="text-xl text-navy-200 max-w-3xl mx-auto">
+              Our success stems from a skilled team, decades of collective industry knowledge, and a firm commitment to client satisfaction.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-8 h-8 text-gold" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Trust</h3>
+              <p className="text-navy-200">
+                We operate with full accountability in every service we provide. Trust is maintained through discipline and consistency.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Award className="w-8 h-8 text-gold" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Reliability</h3>
+              <p className="text-navy-200">
+                Our proven track record in handling time-sensitive and complex shipments makes us a benchmark for reliability.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="w-8 h-8 text-gold" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Customer-Centric</h3>
+              <p className="text-navy-200">
+                Every package and project is handled with care. Our team provides professional, friendly, and proactive service.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="w-8 h-8 text-gold" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Compliance</h3>
+              <p className="text-navy-200">
+                We uphold the highest standards of compliance with all local and international trade regulations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Ready to Get Started?</h2>
+            <p className="text-xl text-gray-600">
+              Contact us today to discuss your logistics needs and discover how we can help your business grow.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardContent className="p-8">
+                <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Phone className="w-8 h-8 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Call Us</h3>
+                <p className="text-gray-600 mb-4">Speak with our logistics experts</p>
+                <div className="space-y-1 text-sm">
+                  <p>+95-9-89747744 (Express)</p>
+                  <p>+95-9-89747711 (General)</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardContent className="p-8">
+                <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Mail className="w-8 h-8 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Email Us</h3>
+                <p className="text-gray-600 mb-4">Get a quote or ask questions</p>
+                <p className="text-sm">info@britiumventures.com</p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardContent className="p-8">
+                <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <MapPin className="w-8 h-8 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Visit Us</h3>
+                <p className="text-gray-600 mb-4">Our main office in Yangon</p>
+                <p className="text-sm">No. 277, Corner of Anawrahta Road and Bo Moe Gyo St., East Dagon Township, Yangon</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="text-center mt-12">
+            <Button asChild size="lg" className="bg-gold hover:bg-gold/90 text-navy-900">
+              <Link to={ROUTE_PATHS.CONTACT}>
+                Get Started Today
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
     </div>
-
-    <div class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="fw-bold m-0">Dashboard Overview</h4>
-            <span class="badge bg-success">● System Online</span>
-        </div>
-
-        <div class="row g-4 mb-4">
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-icon bg-primary text-white"><i class="fas fa-box"></i></div>
-                    <div><h6 class="text-muted mb-1">Total Shipments</h6><h3 class="fw-bold mb-0" id="cntTotal">0</h3></div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-icon bg-warning text-dark"><i class="fas fa-clock"></i></div>
-                    <div><h6 class="text-muted mb-1">Pending</h6><h3 class="fw-bold mb-0" id="cntPending">0</h3></div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-icon bg-success text-white"><i class="fas fa-check"></i></div>
-                    <div><h6 class="text-muted mb-1">Delivered</h6><h3 class="fw-bold mb-0" id="cntDelivered">0</h3></div>
-                </div>
-            </div>
-             <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-icon bg-danger text-white"><i class="fas fa-exclamation-circle"></i></div>
-                    <div><h6 class="text-muted mb-1">Issues</h6><h3 class="fw-bold mb-0">0</h3></div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white fw-bold">Recent Activity</div>
-            <div class="card-body p-0">
-                <table class="table table-hover mb-0">
-                    <thead class="bg-light"><tr><th class="ps-4">Tracking ID</th><th>Status</th><th>Update</th></tr></thead>
-                    <tbody id="activityTable"><tr><td colspan="3" class="text-center py-4">Loading...</td></tr></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // CONFIG
-        const firebaseConfig = {
-            apiKey: "AIzaSyCbrF5_QW6Nb3rBVkozT2y0KotL8clr8Jo",
-            authDomain: "britium-express.firebaseapp.com",
-            databaseURL: "https://britium-express-default-rtdb.firebaseio.com",
-            projectId: "britium-express",
-            storageBucket: "britium-express.firebasestorage.app",
-            messagingSenderId: "406522036528",
-            appId: "1:406522036528:web:7713801d6832932067c8f5"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.database();
-
-        auth.onAuthStateChanged(user => { if(!user) window.location.href = "login.html"; else loadData(); });
-        function logout() { auth.signOut(); }
-
-        function loadData() {
-            db.ref('shipments').limitToLast(10).on('value', snapshot => {
-                const data = snapshot.val();
-                if(!data) return;
-                let total=0, pending=0, delivered=0, rows="";
-                Object.values(data).forEach(i => {
-                    total++;
-                    if(i.status === 'Pending') pending++;
-                    if(i.status === 'Delivered') delivered++;
-                });
-                document.getElementById('cntTotal').innerText = total;
-                document.getElementById('cntPending').innerText = pending;
-                document.getElementById('cntDelivered').innerText = delivered;
-                
-                Object.entries(data).reverse().slice(0,5).forEach(([k,v]) => {
-                    rows += `<tr><td class="ps-4 fw-bold">#${k}</td><td><span class="badge bg-secondary">${v.status}</span></td><td>${new Date(v.timestamp).toLocaleTimeString()}</td></tr>`;
-                });
-                document.getElementById('activityTable').innerHTML = rows;
-            });
-        }
-    </script>
-</body>
-</html>
+  );
+}
