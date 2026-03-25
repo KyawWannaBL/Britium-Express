@@ -1,299 +1,446 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Britium Express | Fast, Reliable, & Secure Delivery</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --brand-blue: #0d2c54;
-            --brand-orange: #ff6b00;
-            --light-gray: #f8f9fa;
-        }
+import React from 'react';
+import { Link } from 'react-router-dom';
+import {
+  Package,
+  Truck,
+  MapPin,
+  Shield,
+  ArrowRight,
+  Phone,
+  Mail,
+  CheckCircle,
+  Globe,
+  Zap,
+  Users,
+  Award,
+  FileText,
+  Briefcase,
+  Wrench
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { ROUTE_PATHS } from '@/lib/index';
+import { useLanguageContext } from '@/lib/LanguageContext';
+import { IMAGES } from '@/assets/images';
 
-        body { font-family: 'Roboto', sans-serif; color: #333; }
+// Replace these paths with your actual file locations
+import deliveryBikePark from '@/assets/images/rider.jpg';
+import deliveryTeam from '@/assets/images/Ko thiha.jpg';
 
-        /* Top Bar & Navbar */
-        .top-bar { background-color: var(--brand-blue); color: white; font-size: 0.9rem; padding: 10px 0; }
-        .navbar { background: white; padding: 10px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .navbar-brand img { height: 70px; width: auto; }
-        .nav-link { font-weight: 500; color: #444 !important; margin-left: 15px; text-transform: uppercase; font-size: 0.9rem; }
-        .nav-link:hover, .nav-link.active { color: var(--brand-orange) !important; }
-        .btn-portal { border: 2px solid var(--brand-blue); color: var(--brand-blue); font-weight: 700; padding: 8px 25px; border-radius: 5px; transition: 0.3s; }
-        .btn-portal:hover { background-color: var(--brand-blue); color: white; }
+export default function HomePage() {
+  const { t } = useLanguageContext();
 
-        /* Hero Section */
-        .hero-section { position: relative; padding: 160px 0; color: white; overflow: hidden; }
-        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
-        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(13, 44, 84, 0.85); z-index: -1; }
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-br from-navy-900 via-navy-800 to-navy-700 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-900/50 via-transparent to-navy-900/70" />
+        <img
+          src={IMAGES.LOGISTICS_HERO_1}
+          alt="Logistics Operations"
+          className="absolute inset-0 w-full h-full object-cover opacity-20"
+        />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="flex items-center gap-4 mb-6">
+                <img
+                  src={IMAGES.BRITIUM_LOGO_55}
+                  alt="Britium Express Logo"
+                  className="h-16 w-auto"
+                />
+                <div>
+                  <h2 className="text-2xl font-bold text-gold">BRITIUM EXPRESS</h2>
+                  <p className="text-navy-200 text-sm">{t('hero.title')}</p>
+                </div>
+              </div>
 
-        /* Components */
-        .tracking-widget { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); border-top: 6px solid var(--brand-orange); }
-        .tracking-btn { background-color: var(--brand-orange); color: white; font-weight: 700; border: none; text-transform: uppercase; width: 100%; padding: 12px; }
-        .tracking-btn:hover { background-color: #e65e00; color: white; }
-        
-        .feature-card { border: 1px solid #eee; border-radius: 8px; padding: 30px; transition: 0.3s; background: white; height: 100%; }
-        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: var(--brand-orange); }
-        .icon-box { font-size: 2.5rem; color: var(--brand-blue); margin-bottom: 20px; }
+              <div className="space-y-4">
+                <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
+                  Myanmar's Most <span className="text-gold">Trusted</span> Logistics Partner
+                </h1>
+                <p className="text-xl lg:text-2xl text-navy-200">
+                  {t('hero.subtitle')}
+                </p>
+              </div>
 
-        .hub-item { border-left: 5px solid var(--brand-orange); background: white; padding: 15px 20px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button asChild size="lg" className="bg-gold hover:bg-gold/90 text-navy-900 font-bold">
+                  <Link to={ROUTE_PATHS.SERVICES}>
+                    {t('hero.cta.services')}
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="border-gold text-gold hover:bg-gold hover:text-navy-900">
+                  <Link to={ROUTE_PATHS.PUBLIC_TRACKING}>
+                    {t('hero.cta.track')}
+                  </Link>
+                </Button>
+              </div>
+            </div>
 
-        /* Carousel Styles */
-        .carousel-item img { height: 500px; object-fit: cover; border-radius: 8px; }
-        
-        /* Mobile App Section */
-        .app-section { background-color: #f0f4f8; border-top: 1px solid #ddd; }
-        .app-card { background: white; border-radius: 15px; padding: 25px; transition: 0.3s; height: 100%; border: 1px solid #eee; }
-        .app-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: var(--brand-blue); }
-        
-        .btn-download { background-color: #333; color: white; border-radius: 50px; padding: 12px 25px; text-decoration: none; font-weight: bold; transition: 0.3s; display: inline-flex; align-items: center; width: 100%; justify-content: center; }
-        .btn-download:hover { background-color: var(--brand-orange); color: white; }
-        .btn-download.secondary { background-color: var(--brand-blue); }
-        .btn-download.secondary:hover { background-color: #0b2444; }
-
-        /* Footer */
-        footer { background-color: #111; color: #aaa; padding: 60px 0 20px; }
-        footer a { color: #aaa; text-decoration: none; display: block; margin-bottom: 10px; }
-        footer a:hover { color: var(--brand-orange); }
-        .float-wa { position: fixed; bottom: 25px; right: 25px; background-color: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); z-index: 1000; }
-    </style>
-</head>
-<body>
-
-    <div class="top-bar">
-        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-            <div><span class="me-3"><i class="fas fa-phone-alt"></i> +95 9 897 4477 44</span> <span><i class="fas fa-envelope"></i> info@britiumexpress.com</span></div>
-            <div><span class="me-3"><i class="fas fa-clock"></i> Mon-Sat: 9:00am - 5:30pm</span></div>
+            <div className="relative">
+              <img
+                src={deliveryBikePark}
+                alt="Delivery Service"
+                className="rounded-2xl shadow-2xl w-full object-cover"
+              />
+            </div>
+          </div>
         </div>
-    </div>
+      </section>
 
-    <nav class="navbar navbar-expand-lg sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="assets/images/BRITIUM EXPRESS logo.png" alt="Britium Express Logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navContent">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="tracking.html">Track & Trace</a></li>
-                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="quote.html">Get Quote</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="news.html">News</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item ms-lg-3"><a href="login.html" class="btn btn-portal">Login</a></li>
+      {/* Company Overview */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">About Britium Ventures</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Britium Ventures Co., Ltd. is a leading Myanmar-based logistics provider, committed to delivering seamless, reliable, and cost-effective solutions across the logistics spectrum.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <img
+                src={IMAGES.WAREHOUSE_OPS_1}
+                alt="Warehouse Operations"
+                className="rounded-2xl shadow-lg"
+              />
+            </div>
+            <div className="space-y-6">
+              <h3 className="text-3xl font-bold text-gray-900">Our Vision</h3>
+              <p className="text-lg text-gray-600">
+                To be Myanmar's most trusted and forward-moving logistics partner—delivering reliability, compliance, and customer-first solutions that drive progress across industries.
+              </p>
+
+              <h3 className="text-3xl font-bold text-gray-900">Our Mission</h3>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-gold mt-1 flex-shrink-0" />
+                  <p className="text-gray-600">Deliver tailored logistics services that meet evolving client needs with precision and care</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-gold mt-1 flex-shrink-0" />
+                  <p className="text-gray-600">Uphold trust, transparency, and compliance in every transaction</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-gold mt-1 flex-shrink-0" />
+                  <p className="text-gray-600">Continuously enhance efficiency through smart coordination</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-gold mt-1 flex-shrink-0" />
+                  <p className="text-gray-600">Promote sustainable practices in supply chain movement</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Integrated Capabilities */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Integrated Capabilities</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              We bring structure and clarity to the complexity of global trade with our comprehensive suite of services.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center mb-4">
+                  <Truck className="w-6 h-6 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Logistics Service</h3>
+                <p className="text-gray-600 mb-4">
+                  Full-spectrum support including freight forwarding, warehousing, inventory management, and multimodal transportation.
+                </p>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Air, Sea & Land Freight</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Warehousing & Storage</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Inventory Management</li>
                 </ul>
-            </div>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center mb-4">
+                  <FileText className="w-6 h-6 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Customs Brokerage</h3>
+                <p className="text-gray-600 mb-4">
+                  Licensed brokerage for import/export customs clearance, ensuring adherence to regulations with minimal delays.
+                </p>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Import/Export Clearance</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />FDA Applications</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Compliance Management</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center mb-4">
+                  <Globe className="w-6 h-6 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Trading Service</h3>
+                <p className="text-gray-600 mb-4">
+                  Streamlined international and domestic trading facilitation, providing reliable market access and documentation compliance.
+                </p>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Market Access</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Documentation</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Trade Facilitation</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center mb-4">
+                  <Package className="w-6 h-6 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Product Sourcing</h3>
+                <p className="text-gray-600 mb-4">
+                  End-to-end product procurement and supplier vetting solutions, ensuring quality, cost-effectiveness, and timely delivery.
+                </p>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Supplier Vetting</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Quality Assurance</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Procurement Management</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center mb-4">
+                  <Briefcase className="w-6 h-6 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Consulting Service</h3>
+                <p className="text-gray-600 mb-4">
+                  In-depth advisory in logistics, trade compliance, market entry, and operational strategy for sustainable growth.
+                </p>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Market Entry Strategy</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Trade Compliance</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Operational Strategy</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center mb-4">
+                  <Wrench className="w-6 h-6 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Engineering Service</h3>
+                <p className="text-gray-600 mb-4">
+                  Custom engineering solutions including technical planning, consulting, and installation for industrial development.
+                </p>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Technical Planning</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Installation Services</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-gold" />Industrial Development</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-    </nav>
+      </section>
 
-    <header class="hero-section">
-        <img src="assets/images/BV EXPRESS.gif" alt="Britium Express Animation" class="hero-bg">
-        <div class="hero-overlay"></div>
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-7 mb-5 mb-lg-0">
-                    <h1 class="display-4 fw-bold mb-3">Fast. Reliable. Secure.</h1>
-                    <p class="lead mb-4">Connecting Yangon, Mandalay, and Nay Pyi Taw with the rest of the world. Trust Britium Express for your logistics needs.</p>
-                    <div class="d-flex gap-2">
-                        <a href="services.html" class="btn btn-light btn-lg text-dark fw-bold px-4">Our Services</a>
-                        <a href="contact.html" class="btn btn-outline-light btn-lg fw-bold px-4">Contact Sales</a>
-                    </div>
+      {/* Britium Express Delivery */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <img
+                  src={IMAGES.BRITIUM_LOGO_55}
+                  alt="Britium Express"
+                  className="h-12 w-auto"
+                />
+                <div>
+                  <h2 className="text-3xl font-bold text-navy-900">BRITIUM EXPRESS</h2>
+                  <p className="text-gold font-semibold">Fast & Reliable Delivery</p>
                 </div>
-                <div class="col-lg-5">
-                    <div class="tracking-widget">
-                        <h4 class="fw-bold text-dark mb-3"><i class="fas fa-search-location text-primary me-2"></i>Track Shipment</h4>
-                        <form action="tracking.html">
-                            <div class="mb-3"><input type="text" class="form-control form-control-lg" placeholder="Enter Tracking ID (e.g., BE-89744)"></div>
-                            <button type="submit" class="tracking-btn">TRACK NOW</button>
-                        </form>
-                    </div>
+              </div>
+
+              <p className="text-lg text-gray-600">
+                As the dedicated express delivery arm of Britium Ventures, Britium Express delivers more than just parcels—we deliver trust. Connecting Myanmar's key economic hubs: Yangon, Mandalay, and Nay Pyi Taw.
+              </p>
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gold/10 rounded-full flex items-center justify-center">
+                    <Zap className="w-4 h-4 text-gold" />
+                  </div>
+                  <span className="font-semibold">Same-day delivery in major cities</span>
                 </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gold/10 rounded-full flex items-center justify-center">
+                    <Shield className="w-4 h-4 text-gold" />
+                  </div>
+                  <span className="font-semibold">Real-time tracking & notifications</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gold/10 rounded-full flex items-center justify-center">
+                    <Users className="w-4 h-4 text-gold" />
+                  </div>
+                  <span className="font-semibold">Professional & caring staff</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4 pt-6">
+                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <div className="text-2xl font-bold text-navy-900">3,000</div>
+                  <div className="text-sm text-gray-600">MMK Yangon Zone A</div>
+                </div>
+                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <div className="text-2xl font-bold text-navy-900">5,000</div>
+                  <div className="text-sm text-gray-600">MMK Mandalay</div>
+                </div>
+                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <div className="text-2xl font-bold text-navy-900">5,000</div>
+                  <div className="text-sm text-gray-600">MMK Nay Pyi Taw</div>
+                </div>
+              </div>
+
+              <Button asChild size="lg" className="bg-gold hover:bg-gold/90 text-navy-900">
+                <Link to={ROUTE_PATHS.PUBLIC_TRACKING}>
+                  Track Your Package
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              </Button>
             </div>
+
+            <div className="relative">
+              <img
+                src={deliveryTeam}
+                alt="Express Delivery Team"
+                className="rounded-2xl shadow-lg w-full object-cover"
+              />
+            </div>
+          </div>
         </div>
-    </header>
+      </section>
 
-    <section class="py-5 bg-light">
-        <div class="container">
-            <div class="text-center mb-5"><h2 class="fw-bold" style="color: var(--brand-blue)">Our Solutions</h2></div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="feature-card text-center">
-                        <i class="fas fa-truck icon-box"></i>
-                        <h4 class="fw-bold">Domestic Express</h4>
-                        <p class="text-muted">Connecting Yangon, Mandalay, and Nay Pyi Taw with same-day and next-day options.</p>
-                        <a href="domestic.html" class="btn btn-sm btn-outline-primary">View Hubs</a>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card text-center">
-                        <i class="fas fa-hand-holding-dollar icon-box"></i>
-                        <h4 class="fw-bold">COD & E-Commerce</h4>
-                        <p class="text-muted">Secure Cash on Delivery handling with fast remittance for online sellers.</p>
-                        <a href="register_seller.html" class="btn btn-sm btn-outline-primary">Seller Registration</a>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card text-center">
-                        <i class="fas fa-plane-departure icon-box"></i>
-                        <h4 class="fw-bold">International Cargo</h4>
-                        <p class="text-muted">Consolidated air cargo to USA, Asia, and Europe. Customs Licensed handling.</p>
-                        <a href="quote.html" class="btn btn-sm btn-outline-primary">Check Rates Below</a>
-                    </div>
-                </div>
+      {/* Why Choose Us */}
+      <section className="py-20 bg-navy-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">Why Choose Britium Ventures?</h2>
+            <p className="text-xl text-navy-200 max-w-3xl mx-auto">
+              Our success stems from a skilled team, decades of collective industry knowledge, and a firm commitment to client satisfaction.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-8 h-8 text-gold" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Trust</h3>
+              <p className="text-navy-200">
+                We operate with full accountability in every service we provide. Trust is maintained through discipline and consistency.
+              </p>
             </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Award className="w-8 h-8 text-gold" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Reliability</h3>
+              <p className="text-navy-200">
+                Our proven track record in handling time-sensitive and complex shipments makes us a benchmark for reliability.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="w-8 h-8 text-gold" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Customer-Centric</h3>
+              <p className="text-navy-200">
+                Every package and project is handled with care. Our team provides professional, friendly, and proactive service.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="w-8 h-8 text-gold" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Compliance</h3>
+              <p className="text-navy-200">
+                We uphold the highest standards of compliance with all local and international trade regulations.
+              </p>
+            </div>
+          </div>
         </div>
-    </section>
+      </section>
 
-    <section class="py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold" style="color: var(--brand-blue)">Our Fleet in Action</h2>
-                <p class="text-muted">Reliable vehicles for every delivery requirement.</p>
-            </div>
-            <div id="fleetCarousel" class="carousel slide shadow-lg rounded" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#fleetCarousel" data-bs-slide-to="0" class="active"></button>
-                    <button type="button" data-bs-target="#fleetCarousel" data-bs-slide-to="1"></button>
-                    <button type="button" data-bs-target="#fleetCarousel" data-bs-slide-to="2"></button>
+      {/* Contact Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Ready to Get Started?</h2>
+            <p className="text-xl text-gray-600">
+              Contact us today to discuss your logistics needs and discover how we can help your business grow.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardContent className="p-8">
+                <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Phone className="w-8 h-8 text-gold" />
                 </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="assets/images/1.jpg" class="d-block w-100" alt="Fleet 1">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5 class="fw-bold bg-dark bg-opacity-50 d-inline-block px-3 py-1 rounded">Daily Operations</h5>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="assets/images/2.jpg" class="d-block w-100" alt="Fleet 2">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5 class="fw-bold bg-dark bg-opacity-50 d-inline-block px-3 py-1 rounded">Highway Express</h5>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="assets/images/3.jpg" class="d-block w-100" alt="Fleet 3">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5 class="fw-bold bg-dark bg-opacity-50 d-inline-block px-3 py-1 rounded">Last Mile Delivery</h5>
-                        </div>
-                    </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Call Us</h3>
+                <p className="text-gray-600 mb-4">Speak with our logistics experts</p>
+                <div className="space-y-1 text-sm">
+                  <p>+95-9-89747744 (Express)</p>
+                  <p>+95-9-89747711 (General)</p>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#fleetCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#fleetCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardContent className="p-8">
+                <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Mail className="w-8 h-8 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Email Us</h3>
+                <p className="text-gray-600 mb-4">Get a quote or ask questions</p>
+                <p className="text-sm">info@britiumventures.com</p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardContent className="p-8">
+                <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <MapPin className="w-8 h-8 text-gold" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Visit Us</h3>
+                <p className="text-gray-600 mb-4">Our main office in Yangon</p>
+                <p className="text-sm">No. 277, Corner of Anawrahta Road and Bo Moe Gyo St., East Dagon Township, Yangon</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="text-center mt-12">
+            <Button asChild size="lg" className="bg-gold hover:bg-gold/90 text-navy-900">
+              <Link to={ROUTE_PATHS.CONTACT}>
+                Get Started Today
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </Button>
+          </div>
         </div>
-    </section>
-
-    <section class="py-5 bg-dark text-white">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-5 mb-4 mb-lg-0">
-                    <h2 class="fw-bold text-warning mb-3">Watch Our Story</h2>
-                    <h3 class="fw-light mb-4">See how Britium Express connects Myanmar.</h3>
-                    <p class="lead opacity-75">From the bustling streets of Yangon to the highways of Mandalay, our music video showcases the dedication of our team and the spirit of our delivery network.</p>
-                </div>
-                <div class="col-lg-7">
-                    <div class="ratio ratio-16x9 shadow-lg border border-secondary rounded">
-                        <video controls class="rounded">
-                            <source src="assets/images/BRITIUM EXPRESS SONG.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h3 class="fw-bold mb-4" style="color: var(--brand-blue)">Our Network Hubs</h3>
-                    <div class="hub-item"><h5 class="fw-bold m-0">YANGON (HQ)</h5><small>Commercial Capital</small></div>
-                    <div class="hub-item"><h5 class="fw-bold m-0">MANDALAY</h5><small>Upper Myanmar Hub</small></div>
-                    <div class="hub-item"><h5 class="fw-bold m-0">NAY PYI TAW</h5><small>Central Region</small></div>
-                </div>
-                <div class="col-lg-6 text-center">
-                    <img src="https://img.freepik.com/free-vector/delivery-staff-driving-motorcycle-shopping-online-concept_1150-34879.jpg" alt="Rider" class="img-fluid rounded" style="max-height: 350px;">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-5 app-section">
-        <div class="container">
-            <div class="row justify-content-center align-items-center">
-                <div class="col-lg-12 text-center mb-5">
-                    <h2 class="fw-bold" style="color: var(--brand-blue);">Download Our Apps</h2>
-                    <p class="lead text-muted">Choose the right application for your needs.</p>
-                </div>
-                
-                <div class="col-md-5 col-lg-4 mb-4">
-                    <div class="app-card text-center shadow-sm">
-                        <i class="fas fa-box-open fa-3x text-primary mb-3"></i>
-                        <h4 class="fw-bold">Britium Express</h4>
-                        <p class="text-muted small mb-4">For Customers & Tracking</p>
-                        <a href="https://britium.geliverymm.com/Britium-Express-2025-12-31.apk" class="btn-download shadow-sm">
-                            <i class="fab fa-android fa-lg me-2"></i> Download APK
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-md-5 col-lg-4 mb-4">
-                    <div class="app-card text-center shadow-sm" style="border-color: var(--brand-orange);">
-                        <i class="fas fa-users-cog fa-3x text-warning mb-3"></i>
-                        <h4 class="fw-bold">Britium Connect</h4>
-                        <p class="text-muted small mb-4">For Partners & Internal Use</p>
-                        <a href="https://drive.google.com/file/d/19gx1t_14GUl5ty1t7lvkSEowG4PwZTTU/view?usp=sharing" target="_blank" class="btn-download secondary shadow-sm">
-                            <i class="fab fa-google-drive fa-lg me-2"></i> Download App
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <h5 class="text-uppercase text-white">Britium Express</h5>
-                    <p class="small">A dedicated delivery arm of Britium Ventures Company Limited.</p>
-                </div>
-                <div class="col-lg-2 mb-4">
-                    <h5 class="text-white">Links</h5>
-                    <a href="tracking.html">Track Package</a>
-                    <a href="services.html">Services</a>
-                    <a href="contact.html">Contact</a>
-                </div>
-                <div class="col-lg-3 mb-4">
-                    <h5 class="text-white">Downloads</h5>
-                    <a href="https://britium.geliverymm.com/Britium-Express-2025-12-31.apk" class="text-warning small mb-2"><i class="fas fa-download me-1"></i> Britium Express APK</a>
-                    <a href="https://drive.google.com/file/d/19gx1t_14GUl5ty1t7lvkSEowG4PwZTTU/view?usp=sharing" target="_blank" class="text-warning small"><i class="fas fa-download me-1"></i> Britium Connect APK</a>
-                </div>
-                <div class="col-lg-3 mb-4">
-                    <h5 class="text-white">Contact Us</h5>
-                    <p class="mb-1"><i class="fas fa-phone me-2"></i> +95 9 897 4477 44</p>
-                    <p><i class="fas fa-map-marker-alt me-2"></i> No. 277, East Dagon Township, Yangon.</p>
-                </div>
-            </div>
-            <div class="border-top border-secondary pt-3 mt-3 text-center small">&copy; 2026 Britium Ventures Company Limited.</div>
-        </div>
-    </footer>
-
-    <a href="https://wa.me/959897447744" class="float-wa"><i class="fab fa-whatsapp"></i></a>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-</html>
+      </section>
+    </div>
+  );
+}
