@@ -1,421 +1,1040 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Booking | Britium Express</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  Calculator,
+  MapPin,
+  Package,
+  Truck,
+  Plane,
+  Clock,
+  Phone,
+  Mail,
+  ArrowRight,
+  Shield,
+  IdCard,
+  Ban,
+  FileCheck,
+  Loader2,
+  AlertTriangle,
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { ROUTE_PATHS } from '@/lib/index';
+import { IMAGES } from '@/assets/images';
+import { supabase } from '@/integrations/supabase/client';
 
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
-    
-    <style>
-        :root { --brand-blue: #0d2c54; --brand-orange: #ff6b00; --light-gray: #f8f9fa; }
-        body { font-family: 'Roboto', sans-serif; color: #333; background-color: #f9f9f9; }
+interface PricingData {
+  id: string;
+  service_type: 'domestic' | 'international';
+  region: string;
+  destination: string;
+  weight_min: number;
+  weight_max: number | null;
+  price_per_kg: number;
+  currency: string;
+}
 
-        /* UI Styles */
-        .top-bar { background-color: var(--brand-blue); color: white; padding: 10px 0; font-size: 0.9rem; }
-        .navbar { background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 15px 0; }
-        .navbar-brand img { height: 70px; width: auto; }
-        .nav-link { font-weight: 500; color: #444 !important; text-transform: uppercase; font-size: 0.9rem; }
-        .nav-link.active { color: var(--brand-orange) !important; }
-        .btn-portal { border: 2px solid var(--brand-blue); color: var(--brand-blue); font-weight: 700; padding: 8px 25px; border-radius: 5px; }
+interface QuoteResult {
+  basePrice: number;
+  totalPrice: number;
+  currency: string;
+  deliveryTime: string;
+  chargeableWeight?: number;
+  actualWeight?: number;
+  volumetricWeight?: number;
+}
 
-        .page-hero { background: linear-gradient(rgba(13,44,84,0.9), rgba(13,44,84,0.9)), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); background-size: cover; padding: 80px 0; color: white; text-align: center; }
-        .quote-container { margin-top: -50px; background: white; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); overflow: hidden; position: relative; z-index: 10; }
-        
-        .quote-sidebar { background-color: var(--brand-blue); color: white; padding: 40px 30px; }
-        .quote-form-area { padding: 40px; }
-        
-        .form-section-title { font-size: 0.85rem; font-weight: 700; color: #888; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 15px; margin-top: 15px; letter-spacing: 1px; }
-        .form-label { font-size: 0.85rem; font-weight: 600; color: var(--brand-blue); }
-        
-        .compliance-box { background: #fff3cd; border: 1px solid #ffecb5; padding: 15px; border-radius: 8px; font-size: 0.9rem; margin-top: 20px; }
-        .compliance-box input[type="checkbox"] { transform: scale(1.2); margin-right: 10px; }
+const MYANMAR_LOCATIONS: Record<string, string[]> = {
+  Yangon: [
+    'Kamaryut',
+    'Bahan',
+    'Sanchaung',
+    'Hlaing',
+    'Insein',
+    'Mingaladon',
+    'North Okkalapa',
+    'South Okkalapa',
+    'Yankin',
+    'Thingangyun',
+    'Tamwe',
+    'South Dagon',
+    'North Dagon',
+    'East Dagon',
+    'Thaketa',
+    'Dawbon',
+    'Pazundaung',
+    'Botahtaung',
+    'Kyauktada',
+    'Latha',
+    'Lanmadaw',
+    'Ahlone',
+    'Kyeemyindaung',
+    'Hlaing Tharyar',
+    'Shwepyithar',
+  ],
+  Mandalay: [
+    'Chanayethazan',
+    'Chanmyathazi',
+    'Maha Aungmye',
+    'Pyigyidagun',
+    'Aungmyethazan',
+    'Amarapura',
+    'Patheingyi',
+    'Pyin Oo Lwin',
+  ],
+  'Nay Pyi Taw': [
+    'Zabuthiri',
+    'Dekkhinathiri',
+    'Ottarathiri',
+    'Pobbathiri',
+    'Zeyarthiri',
+    'Pyinmana',
+    'Lewe',
+    'Tatkon',
+  ],
+};
 
-        .result-box { background: #f8fcfd; border: 2px dashed #bce0fd; border-radius: 10px; padding: 20px; margin-top: 25px; display: none; }
+export default function GetQuotePage() {
+  const [serviceType, setServiceType] = useState<'domestic' | 'international'>('domestic');
 
-        /* Thermal Label CSS */
-        #shippingLabel { width: 57mm; background: white; padding: 2mm; font-family: 'Arial', sans-serif; color: black; border: 1px solid #ccc; margin: 20px auto; display: none; }
-        .label-header { text-align: center; border-bottom: 2px solid black; padding-bottom: 5px; margin-bottom: 5px; }
-        .label-logo { max-width: 40mm; height: auto; }
-        .label-route { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid black; padding-bottom: 5px; margin-bottom: 5px; }
-        .route-code { font-size: 18px; font-weight: 900; }
-        .label-addr { font-size: 10px; border-bottom: 1px dashed black; padding-bottom: 5px; margin-bottom: 5px; }
-        .label-info { font-size: 10px; line-height: 1.3; margin-bottom: 5px; }
-        .label-row { display: flex; justify-content: space-between; }
-        .qr-container { text-align: center; margin: 8px 0; }
-        .label-footer { font-size: 8px; text-align: center; border-top: 1px solid black; padding-top: 2px; font-weight: bold; }
+  const [pricing, setPricing] = useState<PricingData[]>([]);
+  const [loadingPricing, setLoadingPricing] = useState(true);
 
-        @media print {
-            body * { visibility: hidden; }
-            #shippingLabel, #shippingLabel * { visibility: visible; }
-            #shippingLabel { position: absolute; left: 0; top: 0; width: 57mm; border: none; margin: 0; padding: 0; }
-            @page { size: 57mm auto; margin: 0mm; }
-        }
-    </style>
-</head>
-<body>
+  const [region, setRegion] = useState('');
+  const [destination, setDestination] = useState('');
 
-    <div class="top-bar"><div class="container text-center text-md-start"><span><i class="fas fa-phone-alt me-2"></i> +95 9 897 4477 44</span></div></div>
-    <nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="index.html"><img src="assets/images/BRITIUM EXPRESS logo.png" alt="Logo"></a>
-            <div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link active" href="quote.html">Get Quote</a></li><li class="nav-item"><a class="nav-link" href="login.html">Login</a></li></ul></div>
+  const [weight, setWeight] = useState('1');
+  const [dimensions, setDimensions] = useState({
+    length: '',
+    width: '',
+    height: '',
+  });
+
+  // Domestic secure booking fields
+  const [senderName, setSenderName] = useState('');
+  const [senderPhone, setSenderPhone] = useState('');
+  const [originCity, setOriginCity] = useState('Yangon');
+  const [destinationCity, setDestinationCity] = useState('');
+  const [senderTownship, setSenderTownship] = useState('');
+  const [receiverTownship, setReceiverTownship] = useState('');
+  const [receiverName, setReceiverName] = useState('');
+  const [receiverPhone, setReceiverPhone] = useState('');
+  const [receiverAddress, setReceiverAddress] = useState('');
+  const [complianceChecked, setComplianceChecked] = useState(false);
+
+  const [quote, setQuote] = useState<QuoteResult | null>(null);
+
+  useEffect(() => {
+    const fetchPricingData = async () => {
+      setLoadingPricing(true);
+      try {
+        const { data, error } = await supabase
+          .from('pricing_2026_02_03_21_00')
+          .select('*')
+          .eq('is_active', true)
+          .order('region, destination, weight_min');
+
+        if (error) throw error;
+        setPricing((data || []) as PricingData[]);
+      } catch (error) {
+        console.error('Error fetching pricing:', error);
+      } finally {
+        setLoadingPricing(false);
+      }
+    };
+
+    fetchPricingData();
+  }, []);
+
+  useEffect(() => {
+    setDestination('');
+    setQuote(null);
+  }, [serviceType, region]);
+
+  useEffect(() => {
+    calculateQuote();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [serviceType, region, destination, weight, dimensions, pricing]);
+
+  const regionOptions = useMemo(() => {
+    if (serviceType === 'domestic') {
+      return [
+        { value: 'yangon', label: 'Yangon City' },
+        { value: 'mandalay', label: 'Mandalay Region' },
+        { value: 'naypyitaw', label: 'Nay Pyi Taw' },
+      ];
+    }
+
+    return [
+      { value: 'asia', label: 'Asia' },
+      { value: 'europe', label: 'Europe' },
+      { value: 'north_america', label: 'North America' },
+      { value: 'oceania', label: 'Oceania' },
+      { value: 'middle_east', label: 'Middle East' },
+    ];
+  }, [serviceType]);
+
+  const availableDestinations = useMemo(() => {
+    return pricing
+      .filter((p) => p.service_type === serviceType && p.region === region)
+      .map((p) => p.destination)
+      .filter((dest, index, arr) => arr.indexOf(dest) === index)
+      .sort();
+  }, [pricing, serviceType, region]);
+
+  const senderTownships = useMemo(() => {
+    return MYANMAR_LOCATIONS[originCity] || [];
+  }, [originCity]);
+
+  const receiverTownships = useMemo(() => {
+    return MYANMAR_LOCATIONS[destinationCity] || [];
+  }, [destinationCity]);
+
+  const domesticFormValid = useMemo(() => {
+    return (
+      senderName.trim() &&
+      senderPhone.trim() &&
+      originCity &&
+      destinationCity &&
+      senderTownship &&
+      receiverTownship &&
+      receiverName.trim() &&
+      receiverPhone.trim() &&
+      receiverAddress.trim() &&
+      complianceChecked
+    );
+  }, [
+    senderName,
+    senderPhone,
+    originCity,
+    destinationCity,
+    senderTownship,
+    receiverTownship,
+    receiverName,
+    receiverPhone,
+    receiverAddress,
+    complianceChecked,
+  ]);
+
+  const calculateQuote = () => {
+    if (!destination || !weight || !region) {
+      setQuote(null);
+      return;
+    }
+
+    const actualWeight = parseFloat(weight);
+    if (isNaN(actualWeight) || actualWeight <= 0) {
+      setQuote(null);
+      return;
+    }
+
+    let volumetricWeight = 0;
+    const l = parseFloat(dimensions.length);
+    const w = parseFloat(dimensions.width);
+    const h = parseFloat(dimensions.height);
+
+    if (!isNaN(l) && !isNaN(w) && !isNaN(h) && l > 0 && w > 0 && h > 0) {
+      volumetricWeight = (l * w * h) / 6000;
+    }
+
+    const chargeableWeight =
+      serviceType === 'international'
+        ? Math.max(actualWeight, volumetricWeight)
+        : actualWeight;
+
+    const applicablePricing = pricing.find(
+      (p) =>
+        p.service_type === serviceType &&
+        p.region === region &&
+        p.destination === destination &&
+        chargeableWeight >= p.weight_min &&
+        (p.weight_max === null || chargeableWeight <= p.weight_max)
+    );
+
+    if (!applicablePricing) {
+      setQuote(null);
+      return;
+    }
+
+    let totalPrice = 0;
+
+    if (serviceType === 'domestic') {
+      if (chargeableWeight <= 1) {
+        totalPrice = applicablePricing.price_per_kg;
+      } else {
+        const additionalWeight = chargeableWeight - 1;
+        totalPrice = applicablePricing.price_per_kg + additionalWeight * 500;
+      }
+    } else {
+      totalPrice = applicablePricing.price_per_kg * chargeableWeight;
+    }
+
+    setQuote({
+      basePrice: applicablePricing.price_per_kg,
+      totalPrice: Math.round(totalPrice),
+      currency: applicablePricing.currency,
+      deliveryTime: getDeliveryTime(serviceType, region),
+      chargeableWeight: Math.round(chargeableWeight * 100) / 100,
+      actualWeight,
+      volumetricWeight: Math.round(volumetricWeight * 100) / 100,
+    });
+  };
+
+  const getDeliveryTime = (
+    type: 'domestic' | 'international',
+    currentRegion: string
+  ) => {
+    if (type === 'domestic') {
+      if (currentRegion === 'yangon') return '1–2 Days';
+      return '2–3 Days';
+    }
+
+    switch (currentRegion) {
+      case 'asia':
+        return '3–5 Days';
+      case 'middle_east':
+        return '4–6 Days';
+      case 'europe':
+      case 'north_america':
+      case 'oceania':
+        return '5–7 Days';
+      default:
+        return '3–7 Days';
+    }
+  };
+
+  const handleServiceChange = (value: string) => {
+    const next = value as 'domestic' | 'international';
+    setServiceType(next);
+    setRegion('');
+    setDestination('');
+    setQuote(null);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#f9f9f9]">
+      {/* Top bar */}
+      <div className="bg-navy-900 py-2 text-sm text-white">
+        <div className="mx-auto flex max-w-7xl items-center justify-center px-4 sm:px-6 lg:justify-start lg:px-8">
+          <div className="flex items-center gap-2">
+            <Phone className="h-4 w-4 text-gold" />
+            <span>+95 9 897 4477 44</span>
+          </div>
         </div>
-    </nav>
+      </div>
 
-    <header class="page-hero">
-        <div class="container">
-            <h1 class="fw-bold display-5 mb-3">Secure Booking Portal</h1>
-            <p class="lead opacity-75">Identity Verified Shipping & Compliance Check.</p>
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-navy-900 text-white">
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-900/85 via-navy-900/80 to-navy-900/90" />
+        <img
+          src={IMAGES.LOGISTICS_HERO_3}
+          alt="Secure Booking"
+          className="absolute inset-0 h-full w-full object-cover opacity-20"
+        />
+
+        <div className="relative mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 lg:px-8">
+          <h1 className="mb-4 text-4xl font-bold lg:text-6xl">
+            Secure Booking <span className="text-gold">Portal</span>
+          </h1>
+          <p className="mx-auto max-w-3xl text-lg text-navy-200 lg:text-2xl">
+            Identity verified shipping, instant quote calculation, and compliance-first booking.
+          </p>
         </div>
-    </header>
+      </section>
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="quote-container row g-0">
-                    
-                    <div class="col-md-4 quote-sidebar d-none d-md-block">
-                        <h4 class="fw-bold mb-4">Security Policy</h4>
-                        <div class="mb-4"><small class="opacity-75">To comply with logistics regulations, all senders must verify their identity.</small></div>
-                        <ul class="list-unstyled small opacity-75">
-                            <li class="mb-2"><i class="fas fa-id-card me-2"></i> NRC/Passport Required</li>
-                            <li class="mb-2"><i class="fas fa-ban me-2"></i> No Prohibited Items</li>
-                            <li class="mb-2"><i class="fas fa-file-contract me-2"></i> Legal Declarations</li>
-                        </ul>
+      {/* Main quote card */}
+      <section className="relative z-10 -mt-10 pb-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="overflow-hidden rounded-2xl bg-white shadow-[0_15px_40px_rgba(0,0,0,0.1)]">
+            <div className="grid lg:grid-cols-12">
+              {/* Sidebar */}
+              <div className="hidden bg-navy-900 p-8 text-white lg:col-span-4 lg:block">
+                <div className="sticky top-8">
+                  <h2 className="mb-4 text-2xl font-bold">Security Policy</h2>
+                  <p className="mb-8 text-sm leading-6 text-navy-200">
+                    To comply with logistics regulations, all senders must verify their
+                    identity and confirm shipment compliance before booking.
+                  </p>
+
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4">
+                      <IdCard className="mt-0.5 h-5 w-5 text-gold" />
+                      <div>
+                        <p className="font-semibold">NRC / Passport Required</p>
+                        <p className="text-sm text-navy-200">
+                          Identity details should match the sender information.
+                        </p>
+                      </div>
                     </div>
 
-                    <div class="col-md-8 quote-form-area">
-                        <h3 class="fw-bold text-dark mb-4">New Shipment</h3>
-
-                        <ul class="nav nav-pills mb-4" id="pills-tab" role="tablist">
-                            <li class="nav-item"><button class="nav-link active" id="pills-domestic-tab" data-bs-toggle="pill" data-bs-target="#pills-domestic">Domestic</button></li>
-                            <li class="nav-item"><button class="nav-link" id="pills-international-tab" data-bs-toggle="pill" data-bs-target="#pills-international">International</button></li>
-                        </ul>
-
-                        <div class="tab-content" id="pills-tabContent">
-                            
-                            <div class="tab-pane fade show active" id="pills-domestic">
-                                <form id="domForm">
-                                    <div class="form-section-title">1. KYC IDENTITY VERIFICATION</div>
-                                    <div class="row g-2 mb-2">
-                                        <div class="col-12">
-                                            <label class="form-label text-danger">Sender Full Name (Must match ID)</label>
-                                            <input type="text" class="form-control" id="dSenderName" placeholder="e.g. U Kyaw Kyaw" required oninput="validateDom()">
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="form-label">Phone Number</label>
-                                            <input type="tel" class="form-control" id="dSenderPhone" placeholder="09..." required oninput="validateDom()">
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="form-label">Upload National ID (Front)</label>
-                                            <input type="file" class="form-control" id="dSenderID" accept="image/*" required onchange="validateDom()">
-                                            <div class="form-text small text-muted">Files are encrypted.</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-section-title">2. SHIPMENT INFO</div>
-                                    
-                                    <div class="row g-2 mb-2">
-                                        <div class="col-6">
-                                            <label class="form-label">Origin City</label>
-                                            <select class="form-select" id="dOrigin" onchange="loadTownships('dOrigin', 'dSenderTownship')">
-                                                <option selected disabled>Select City</option>
-                                                <option value="Yangon">Yangon</option>
-                                                <option value="Mandalay">Mandalay</option>
-                                                <option value="Nay Pyi Taw">Nay Pyi Taw</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="form-label">Destination City</label>
-                                            <select class="form-select" id="dDest" onchange="loadTownships('dDest', 'dReceiverTownship')">
-                                                <option selected disabled>Select City</option>
-                                                <option value="Mandalay">Mandalay</option>
-                                                <option value="Yangon">Yangon</option>
-                                                <option value="Nay Pyi Taw">Nay Pyi Taw</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="row g-2 mb-2">
-                                        <div class="col-6">
-                                            <label class="form-label">Sender Township</label>
-                                            <select class="form-select" id="dSenderTownship" disabled>
-                                                <option>Select City First</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="form-label">Receiver Township</label>
-                                            <select class="form-select" id="dReceiverTownship" disabled>
-                                                <option>Select City First</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="row g-2 mb-2">
-                                        <div class="col-12">
-                                            <label class="form-label">Weight (Kg)</label>
-                                            <input type="number" class="form-control" id="dWeight" placeholder="0.0" step="0.1" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-section-title">3. RECEIVER DETAILS</div>
-                                    <div class="row g-2">
-                                        <div class="col-6"><input type="text" class="form-control" id="dRecName" placeholder="Receiver Name" required></div>
-                                        <div class="col-6"><input type="text" class="form-control" id="dRecPhone" placeholder="Receiver Phone" required></div>
-                                        <div class="col-12"><input type="text" class="form-control" id="dRecAddr" placeholder="Full Street Address" required></div>
-                                    </div>
-
-                                    <div class="compliance-box">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="dCompliance" onchange="validateDom()">
-                                            <label class="form-check-label fw-bold" for="dCompliance">
-                                                I declare that this shipment contains NO prohibited items (Drugs, Weapons, Batteries, Liquids) and I agree to Britium Express Terms & Conditions.
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <button type="button" id="dSubmitBtn" class="btn btn-warning w-100 fw-bold mt-4 py-3 text-white" disabled onclick="processBooking('dom')">
-                                        <i class="fas fa-lock me-2"></i> VERIFY ID & BOOK SHIPMENT
-                                    </button>
-                                </form>
-                                
-                                <div id="domResult" class="result-box text-center">
-                                    <h5 class="fw-bold text-success"><i class="fas fa-check-circle"></i> Booking Confirmed!</h5>
-                                    <p>Your ID has been securely uploaded to the Admin Dashboard.</p>
-                                    <h2 class="fw-bold" id="domPriceDisplay">0 MMK</h2>
-                                    <div class="d-flex justify-content-center gap-2 mt-3">
-                                        <button onclick="window.print()" class="btn btn-dark"><i class="fas fa-print me-2"></i> Print Label</button>
-                                        <a href="tracking.html" class="btn btn-outline-primary">Track Status</a>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="tab-pane fade" id="pills-international">
-                                <form id="intlForm">
-                                    <div class="form-section-title">1. KYC IDENTITY VERIFICATION</div>
-                                    <div class="row g-2 mb-2">
-                                        <div class="col-12"><label class="text-danger small fw-bold">SENDER NAME (MATCH ID)</label><input type="text" class="form-control" id="iSenderName" required oninput="validateIntl()"></div>
-                                        <div class="col-6"><input type="file" class="form-control" id="iSenderID" accept="image/*" required onchange="validateIntl()"></div>
-                                        <div class="col-6"><input type="tel" class="form-control" id="iSenderPhone" placeholder="Phone" required></div>
-                                    </div>
-                                    
-                                    <div class="form-section-title">2. SHIPMENT INFO</div>
-                                    <div class="row g-2 mb-2">
-                                        <div class="col-12"><select class="form-select" id="iCountry"><option value="Thailand">Thailand</option><option value="Singapore">Singapore</option><option value="USA">USA</option></select></div>
-                                        <div class="col-6"><input type="number" class="form-control" id="iWeight" placeholder="Weight" required></div>
-                                    </div>
-                                    
-                                    <div class="compliance-box">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="iCompliance" onchange="validateIntl()">
-                                            <label class="form-check-label fw-bold" for="iCompliance">I agree to International Air Cargo Regulations (No Dangerous Goods). Confirmed ID Match.</label>
-                                        </div>
-                                    </div>
-                                    
-                                    <button type="button" id="iSubmitBtn" class="btn btn-primary w-100 fw-bold mt-4 py-3" disabled onclick="processBooking('intl')">
-                                        <i class="fas fa-plane me-2"></i> VERIFY & BOOK CARGO
-                                    </button>
-                                </form>
-                                <div id="intlResult" class="result-box text-center">
-                                    <h2 id="intlPriceDisplay">0 MMK</h2>
-                                    <button onclick="window.print()" class="btn btn-dark mt-2">Print Label</button>
-                                </div>
-                            </div>
-
-                        </div>
+                    <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4">
+                      <Ban className="mt-0.5 h-5 w-5 text-gold" />
+                      <div>
+                        <p className="font-semibold">No Prohibited Items</p>
+                        <p className="text-sm text-navy-200">
+                          No dangerous goods, restricted goods, weapons, or illegal items.
+                        </p>
+                      </div>
                     </div>
+
+                    <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4">
+                      <FileCheck className="mt-0.5 h-5 w-5 text-gold" />
+                      <div>
+                        <p className="font-semibold">Legal Declarations</p>
+                        <p className="text-sm text-navy-200">
+                          Booking is subject to terms, regulations, and shipment review.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-8 rounded-xl border border-gold/20 bg-gold/10 p-4">
+                    <div className="flex items-start gap-3">
+                      <Shield className="mt-0.5 h-5 w-5 text-gold" />
+                      <div>
+                        <p className="font-semibold text-white">Compliance First</p>
+                        <p className="text-sm text-navy-200">
+                          Britium Express prioritizes secure, trackable, and regulation-ready
+                          shipment handling.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-            </div>
-        </div>
+              </div>
 
-        <div id="shippingLabel">
-            <div class="label-header">
-                <img src="assets/images/BRITIUM EXPRESS logo.png" alt="Logo" class="label-logo">
-                <div class="label-type" id="lblService">SERVICE</div>
+              {/* Form area */}
+              <div className="p-6 sm:p-8 lg:col-span-8">
+                <div className="mb-6">
+                  <h2 className="text-3xl font-bold text-gray-900">New Shipment</h2>
+                  <p className="mt-2 text-gray-600">
+                    Choose service type, enter shipment details, and get an instant quote.
+                  </p>
+                </div>
+
+                <Tabs value={serviceType} onValueChange={handleServiceChange} className="mb-8">
+                  <TabsList className="grid w-full max-w-md grid-cols-2 bg-gray-100">
+                    <TabsTrigger
+                      value="domestic"
+                      className="data-[state=active]:bg-gold data-[state=active]:text-navy-900"
+                    >
+                      <Truck className="mr-2 h-4 w-4" />
+                      Domestic
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="international"
+                      className="data-[state=active]:bg-gold data-[state=active]:text-navy-900"
+                    >
+                      <Plane className="mr-2 h-4 w-4" />
+                      International
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+
+                <div className="grid gap-8 xl:grid-cols-3">
+                  {/* Left form */}
+                  <div className="space-y-8 xl:col-span-2">
+                    {serviceType === 'domestic' && (
+                      <>
+                        <section>
+                          <div className="mb-4 border-b pb-2">
+                            <p className="text-xs font-bold uppercase tracking-[0.16em] text-gray-500">
+                              1. KYC Identity Verification
+                            </p>
+                          </div>
+
+                          <div className="grid gap-4 md:grid-cols-2">
+                            <div className="md:col-span-2">
+                              <Label className="mb-2 block text-sm font-semibold text-navy-900">
+                                Sender Full Name
+                              </Label>
+                              <Input
+                                value={senderName}
+                                onChange={(e) => setSenderName(e.target.value)}
+                                placeholder="e.g. U Kyaw Kyaw"
+                                className="h-12"
+                              />
+                            </div>
+
+                            <div>
+                              <Label className="mb-2 block text-sm font-semibold text-navy-900">
+                                Phone Number
+                              </Label>
+                              <Input
+                                value={senderPhone}
+                                onChange={(e) => setSenderPhone(e.target.value)}
+                                placeholder="09..."
+                                className="h-12"
+                              />
+                            </div>
+
+                            <div>
+                              <Label className="mb-2 block text-sm font-semibold text-navy-900">
+                                ID Upload
+                              </Label>
+                              <Input type="file" className="h-12" />
+                              <p className="mt-1 text-xs text-gray-500">
+                                Files are encrypted and handled securely.
+                              </p>
+                            </div>
+                          </div>
+                        </section>
+
+                        <section>
+                          <div className="mb-4 border-b pb-2">
+                            <p className="text-xs font-bold uppercase tracking-[0.16em] text-gray-500">
+                              2. Shipment Info
+                            </p>
+                          </div>
+
+                          <div className="grid gap-4 md:grid-cols-2">
+                            <div>
+                              <Label className="mb-2 block text-sm font-semibold text-navy-900">
+                                Origin City
+                              </Label>
+                              <Select
+                                value={originCity}
+                                onValueChange={(value) => {
+                                  setOriginCity(value);
+                                  setSenderTownship('');
+                                }}
+                              >
+                                <SelectTrigger className="h-12">
+                                  <SelectValue placeholder="Select city" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Yangon">Yangon</SelectItem>
+                                  <SelectItem value="Mandalay">Mandalay</SelectItem>
+                                  <SelectItem value="Nay Pyi Taw">Nay Pyi Taw</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+
+                            <div>
+                              <Label className="mb-2 block text-sm font-semibold text-navy-900">
+                                Destination City
+                              </Label>
+                              <Select
+                                value={destinationCity}
+                                onValueChange={(value) => {
+                                  setDestinationCity(value);
+                                  setReceiverTownship('');
+                                }}
+                              >
+                                <SelectTrigger className="h-12">
+                                  <SelectValue placeholder="Select city" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Yangon">Yangon</SelectItem>
+                                  <SelectItem value="Mandalay">Mandalay</SelectItem>
+                                  <SelectItem value="Nay Pyi Taw">Nay Pyi Taw</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+
+                            <div>
+                              <Label className="mb-2 block text-sm font-semibold text-navy-900">
+                                Sender Township
+                              </Label>
+                              <Select
+                                value={senderTownship}
+                                onValueChange={setSenderTownship}
+                              >
+                                <SelectTrigger className="h-12">
+                                  <SelectValue placeholder="Select township" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {senderTownships.map((township) => (
+                                    <SelectItem key={township} value={township}>
+                                      {township}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+
+                            <div>
+                              <Label className="mb-2 block text-sm font-semibold text-navy-900">
+                                Receiver Township
+                              </Label>
+                              <Select
+                                value={receiverTownship}
+                                onValueChange={setReceiverTownship}
+                              >
+                                <SelectTrigger className="h-12">
+                                  <SelectValue placeholder="Select township" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {receiverTownships.map((township) => (
+                                    <SelectItem key={township} value={township}>
+                                      {township}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                        </section>
+                      </>
+                    )}
+
+                    <section>
+                      <div className="mb-4 border-b pb-2">
+                        <p className="text-xs font-bold uppercase tracking-[0.16em] text-gray-500">
+                          {serviceType === 'domestic' ? '3. Quote Setup' : '1. Quote Setup'}
+                        </p>
+                      </div>
+
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <div>
+                          <Label className="mb-2 block text-sm font-semibold text-navy-900">
+                            From
+                          </Label>
+                          <Select value="yangon" disabled>
+                            <SelectTrigger className="h-12">
+                              <SelectValue placeholder="Origin" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="yangon">Yangon, Myanmar</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div>
+                          <Label className="mb-2 block text-sm font-semibold text-navy-900">
+                            {serviceType === 'domestic' ? 'Region' : 'Destination Region'}
+                          </Label>
+                          <Select value={region} onValueChange={setRegion}>
+                            <SelectTrigger className="h-12">
+                              <SelectValue placeholder="Select region" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {regionOptions.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <Label className="mb-2 block text-sm font-semibold text-navy-900">
+                            {serviceType === 'domestic' ? 'Township / City' : 'Country'}
+                          </Label>
+                          <Select
+                            value={destination}
+                            onValueChange={setDestination}
+                            disabled={!region}
+                          >
+                            <SelectTrigger className="h-12">
+                              <SelectValue placeholder="Select destination" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {availableDestinations.map((dest) => (
+                                <SelectItem key={dest} value={dest}>
+                                  {dest}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div>
+                          <Label className="mb-2 block text-sm font-semibold text-navy-900">
+                            Weight (kg)
+                          </Label>
+                          <Input
+                            type="number"
+                            min="0.1"
+                            step="0.1"
+                            value={weight}
+                            onChange={(e) => setWeight(e.target.value)}
+                            className="h-12"
+                            placeholder="Enter weight"
+                          />
+                        </div>
+
+                        <div className="md:col-span-1">
+                          <Label className="mb-2 block text-sm font-semibold text-navy-900">
+                            Delivery Estimate
+                          </Label>
+                          <div className="flex h-12 items-center rounded-md border bg-gray-50 px-4 text-sm text-gray-700">
+                            {region ? getDeliveryTime(serviceType, region) : 'Select region first'}
+                          </div>
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <Label className="mb-2 block text-sm font-semibold text-navy-900">
+                            Dimensions (cm) — Optional
+                          </Label>
+                          <div className="grid grid-cols-3 gap-3">
+                            <Input
+                              type="number"
+                              placeholder="Length"
+                              value={dimensions.length}
+                              onChange={(e) =>
+                                setDimensions((prev) => ({ ...prev, length: e.target.value }))
+                              }
+                              className="h-12"
+                            />
+                            <Input
+                              type="number"
+                              placeholder="Width"
+                              value={dimensions.width}
+                              onChange={(e) =>
+                                setDimensions((prev) => ({ ...prev, width: e.target.value }))
+                              }
+                              className="h-12"
+                            />
+                            <Input
+                              type="number"
+                              placeholder="Height"
+                              value={dimensions.height}
+                              onChange={(e) =>
+                                setDimensions((prev) => ({ ...prev, height: e.target.value }))
+                              }
+                              className="h-12"
+                            />
+                          </div>
+                          <p className="mt-2 text-xs text-gray-500">
+                            Used to calculate volumetric weight for international shipments.
+                          </p>
+                        </div>
+                      </div>
+                    </section>
+
+                    {serviceType === 'domestic' && (
+                      <>
+                        <section>
+                          <div className="mb-4 border-b pb-2">
+                            <p className="text-xs font-bold uppercase tracking-[0.16em] text-gray-500">
+                              4. Receiver Details
+                            </p>
+                          </div>
+
+                          <div className="grid gap-4 md:grid-cols-2">
+                            <div>
+                              <Input
+                                value={receiverName}
+                                onChange={(e) => setReceiverName(e.target.value)}
+                                placeholder="Receiver Name"
+                                className="h-12"
+                              />
+                            </div>
+                            <div>
+                              <Input
+                                value={receiverPhone}
+                                onChange={(e) => setReceiverPhone(e.target.value)}
+                                placeholder="Receiver Phone"
+                                className="h-12"
+                              />
+                            </div>
+                            <div className="md:col-span-2">
+                              <Input
+                                value={receiverAddress}
+                                onChange={(e) => setReceiverAddress(e.target.value)}
+                                placeholder="Full Street Address"
+                                className="h-12"
+                              />
+                            </div>
+                          </div>
+                        </section>
+
+                        <section className="rounded-xl border border-yellow-300 bg-yellow-50 p-4">
+                          <div className="flex items-start gap-3">
+                            <Checkbox
+                              id="compliance"
+                              checked={complianceChecked}
+                              onCheckedChange={(checked) =>
+                                setComplianceChecked(Boolean(checked))
+                              }
+                              className="mt-1"
+                            />
+                            <div>
+                              <Label
+                                htmlFor="compliance"
+                                className="cursor-pointer text-sm font-semibold text-gray-900"
+                              >
+                                I declare that this shipment contains no prohibited items
+                                (drugs, weapons, batteries, liquids) and I agree to
+                                Britium Express Terms & Conditions.
+                              </Label>
+                            </div>
+                          </div>
+                        </section>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Quote panel */}
+                  <div className="xl:col-span-1">
+                    <Card className="sticky top-8 overflow-hidden border-0 shadow-xl">
+                      <CardHeader className="bg-gold text-navy-900">
+                        <CardTitle className="flex items-center gap-2 text-2xl">
+                          <Calculator className="h-6 w-6" />
+                          Your Quote
+                        </CardTitle>
+                      </CardHeader>
+
+                      <CardContent className="p-6">
+                        {loadingPricing ? (
+                          <div className="flex min-h-[240px] items-center justify-center">
+                            <div className="text-center">
+                              <Loader2 className="mx-auto mb-3 h-8 w-8 animate-spin text-navy-900" />
+                              <p className="text-sm text-gray-500">Loading pricing...</p>
+                            </div>
+                          </div>
+                        ) : quote ? (
+                          <div className="space-y-6">
+                            <div className="text-center">
+                              <div className="mb-2 text-4xl font-extrabold text-navy-900">
+                                {quote.totalPrice.toLocaleString()} {quote.currency}
+                              </div>
+                              <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                                <Clock className="mr-1 h-4 w-4" />
+                                {quote.deliveryTime}
+                              </Badge>
+                            </div>
+
+                            <div className="space-y-3 border-t pt-4 text-sm">
+                              <div className="flex justify-between gap-4">
+                                <span className="text-gray-500">Service</span>
+                                <span className="font-medium capitalize">{serviceType}</span>
+                              </div>
+
+                              <div className="flex justify-between gap-4">
+                                <span className="text-gray-500">Route</span>
+                                <span className="text-right font-medium">
+                                  Yangon → {destination}
+                                </span>
+                              </div>
+
+                              {serviceType === 'international' ? (
+                                <>
+                                  <div className="flex justify-between gap-4">
+                                    <span className="text-gray-500">Actual Weight</span>
+                                    <span className="font-medium">
+                                      {quote.actualWeight} kg
+                                    </span>
+                                  </div>
+
+                                  {quote.volumetricWeight !== undefined &&
+                                    quote.volumetricWeight > 0 && (
+                                      <div className="flex justify-between gap-4">
+                                        <span className="text-gray-500">
+                                          Volumetric Weight
+                                        </span>
+                                        <span className="font-medium">
+                                          {quote.volumetricWeight} kg
+                                        </span>
+                                      </div>
+                                    )}
+
+                                  <div className="flex justify-between gap-4 font-semibold">
+                                    <span className="text-gray-900">Chargeable Weight</span>
+                                    <span className="text-navy-900">
+                                      {quote.chargeableWeight} kg
+                                    </span>
+                                  </div>
+
+                                  <div className="flex justify-between gap-4">
+                                    <span className="text-gray-500">Rate per kg</span>
+                                    <span className="font-medium">
+                                      {quote.basePrice.toLocaleString()} {quote.currency}
+                                    </span>
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                  <div className="flex justify-between gap-4">
+                                    <span className="text-gray-500">Weight</span>
+                                    <span className="font-medium">{weight} kg</span>
+                                  </div>
+
+                                  <div className="flex justify-between gap-4">
+                                    <span className="text-gray-500">Base Rate (1kg)</span>
+                                    <span className="font-medium">
+                                      {quote.basePrice.toLocaleString()} {quote.currency}
+                                    </span>
+                                  </div>
+
+                                  {parseFloat(weight) > 1 && (
+                                    <div className="flex justify-between gap-4">
+                                      <span className="text-gray-500">
+                                        Additional ({(parseFloat(weight) - 1).toFixed(1)}kg)
+                                      </span>
+                                      <span className="font-medium">
+                                        {((parseFloat(weight) - 1) * 500).toLocaleString()}{' '}
+                                        {quote.currency}
+                                      </span>
+                                    </div>
+                                  )}
+                                </>
+                              )}
+                            </div>
+
+                            {serviceType === 'domestic' ? (
+                              <Button
+                                size="lg"
+                                className="w-full bg-navy-900 hover:bg-navy-800"
+                                disabled={!domesticFormValid}
+                              >
+                                Verify ID & Book Shipment
+                                <ArrowRight className="ml-2 h-4 w-4" />
+                              </Button>
+                            ) : (
+                              <Button
+                                asChild
+                                size="lg"
+                                className="w-full bg-navy-900 hover:bg-navy-800"
+                              >
+                                <Link to={ROUTE_PATHS.CONTACT}>
+                                  Book Cargo
+                                  <ArrowRight className="ml-2 h-4 w-4" />
+                                </Link>
+                              </Button>
+                            )}
+
+                            <p className="text-center text-xs leading-5 text-gray-500">
+                              {serviceType === 'domestic'
+                                ? '*Additional weight is charged at 500 MMK per kg after the first 1 kg.'
+                                : '*International rates are based on chargeable weight, whichever is greater between actual and volumetric weight.'}
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="py-10 text-center">
+                            <Package className="mx-auto mb-4 h-14 w-14 text-gray-300" />
+                            <p className="mb-2 font-medium text-gray-700">
+                              No quote yet
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              Select region, destination, and shipment weight to calculate.
+                            </p>
+                          </div>
+                        )}
+
+                        {serviceType === 'domestic' && !domesticFormValid && (
+                          <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+                            <div className="flex items-start gap-2">
+                              <AlertTriangle className="mt-0.5 h-4 w-4" />
+                              <p>
+                                Complete sender, receiver, routing, and compliance details to
+                                enable secure booking.
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="label-route">
-                <div class="route-code" id="lblOrg">ORG</div><div class="route-arrow">✈</div><div class="route-code" id="lblDst">DST</div>
-            </div>
-            <div class="label-addr">
-                <span class="small text-muted">To:</span> <strong id="lblRecName">NAME</strong>
-                <div id="lblRecAddr">Address</div>
-                <div class="small">Tel: <span id="lblRecPhone"></span></div>
-            </div>
-            <div class="label-info">
-                <div class="label-row"><span>Ref:</span> <span class="fw-b" id="lblRef">#Q-0000</span></div>
-                <div class="label-row"><span>Sender:</span> <span class="fw-b" id="lblSendName">Verified</span></div>
-                <div class="label-row"><span>Route:</span> <span class="fw-b" id="lblTownshipRoute">City-City</span></div>
-                <div class="label-row"><span>Weight/Price:</span> <span class="fw-b" id="lblDetails">0kg / 0MMK</span></div>
-            </div>
-            <div class="qr-container" id="qrCodeTarget"></div>
-            <div class="label-footer">ID VERIFIED • SECURITY CHECKED</div>
+          </div>
         </div>
+      </section>
+
+      {/* Extra info cards */}
+      <section className="bg-gray-50 py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <Card className="text-center transition-shadow hover:shadow-lg">
+              <CardContent className="p-8">
+                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
+                  <MapPin className="h-8 w-8 text-blue-600" />
+                </div>
+                <h3 className="mb-4 text-xl font-bold text-gray-900">Wide Coverage</h3>
+                <p className="text-gray-600">
+                  Domestic delivery to major cities and townships across Myanmar, plus
+                  international shipping coverage to multiple global regions.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center transition-shadow hover:shadow-lg">
+              <CardContent className="p-8">
+                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+                  <Clock className="h-8 w-8 text-green-600" />
+                </div>
+                <h3 className="mb-4 text-xl font-bold text-gray-900">Fast Delivery</h3>
+                <p className="text-gray-600">
+                  Same-day and next-day delivery options for domestic routes, plus express
+                  international air cargo services.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center transition-shadow hover:shadow-lg">
+              <CardContent className="p-8">
+                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gold/10">
+                  <Package className="h-8 w-8 text-gold" />
+                </div>
+                <h3 className="mb-4 text-xl font-bold text-gray-900">Secure Handling</h3>
+                <p className="text-gray-600">
+                  Professional handling, real-time tracking, and compliance-focused shipment
+                  processing for peace of mind.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact CTA */}
+      <section className="bg-navy-900 py-20 text-white">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <h2 className="mb-6 text-4xl font-bold">Need a Custom Quote?</h2>
+          <p className="mb-10 text-xl text-navy-200">
+            For bulk shipments, special cargo requirements, or tailored logistics support,
+            contact our team directly.
+          </p>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <Card className="border-white/20 bg-white/10 text-white transition-colors hover:bg-white/15">
+              <CardContent className="p-6 text-center">
+                <Phone className="mx-auto mb-4 h-8 w-8 text-gold" />
+                <h3 className="mb-2 font-bold">Call Us</h3>
+                <p className="mb-4 text-navy-200">Speak with our logistics experts</p>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="border-gold text-gold hover:bg-gold hover:text-navy-900"
+                >
+                  <a href="tel:+95989747744">+95-9-89747744</a>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="border-white/20 bg-white/10 text-white transition-colors hover:bg-white/15">
+              <CardContent className="p-6 text-center">
+                <Mail className="mx-auto mb-4 h-8 w-8 text-gold" />
+                <h3 className="mb-2 font-bold">Email Us</h3>
+                <p className="mb-4 text-navy-200">Get a detailed proposal</p>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="border-gold text-gold hover:bg-gold hover:text-navy-900"
+                >
+                  <a href="mailto:info@britiumexpress.com">Send Email</a>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
     </div>
-
-    <script>
-        // 1. CONFIGURATION
-        const firebaseConfig = {
-            apiKey: "AIzaSyCbrF5_QW6Nb3rBVkozT2y0KotL8clr8Jo",
-            authDomain: "britium-express.firebaseapp.com",
-            databaseURL: "https://britium-express-default-rtdb.firebaseio.com",
-            projectId: "britium-express",
-            storageBucket: "britium-express.firebasestorage.app",
-            messagingSenderId: "406522036528",
-            appId: "1:406522036528:web:7713801d6832932067c8f5"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        const storage = firebase.storage();
-
-        // 2. LOCATIONS DATA
-        const myanmarLocations = {
-            "Yangon": ["Kamaryut", "Bahan", "Sanchaung", "Hlaing", "Insein", "Mingaladon", "North Okkalapa", "South Okkalapa", "Yankin", "Thingangyun", "Tamwe", "South Dagon", "North Dagon", "East Dagon", "Thaketa", "Dawbon", "Pazundaung", "Botahtaung", "Kyauktada", "Latha", "Lanmadaw", "Ahlone", "Kyeemyindaung", "Hlaing Tharyar", "Shwepyithar"],
-            "Mandalay": ["Chanayethazan", "Chanmyathazi", "Maha Aungmye", "Pyigyidagun", "Aungmyethazan", "Amarapura", "Patheingyi", "Pyin Oo Lwin"],
-            "Nay Pyi Taw": ["Zabuthiri", "Dekkhinathiri", "Ottarathiri", "Pobbathiri", "Zeyarthiri", "Pyinmana", "Lewe", "Tatkon"]
-        };
-
-        function loadTownships(cityId, townshipId) {
-            const city = document.getElementById(cityId).value;
-            const tspSelect = document.getElementById(townshipId);
-            tspSelect.innerHTML = '<option selected disabled>Select Township...</option>';
-            
-            if (myanmarLocations[city]) {
-                tspSelect.disabled = false;
-                myanmarLocations[city].sort().forEach(tsp => {
-                    let opt = document.createElement('option');
-                    opt.value = tsp;
-                    opt.innerHTML = tsp;
-                    tspSelect.appendChild(opt);
-                });
-            } else {
-                tspSelect.disabled = true;
-            }
-        }
-
-        // 3. VALIDATION
-        function validateDom() {
-            const name = document.getElementById('dSenderName').value;
-            const file = document.getElementById('dSenderID').files.length > 0;
-            const check = document.getElementById('dCompliance').checked;
-            document.getElementById('dSubmitBtn').disabled = !(name && file && check);
-        }
-
-        function validateIntl() {
-            const name = document.getElementById('iSenderName').value;
-            const file = document.getElementById('iSenderID').files.length > 0;
-            const check = document.getElementById('iCompliance').checked;
-            document.getElementById('iSubmitBtn').disabled = !(name && file && check);
-        }
-
-        // 4. BOOKING PROCESS
-        async function processBooking(type) {
-            const btn = document.getElementById(type === 'dom' ? 'dSubmitBtn' : 'iSubmitBtn');
-            const originalText = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading ID & Processing...';
-
-            try {
-                const prefix = type === 'dom' ? 'd' : 'i';
-                const sName = document.getElementById(prefix + 'SenderName').value;
-                const file = document.getElementById(prefix + 'SenderID').files[0];
-                const weight = document.getElementById(prefix === 'dom' ? 'dWeight' : 'iWeight').value || 1;
-                
-                let origin, dest, price, sTownship, rTownship;
-                
-                if(type === 'dom') {
-                    origin = document.getElementById('dOrigin').value;
-                    dest = document.getElementById('dDest').value;
-                    sTownship = document.getElementById('dSenderTownship').value;
-                    rTownship = document.getElementById('dReceiverTownship').value;
-                    price = (2500 + (Math.max(0, weight - 2) * 500));
-                } else {
-                    origin = "MM";
-                    dest = document.getElementById('iCountry').value;
-                    price = weight * 10000;
-                    sTownship = "N/A"; rTownship = "N/A";
-                }
-
-                // Upload ID
-                const storageRef = storage.ref(`ids/${Date.now()}_${file.name}`);
-                const snapshot = await storageRef.put(file);
-                const downloadURL = await snapshot.ref.getDownloadURL();
-
-                // Save Data
-                const refId = "BE-" + Math.floor(100000 + Math.random() * 900000);
-                const bookingData = {
-                    tracking_id: refId,
-                    sender_name: sName,
-                    sender_phone: document.getElementById(prefix + (type==='dom'?'SenderPhone':'SenderPhone')).value,
-                    receiver_name: type==='dom' ? document.getElementById('dRecName').value : document.getElementById('iReceiverName').value,
-                    origin: origin,
-                    destination: dest,
-                    sender_township: sTownship,
-                    receiver_township: rTownship,
-                    weight: weight,
-                    price: price,
-                    status: "Pending",
-                    id_image_url: downloadURL,
-                    timestamp: Date.now()
-                };
-
-                await db.ref('shipments/' + refId).set(bookingData);
-
-                // Generate Label
-                generateLabel(bookingData);
-                
-                if(type === 'dom') {
-                    document.getElementById('domResult').style.display = 'block';
-                    document.getElementById('domPriceDisplay').innerText = price + " MMK";
-                } else {
-                    document.getElementById('intlResult').style.display = 'block';
-                    document.getElementById('intlPriceDisplay').innerText = price + " MMK";
-                }
-                
-                btn.innerHTML = '<i class="fas fa-check"></i> Success';
-
-            } catch (error) {
-                console.error(error);
-                alert("Error: " + error.message);
-                btn.disabled = false;
-                btn.innerHTML = originalText;
-            }
-        }
-
-        function generateLabel(data) {
-            const isDom = data.destination === 'Yangon' || data.destination === 'Mandalay' || data.destination === 'Nay Pyi Taw';
-            document.getElementById('lblService').innerText = isDom ? 'DOMESTIC' : 'INTL CARGO';
-            document.getElementById('lblOrg').innerText = data.origin.substring(0,3).toUpperCase();
-            document.getElementById('lblDst').innerText = data.destination.substring(0,3).toUpperCase();
-            document.getElementById('lblRecName').innerText = data.receiver_name;
-            document.getElementById('lblRecAddr').innerText = data.receiver_township !== "N/A" ? data.receiver_township + ", " + data.destination : data.destination;
-            document.getElementById('lblRef').innerText = data.tracking_id;
-            document.getElementById('lblSendName').innerText = data.sender_name;
-            
-            // Show Township Routing
-            const routeStr = data.sender_township !== "N/A" ? `${data.sender_township} > ${data.receiver_township}` : "Standard";
-            document.getElementById('lblTownshipRoute').innerText = routeStr;
-            
-            document.getElementById('lblDetails').innerText = `${data.weight}kg / ${data.price}MMK`;
-            
-            // QR Code
-            document.getElementById('qrCodeTarget').innerHTML = "";
-            new QRCode(document.getElementById('qrCodeTarget'), {
-                text: `${data.tracking_id}|${data.origin}|${data.destination}|${data.receiver_township}`,
-                width: 100, height: 100
-            });
-            document.getElementById('shippingLabel').style.display = 'block';
-        }
-    </script>
-</body>
-</html>
+  );
+}
